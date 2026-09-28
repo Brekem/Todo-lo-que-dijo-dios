@@ -70,19 +70,28 @@ jobs:
       - name: App Bundle (Google Play)
         run: flutter build appbundle --release --obfuscate --split-debug-info=build/symbols
 
-      - name: Nombrar APK
-        run: cp build/app/outputs/flutter-apk/app-release.apk Todo-lo-que-Dios-Dijo.apk
+      - name: Nombrar APK y leer versión
+        id: version
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk Todo-lo-que-Dios-Dijo.apk
+          # "2.0.0+2" → "2.0.0"; "3.0.0-dev.1+3" → "3.0.0-dev.1"
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: *//; s/+.*//')
+          echo "name=$VERSION" >> "$GITHUB_OUTPUT"
+          if [[ "$VERSION" == *-* ]]; then echo "pre=true" >> "$GITHUB_OUTPUT"; else echo "pre=false" >> "$GITHUB_OUTPUT"; fi
 
-      # APK descargable directamente desde el móvil (pestaña Releases).
+      # APK descargable desde el móvil (pestaña Releases). Una release por
+      # versión del pubspec: las versiones con guion (3.0.0-dev.1) salen como
+      # prerelease y no reemplazan a la versión estable.
       - name: Publicar APK en Releases
         if: github.event_name != 'pull_request'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.0-build.${{ github.run_number }}
-          name: Todo lo que Dios Dijo v1.0.0 (build ${{ github.run_number }})
+          tag_name: v${{ steps.version.outputs.name }}
+          name: Todo lo que Dios Dijo ${{ steps.version.outputs.name }}
           target_commitish: ${{ github.sha }}
-          prerelease: false
-          make_latest: true
+          prerelease: ${{ steps.version.outputs.pre }}
+          make_latest: ${{ steps.version.outputs.pre == 'false' }}
+          overwrite_files: true
           body: |
             APK para instalar directamente en Android.
             Descarga **Todo-lo-que-Dios-Dijo.apk**, ábrelo y permite
