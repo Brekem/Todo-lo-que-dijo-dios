@@ -12,18 +12,40 @@ import 'package:todo_lo_que_dios_dijo/domain/listening/tts_engine.dart';
 import '../helpers.dart';
 
 /// Lector falso: cada frase "termina" cuando el test llama a [finish].
+///
+/// El anuncio «Escucha. Habla…» y la campana terminan solos, para que cada
+/// apartado siga necesitando un solo [finish].
 class FakeTts implements TtsEngine {
   final spoken = <String>[];
+
+  /// Frases dichas con la voz de Dios.
+  final divine = <String>[];
+  int cues = 0;
+  TtsVoice? divineVoice;
   Completer<void>? _current;
 
   bool get speaking => _current != null && !_current!.isCompleted;
 
   @override
-  Future<void> speak(String text) {
+  Future<void> speak(String text, {VoiceStyle style = VoiceStyle.narrator}) {
     spoken.add(text);
+    if (style == VoiceStyle.divine) divine.add(text);
+    if (text.startsWith('Escucha. Habla')) return Future.value();
     _current = Completer<void>();
     return _current!.future;
   }
+
+  @override
+  Future<void> playCue() async => cues++;
+
+  @override
+  Future<List<TtsVoice>> voices() async => const [
+    TtsVoice(name: 'es-us-x-esd-local', locale: 'es-US'),
+    TtsVoice(name: 'es-us-x-esf-network', locale: 'es-US', offline: false),
+  ];
+
+  @override
+  Future<void> setDivineVoice(TtsVoice? voice) async => divineVoice = voice;
 
   Future<void> finish() async {
     _current?.complete();
@@ -60,6 +82,7 @@ Future<(ProviderContainer, FakeTts, SharedPreferences)> setUpContainer([
       contentProvider.overrideWith(() => _FakeContent(content)),
       ttsEngineProvider.overrideWithValue(tts),
       repeatPauseProvider.overrideWithValue(Duration.zero),
+      pauseAfterGodProvider.overrideWithValue(Duration.zero),
     ],
   );
   await container.read(contentProvider.future);
@@ -72,9 +95,100 @@ Future<void> settle() async {
   }
 }
 
+void voiceTests() {
+  final content = loadContent();
+
+  group('La voz de Dios', () {
+    test('anuncio, campana y Dios habla con su propia voz', () async {
+      final (c, tts, _) = await setUpContainer();
+      final ctrl = c.read(listeningProvider.notifier);
+      await ctrl.playFrom(0);
+      await settle();
+      expect(c.read(listeningProvider).godSpeaking, isFalse);
+      await tts.finish(); // presentación
+      await settle();
+      final s = c.read(listeningProvider);
+      expect(s.section, NarrationSection.quote);
+      expect(s.godSpeaking, isTrue);
+      expect(tts.spoken.sublist(1), ['Escucha. Habla Dios.', 'Sea la luz.']);
+      expect(tts.cues, 1);
+      expect(tts.divine, ['Sea la luz.']);
+      await tts.finish(); // lo que Dios dijo
+      await settle();
+      expect(c.read(listeningProvider).godSpeaking, isFalse);
+      expect(c.read(listeningProvider).section, NarrationSection.reference);
+      // El resto lo lee el narrador.
+      expect(tts.divine, hasLength(1));
+      await ctrl.pause();
+      expect(c.read(listeningProvider).godSpeaking, isFalse);
+    });
+
+    test('se puede quitar la campana y se recuerda', () async {
+      final (c, tts, prefs) = await setUpContainer();
+      final ctrl = c.read(listeningProvider.notifier);
+      ctrl.setCue(false);
+      expect(prefs.getBool('listen_cue'), isFalse);
+      await ctrl.playFrom(0);
+      await settle();
+      await tts.finish();
+      await settle();
+      expect(tts.cues, 0);
+      expect(tts.divine, ['Sea la luz.']);
+      await ctrl.pause();
+    });
+
+    test('los pasajes sobre «la voz de Yavé» los lee el narrador', () async {
+      final (c, tts, _) = await setUpContainer();
+      final index = content.passages.indexWhere((p) => p.id.startsWith('v-'));
+      final ctrl = c.read(listeningProvider.notifier);
+      await ctrl.playFrom(index);
+      await settle();
+      await tts.finish();
+      await settle();
+      expect(tts.spoken.last, startsWith('Sobre la voz de Yavé.'));
+      expect(tts.divine, isEmpty);
+      expect(tts.cues, 0);
+      expect(c.read(listeningProvider).godSpeaking, isFalse);
+      await ctrl.pause();
+    });
+
+    test('elegir la voz de Dios, probarla y recordarla', () async {
+      final (c, tts, prefs) = await setUpContainer();
+      final ctrl = c.read(listeningProvider.notifier);
+      final voices = await ctrl.availableVoices();
+      await ctrl.setDivineVoice(voices.first);
+      expect(tts.divineVoice, voices.first);
+      expect(prefs.getString('listen_divine_voice'), isNotNull);
+      unawaited(ctrl.previewDivine());
+      await settle();
+      expect(tts.divine.single, 'Yo soy Yavé tu Dios.');
+      expect(tts.cues, 1);
+      await tts.finish();
+      c.dispose();
+
+      final (c2, _, _) = await setUpContainer({
+        'listen_divine_voice': prefs.getString('listen_divine_voice')!,
+      });
+      expect(c2.read(listeningProvider).divineVoice, voices.first);
+      await c2.read(listeningProvider.notifier).setDivineVoice(null);
+      expect(c2.read(listeningProvider).divineVoice, isNull);
+    });
+
+    test('anuncia quién habla', () {
+      String who(String id) =>
+          Narration.quoteParts(content.passageById(id)!).announcement;
+      expect(who('gen-1-3'), 'Escucha. Habla Dios.');
+      expect(who('isa-41-10'), 'Escucha. Habla Yavé.');
+      expect(who('mat-3-17'), 'Escucha. Habla el Padre.');
+      expect(who('2co-12-9'), 'Escucha. Habla el Señor.');
+    });
+  });
+}
+
 void main() {
   shuffleTests();
   repeatTests();
+  voiceTests();
   final content = loadContent();
   final total = content.passages.length;
   const sections = NarrationSection.values;
@@ -85,7 +199,7 @@ void main() {
       final s = Narration.segments(p, position: 1, total: 71, eraTitle: 'Adán');
       expect(s, hasLength(sections.length));
       expect(s[0], 'Palabra 1 de 71. Adán.');
-      expect(s[1], 'Dios dijo: Sea la luz.');
+      expect(s[1], 'Escucha. Habla Dios. Sea la luz.');
       expect(s[2], 'Génesis, capítulo 1, versículo 3.');
       expect(s.last, startsWith('Oración de liberación. Señor,'));
       for (final text in s) {
@@ -349,12 +463,15 @@ void repeatTests() {
       }
       expect(tts.spoken, [
         'Palabra 1 de $total. Adán.',
+        'Escucha. Habla Dios.', // se anuncia solo la primera vez
         for (var i = 0; i < 3; i++) ...[
-          'Dios dijo: Sea la luz.',
+          'Sea la luz.',
           'Génesis, capítulo 1, versículo 3.',
         ],
-        'Dios dijo: Sea la luz.',
+        'Sea la luz.',
       ]);
+      expect(tts.cues, 4); // la campana suena en cada repetición
+      expect(tts.divine, List.filled(4, 'Sea la luz.'));
       expect(c.read(listeningProvider).passageIndex, 0);
       await ctrl.pause();
     });

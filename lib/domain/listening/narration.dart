@@ -17,8 +17,34 @@ enum NarrationSection {
   final String title;
 }
 
+/// La cita, separada en el anuncio del narrador y lo que Dios dijo.
+typedef QuoteParts = ({String announcement, String words, bool divine});
+
 /// Convierte cada palabra de Dios en frases listas para el lector de voz.
 abstract final class Narration {
+  /// Anuncio antes de la cita («Escucha. Habla Yavé.») y las palabras mismas.
+  ///
+  /// [divine] es `false` cuando la cita no son palabras de Dios sino un
+  /// pasaje sobre «la voz de Yavé»; entonces la lee el narrador.
+  static QuoteParts quoteParts(Passage p) {
+    final words = _clean(p.quote);
+    if (p.id.startsWith('v-')) {
+      return (
+        announcement: 'Sobre la voz de Yavé.',
+        words: words,
+        divine: false,
+      );
+    }
+    final who = switch (p.speaker) {
+      'La voz del Padre' => 'el Padre',
+      'El Señor' || 'La voz del Señor' => 'el Señor',
+      'El Espíritu Santo' => 'el Espíritu Santo',
+      'Jesús resucitado' || 'Jesús glorificado' => 'Jesús',
+      final s => s,
+    };
+    return (announcement: 'Escucha. Habla $who.', words: words, divine: true);
+  }
+
   static List<String> segments(
     Passage p, {
     required int position,
@@ -29,11 +55,10 @@ abstract final class Narration {
       for (final section in NarrationSection.values)
         _clean(switch (section) {
           NarrationSection.intro => 'Palabra $position de $total. $eraTitle.',
-          // «Así dice Yavé: …» ya dice quién habla.
-          NarrationSection.quote =>
-            p.quote.startsWith(RegExp(r'Así (?:dice|ha dicho|dijo)'))
-                ? p.quote
-                : '${p.speaker} dijo: ${p.quote}',
+          NarrationSection.quote => () {
+            final q = quoteParts(p);
+            return '${q.announcement} ${q.words}';
+          }(),
           NarrationSection.reference => '${spokenReference(p.reference)}.',
           NarrationSection.recipient =>
             '¿A quién habló Dios? A ${p.recipient}.',

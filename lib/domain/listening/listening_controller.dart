@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/providers.dart';
 import '../../data/models/content_bundle.dart';
+import '../../data/models/passage.dart';
 import 'narration.dart';
 import 'tts_engine.dart';
 
@@ -40,6 +41,9 @@ class ListeningState {
     this.hasSavedPosition = false,
     this.repeat = ListenRepeat.off,
     this.repetitions = 0,
+    this.godSpeaking = false,
+    this.cue = true,
+    this.divineVoice,
   });
 
   final ListeningStatus status;
@@ -69,6 +73,15 @@ class ListeningState {
   /// Cuántas veces se ha repetido ya la palabra actual.
   final int repetitions;
 
+  /// En este momento se oyen las palabras de Dios (no el narrador).
+  final bool godSpeaking;
+
+  /// Suena la campana antes de que Dios hable.
+  final bool cue;
+
+  /// Voz elegida para Dios; `null` = la del narrador, más grave y pausada.
+  final TtsVoice? divineVoice;
+
   bool get isPlaying => status == ListeningStatus.playing;
   bool get isActive =>
       status == ListeningStatus.playing || status == ListeningStatus.paused;
@@ -92,6 +105,9 @@ class ListeningState {
     bool? hasSavedPosition,
     ListenRepeat? repeat,
     int? repetitions,
+    bool? godSpeaking,
+    bool? cue,
+    TtsVoice? Function()? divineVoice,
   }) => ListeningState(
     status: status ?? this.status,
     passageIndex: passageIndex ?? this.passageIndex,
@@ -103,6 +119,9 @@ class ListeningState {
     hasSavedPosition: hasSavedPosition ?? this.hasSavedPosition,
     repeat: repeat ?? this.repeat,
     repetitions: repetitions ?? this.repetitions,
+    godSpeaking: godSpeaking ?? this.godSpeaking,
+    cue: cue ?? this.cue,
+    divineVoice: divineVoice != null ? divineVoice() : this.divineVoice,
   );
 }
 
@@ -111,6 +130,11 @@ final ttsEngineProvider = Provider<TtsEngine>((ref) => FlutterTtsEngine());
 /// Silencio entre una repetición y la siguiente.
 final repeatPauseProvider = Provider<Duration>(
   (ref) => const Duration(milliseconds: 1500),
+);
+
+/// Silencio después de que Dios habla, antes de que vuelva el narrador.
+final pauseAfterGodProvider = Provider<Duration>(
+  (ref) => const Duration(milliseconds: 1200),
 );
 
 /// Lee en voz alta todas las palabras, de la primera a la última (o en orden
@@ -151,6 +175,11 @@ class ListeningController extends Notifier<ListeningState> {
         (m) => m.name == prefs.listeningRepeat,
         orElse: () => ListenRepeat.off,
       ),
+      cue: prefs.listeningCue,
+      divineVoice: switch (prefs.listeningDivineVoice) {
+        (final name, final locale) => TtsVoice(name: name, locale: locale),
+        null => null,
+      },
     );
   }
 
@@ -186,7 +215,7 @@ class ListeningController extends Notifier<ListeningState> {
   Future<void> pause() async {
     if (!state.isPlaying) return;
     _run++;
-    state = state.copyWith(status: ListeningStatus.paused);
+    state = state.copyWith(status: ListeningStatus.paused, godSpeaking: false);
     await _engine.stop();
   }
 
@@ -269,6 +298,37 @@ class ListeningController extends Notifier<ListeningState> {
     ref.read(preferencesRepositoryProvider).setListeningRepeat(mode.name);
   }
 
+  /// Campana antes de que Dios hable.
+  void setCue(bool on) {
+    state = state.copyWith(cue: on);
+    ref.read(preferencesRepositoryProvider).setListeningCue(on);
+  }
+
+  /// Voz para las palabras de Dios (`null` = la del narrador, más grave).
+  Future<void> setDivineVoice(TtsVoice? voice) async {
+    state = state.copyWith(divineVoice: () => voice);
+    ref
+        .read(preferencesRepositoryProvider)
+        .setListeningDivineVoice(
+          voice == null ? null : (voice.name, voice.locale),
+        );
+    await _engine.setDivineVoice(voice);
+  }
+
+  /// Voces en español del teléfono, para elegir la de Dios.
+  Future<List<TtsVoice>> availableVoices() => _engine.voices();
+
+  /// Hace oír cómo suena Dios con la voz elegida (pausa lo que se escuchaba).
+  Future<void> previewDivine() async {
+    await _interrupt();
+    final run = _run;
+    await _engine.setRate(state.rate);
+    await _engine.setDivineVoice(state.divineVoice);
+    if (state.cue) await _engine.playCue();
+    if (run != _run) return;
+    await _engine.speak('Yo soy Yavé tu Dios.', style: VoiceStyle.divine);
+  }
+
   Future<void> nextWord() => _skip(1);
   Future<void> previousWord() => _skip(-1);
 
@@ -282,6 +342,7 @@ class ListeningController extends Notifier<ListeningState> {
   Future<void> stop() async {
     _run++;
     if (state.isActive) state = state.copyWith(status: ListeningStatus.paused);
+    state = state.copyWith(godSpeaking: false);
     await _engine.stop();
   }
 
@@ -298,6 +359,7 @@ class ListeningController extends Notifier<ListeningState> {
   Future<void> _interrupt() async {
     _run++;
     if (state.isPlaying) state = state.copyWith(status: ListeningStatus.paused);
+    state = state.copyWith(godSpeaking: false);
     await _engine.stop();
   }
 
@@ -344,6 +406,7 @@ class ListeningController extends Notifier<ListeningState> {
     final run = ++_run;
     final total = content.passages.length;
     await _engine.setRate(state.rate);
+    await _engine.setDivineVoice(state.divineVoice);
     while (run == _run) {
       final length = state.length(total);
       if (state.step >= length) {
@@ -371,10 +434,19 @@ class ListeningController extends Notifier<ListeningState> {
       }
       _savePosition();
       try {
-        await _engine.speak(segments[section.index]);
+        if (section == NarrationSection.quote) {
+          await _speakQuote(passage, run);
+        } else {
+          await _engine.speak(segments[section.index]);
+        }
       } catch (e) {
         debugPrint('Error de lectura en voz alta: $e');
-        if (run == _run) state = state.copyWith(status: ListeningStatus.error);
+        if (run == _run) {
+          state = state.copyWith(
+            status: ListeningStatus.error,
+            godSpeaking: false,
+          );
+        }
         return;
       }
       if (run != _run) return; // pausado, saltado o reiniciado
@@ -399,6 +471,30 @@ class ListeningController extends Notifier<ListeningState> {
         );
       }
     }
+  }
+
+  /// El narrador anuncia quién habla, suena la campana y Dios habla con su
+  /// propia voz; después, un silencio antes de que vuelva el narrador.
+  Future<void> _speakQuote(Passage passage, int run) async {
+    final q = Narration.quoteParts(passage);
+    if (!q.divine) {
+      await _engine.speak('${q.announcement} ${q.words}');
+      return;
+    }
+    // Al repetir, basta la campana: no se vuelve a anunciar.
+    if (state.repetitions == 0) {
+      await _engine.speak(q.announcement);
+      if (run != _run) return;
+    }
+    if (state.cue) {
+      await _engine.playCue();
+      if (run != _run) return;
+    }
+    state = state.copyWith(godSpeaking: true);
+    await _engine.speak(q.words, style: VoiceStyle.divine);
+    if (run != _run) return;
+    state = state.copyWith(godSpeaking: false);
+    await Future<void>.delayed(ref.read(pauseAfterGodProvider));
   }
 
   /// Sección que sigue dentro de la misma palabra, o `null` si ya terminó.

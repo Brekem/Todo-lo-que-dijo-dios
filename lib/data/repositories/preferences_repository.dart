@@ -23,6 +23,8 @@ class PreferencesRepository {
   static const _listenOrderKey = 'listen_order';
   static const _listenRepeatKey = 'listen_repeat';
   static const _listenSearchKey = 'listen_search';
+  static const _listenCueKey = 'listen_cue';
+  static const _listenDivineVoiceKey = 'listen_divine_voice';
 
   List<SavedWord> get savedWords {
     final raw = _prefs.getString(_savedKey);
@@ -121,4 +123,20 @@ class PreferencesRepository {
   Future<void> setListeningSearch(String? query) => query == null
       ? _prefs.remove(_listenSearchKey)
       : _prefs.setString(_listenSearchKey, query);
+
+  /// Campana antes de que Dios hable (activada si no se ha tocado).
+  bool get listeningCue => _prefs.getBool(_listenCueKey) ?? true;
+  Future<void> setListeningCue(bool on) => _prefs.setBool(_listenCueKey, on);
+
+  /// Voz elegida para Dios: (nombre, idioma), o `null` = automática.
+  (String, String)? get listeningDivineVoice {
+    final raw = _prefs.getString(_listenDivineVoiceKey);
+    final parts = raw?.split('\t');
+    if (parts == null || parts.length != 2) return null;
+    return (parts[0], parts[1]);
+  }
+
+  Future<void> setListeningDivineVoice((String, String)? voice) => voice == null
+      ? _prefs.remove(_listenDivineVoiceKey)
+      : _prefs.setString(_listenDivineVoiceKey, '${voice.$1}\t${voice.$2}');
 }

@@ -122,6 +122,26 @@ void main() {
       await settle(tester);
       expect(find.text('Sin repetir'), findsOneWidget);
       expect(prefs.getString('listen_repeat'), 'off');
+
+      // La voz de Dios: campana y voces del teléfono.
+      final voiceButton = find.byKey(const Key('divine-voice-button'));
+      await tester.pump(const Duration(seconds: 6)); // se van los avisos
+      await tester.ensureVisible(voiceButton);
+      await tester.tap(voiceButton);
+      await settle(tester);
+      expect(find.text('Campana antes de que Dios hable'), findsOneWidget);
+      // Abrir la hoja del todo para ver las voces.
+      await tester.drag(
+        find.text('La voz de Dios').last,
+        const Offset(0, -600),
+      );
+      await settle(tester);
+      await tester.tap(find.text('Voz 1 · es-US'));
+      await settle(tester);
+      expect(tts.divineVoice?.name, 'es-us-x-esd-local');
+      await tester.tap(find.text('Campana antes de que Dios hable'));
+      await settle(tester);
+      expect(prefs.getBool('listen_cue'), isFalse);
     },
   );
 

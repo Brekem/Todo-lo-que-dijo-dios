@@ -52,6 +52,7 @@ una nueva versión.
 | Escuchar las palabras seguidas (en orden o al azar) en voz alta, con oración; recuerda dónde te quedaste | `features/listen`, `domain/listening` |
 | Repetir una palabra una y otra vez (completa o solo lo que Dios dijo) | `features/listen`, `domain/listening` |
 | Escuchar los resultados de una búsqueda, uno tras otro | `features/search`, `domain/listening` |
+| Voz de Dios inconfundible: anuncio «Escucha. Habla Yavé», campana, voz más grave y pausada, tarjeta dorada y elección de voz | `features/listen`, `domain/listening`, `assets/audio` |
 | Búsqueda inteligente: palabra, problema, tema, personaje | `domain/search`, `features/search` |
 | Las palabras que guardé (versículo + aplicación + oración) | `features/favorites` |
 | Mi camino: leídas, días seguidos, temas, oraciones | `features/stats` |

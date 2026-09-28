@@ -6,6 +6,7 @@ import '../../core/theme/app_palette.dart';
 import '../../data/models/content_bundle.dart';
 import '../../domain/listening/listening_controller.dart';
 import '../../domain/listening/narration.dart';
+import '../../domain/listening/tts_engine.dart';
 import '../../shared/widgets/async_content.dart';
 import '../../shared/widgets/sacred_background.dart';
 import '../../shared/widgets/section_label.dart';
@@ -82,6 +83,7 @@ class _ListenBody extends ConsumerWidget {
     final query = state.searchQuery;
     final passage = content.passages[index];
     final era = content.eraById(passage.era)?.title ?? '';
+    final quote = Narration.quoteParts(passage);
     final sectionText =
         Narration.segments(
           passage,
@@ -232,27 +234,36 @@ class _ListenBody extends ConsumerWidget {
         // Sección que se está leyendo (para seguir con la vista).
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 600),
-          child: Container(
-            key: ValueKey('$index-${state.section.index}'),
-            padding: const EdgeInsets.fromLTRB(22, 18, 22, 20),
-            decoration: BoxDecoration(
-              color: state.section == NarrationSection.prayer
-                  ? palette.blueSoft
-                  : state.section == NarrationSection.problem
-                  ? palette.goldSoft
-                  : palette.parchment.withValues(alpha: 0.85),
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: palette.gold.withValues(alpha: 0.3)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SectionLabel(state.section.title),
-                const SizedBox(height: 10),
-                Text(sectionText, style: theme.textTheme.bodyLarge),
-              ],
-            ),
-          ),
+          child: state.section == NarrationSection.quote && quote.divine
+              ? _GodSpeaks(
+                  key: ValueKey('$index-god-${state.godSpeaking}'),
+                  speaking: state.godSpeaking,
+                  announcement: quote.announcement,
+                  words: quote.words,
+                )
+              : Container(
+                  key: ValueKey('$index-${state.section.index}'),
+                  padding: const EdgeInsets.fromLTRB(22, 18, 22, 20),
+                  decoration: BoxDecoration(
+                    color: state.section == NarrationSection.prayer
+                        ? palette.blueSoft
+                        : state.section == NarrationSection.problem
+                        ? palette.goldSoft
+                        : palette.parchment.withValues(alpha: 0.85),
+                    borderRadius: BorderRadius.circular(22),
+                    border: Border.all(
+                      color: palette.gold.withValues(alpha: 0.3),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SectionLabel(state.section.title),
+                      const SizedBox(height: 10),
+                      Text(sectionText, style: theme.textTheme.bodyLarge),
+                    ],
+                  ),
+                ),
         ),
         const SizedBox(height: 28),
         // Controles
@@ -375,6 +386,24 @@ class _ListenBody extends ConsumerWidget {
             },
           ),
         ),
+        const SizedBox(height: 10),
+        Center(
+          child: OutlinedButton.icon(
+            key: const Key('divine-voice-button'),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: palette.gold,
+              side: BorderSide(color: palette.gold.withValues(alpha: 0.6)),
+            ),
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              showDragHandle: true,
+              builder: (_) => const _DivineVoiceSheet(),
+            ),
+            icon: const Icon(Icons.record_voice_over_outlined),
+            label: const Text('La voz de Dios'),
+          ),
+        ),
         const SizedBox(height: 18),
         Center(
           child: SegmentedButton<double>(
@@ -392,6 +421,197 @@ class _ListenBody extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Mientras Dios habla: tarjeta dorada y luminosa, con sus palabras en grande,
+/// para que se note que ya no habla el narrador.
+class _GodSpeaks extends StatelessWidget {
+  const _GodSpeaks({
+    super.key,
+    required this.speaking,
+    required this.announcement,
+    required this.words,
+  });
+
+  final bool speaking;
+  final String announcement;
+  final String words;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = AppPalette.of(context);
+    final theme = Theme.of(context);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(24, 20, 24, 26),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            palette.goldSoft,
+            palette.gold.withValues(alpha: speaking ? 0.32 : 0.14),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: palette.gold, width: speaking ? 1.6 : 1),
+        boxShadow: [
+          if (speaking)
+            BoxShadow(
+              color: palette.gold.withValues(alpha: 0.45),
+              blurRadius: 28,
+              spreadRadius: 2,
+            ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                speaking ? Icons.graphic_eq_rounded : Icons.hearing_rounded,
+                color: palette.gold,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  speaking ? 'DIOS ESTÁ HABLANDO' : announcement.toUpperCase(),
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: palette.gold,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.4,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Text(
+            '«$words»',
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w600,
+              height: 1.35,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Elegir la voz de Dios, la campana y probar cómo suena.
+class _DivineVoiceSheet extends ConsumerStatefulWidget {
+  const _DivineVoiceSheet();
+
+  @override
+  ConsumerState<_DivineVoiceSheet> createState() => _DivineVoiceSheetState();
+}
+
+class _DivineVoiceSheetState extends ConsumerState<_DivineVoiceSheet> {
+  late final Future<List<TtsVoice>> _voices = ref
+      .read(listeningProvider.notifier)
+      .availableVoices();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(listeningProvider);
+    final controller = ref.read(listeningProvider.notifier);
+    final palette = AppPalette.of(context);
+    final theme = Theme.of(context);
+
+    Widget option(TtsVoice? voice, String title, String? subtitle) {
+      final selected = voice == state.divineVoice;
+      return ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: Icon(
+          selected ? Icons.radio_button_checked : Icons.radio_button_off,
+          color: selected ? palette.gold : palette.warmGray,
+        ),
+        title: Text(title),
+        subtitle: subtitle == null ? null : Text(subtitle),
+        trailing: IconButton(
+          tooltip: 'Probar',
+          icon: Icon(Icons.play_circle_outline, color: palette.gold),
+          onPressed: () async {
+            await controller.setDivineVoice(voice);
+            await controller.previewDivine();
+          },
+        ),
+        onTap: () => controller.setDivineVoice(voice),
+      );
+    }
+
+    return SafeArea(
+      child: DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.7,
+        maxChildSize: 0.95,
+        builder: (context, scroll) => ListView(
+          controller: scroll,
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+          children: [
+            Text('La voz de Dios', style: theme.textTheme.headlineSmall),
+            const SizedBox(height: 8),
+            Text(
+              'Cuando Dios habla, el narrador lo anuncia, suena una campana y '
+              'Dios habla con una voz más grave y pausada. Elige la voz que '
+              'más te ayude a reconocerlo.',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: palette.warmGray,
+              ),
+            ),
+            const SizedBox(height: 12),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Campana antes de que Dios hable'),
+              value: state.cue,
+              activeThumbColor: palette.gold,
+              onChanged: controller.setCue,
+            ),
+            const Divider(),
+            option(null, 'La misma voz, más grave y solemne', 'Recomendada'),
+            FutureBuilder<List<TtsVoice>>(
+              future: _voices,
+              builder: (context, snapshot) {
+                final voices = snapshot.data ?? const <TtsVoice>[];
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (voices.isEmpty) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      'Tu teléfono no tiene otras voces en español. Puedes '
+                      'instalar más en Ajustes → Texto a voz.',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  );
+                }
+                return Column(
+                  children: [
+                    for (final (i, v) in voices.indexed)
+                      option(
+                        v,
+                        'Voz ${i + 1} · ${v.locale}',
+                        v.offline
+                            ? 'Funciona sin conexión'
+                            : 'Necesita internet',
+                      ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -3,7 +3,7 @@ description: "Todo lo que Dios Dijo: todas las palabras que Yavé pronunció en 
 publish_to: 'none'
 
 # versionName+versionCode para Google Play. Incrementa el número tras "+" en cada subida.
-version: 3.3.0+7
+version: 3.4.0+8
 
 environment:
   sdk: ^3.13.4
@@ -26,6 +26,7 @@ dependencies:
   firebase_ai: ^4.0.0
   firebase_app_check: ^0.4.8
   flutter_tts: ^4.2.5
+  audioplayers: ^6.8.1
   wakelock_plus: ^1.8.0
 
 dev_dependencies:
@@ -38,6 +39,7 @@ flutter:
 
   assets:
     - assets/data/
+    - assets/audio/
 
   fonts:
     # Títulos y citas: serif clásica, reverente.
