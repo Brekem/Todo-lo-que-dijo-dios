@@ -383,6 +383,57 @@ BOOK_IDS = {
 }
 
 
+WRITTEN = ROOT / 'tool' / 'content' / 'written'
+
+
+def load_written():
+    """Cita corta y textos escritos a mano para cada discurso (tool/content/written)."""
+    W = {}
+
+    def w(id, quote, problem, explanation, application, prayer, cats=None):
+        assert id not in W, f'repetida: {id}'
+        assert prayer.rstrip().endswith('Amén.'), f'oración sin «Amén.»: {id}'
+        if cats:
+            assert all(c in CATEGORIES_BY_ID for c in cats), f'categoría desconocida: {id}'
+        W[id] = dict(quote=quote, problem=problem, explanation=explanation,
+                     application=application, prayer=prayer, cats=cats)
+
+    def skip(id, reason):
+        """El extractor lo tomó por un discurso, pero no es Dios hablando."""
+        assert id not in W, f'repetida: {id}'
+        W[id] = dict(skip=reason)
+
+    for f in sorted(WRITTEN.glob('*.py')):
+        exec(compile(f.read_text(encoding='utf-8'), str(f), 'exec'), {'w': w, 'skip': skip})
+    return W
+
+
+def _plain(s: str) -> str:
+    return re.sub(r'\s+', ' ', re.sub(r'[^\w\s]', ' ', s.lower())).strip()
+
+
+def check_quote(pid: str, quote: str, source: str):
+    """La cita corta debe estar palabra por palabra en la RV1909 (se permite «…»)."""
+    text = _plain(source)
+    for piece in re.split(r'…', quote):
+        piece = _plain(piece)
+        assert piece and piece in text, f'{pid}: la cita no está en el texto: «{piece}»'
+
+
+def apply_written(p: dict, source: str, W: dict):
+    x = W.get(p['id'])
+    if x is None:
+        return
+    if 'skip' in x:
+        p['_skip'] = True
+        return
+    check_quote(p['id'], x['quote'], source)
+    p.update(quote=x['quote'], problem=x['problem'], explanation=x['explanation'],
+             application=x['application'], prayer=x['prayer'], curated=True)
+    if x['cats']:
+        p['categories'] = x['cats']
+
+
 def load_curated():
     P = []
 
@@ -419,6 +470,8 @@ def reference(book_name, chapter, v1, v2):
 def main():
     corpus = json.loads((ROOT / 'tool' / 'corpus' / 'units.json').read_text(encoding='utf-8'))
     curated = load_curated()
+    written = load_written()
+    used = set()
     era_ids = [e[0] for e in ERAS]
 
     def overlaps(u):
@@ -483,6 +536,8 @@ def main():
             'historicalContext': CONTEXT[u['book']], 'situation': situation,
             **fields, 'curated': False,
         }))
+        apply_written(items[-1][1], u['text'], written)
+        used.add(uid)
 
     # «La voz de Yavé» fuera de los discursos: se agrupan versículos seguidos.
     in_units = lambda v: any(x['book'] == v['book'] and x['chapter'] == v['chapter']
@@ -518,7 +573,12 @@ def main():
             'historicalContext': CONTEXT[g['book']], 'situation': situation,
             **fields, 'curated': False,
         }))
+        apply_written(items[-1][1], text, written)
+        used.add(uid)
 
+    stale = set(written) - used
+    assert not stale, f'textos escritos para palabras que ya no existen: {sorted(stale)}'
+    items = [kv for kv in items if not kv[1].pop('_skip', False)]
     items.sort(key=lambda kv: kv[0])
     passages = []
     seen = set()

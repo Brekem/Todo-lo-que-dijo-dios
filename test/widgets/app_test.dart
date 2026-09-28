@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_lo_que_dios_dijo/app/app.dart';
+import 'package:todo_lo_que_dios_dijo/shared/widgets/passage_tile.dart';
 import 'package:todo_lo_que_dios_dijo/app/providers.dart';
 import 'package:todo_lo_que_dios_dijo/data/models/content_bundle.dart';
 
@@ -72,7 +73,7 @@ void main() {
       findsOneWidget,
     );
 
-    await tester.tap(find.textContaining('No temas, Abram').last);
+    await tester.tap(find.byType(PassageTile).first);
     await settle(tester, 3);
     expect(find.text('¿A quién habló Dios?'), findsOneWidget);
     expect(find.text('Contexto histórico'), findsOneWidget);

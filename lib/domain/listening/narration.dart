@@ -29,9 +29,11 @@ abstract final class Narration {
       for (final section in NarrationSection.values)
         _clean(switch (section) {
           NarrationSection.intro => 'Palabra $position de $total. $eraTitle.',
-          // Los pasajes completos ya incluyen «Y dijo Yavé…» en el texto.
+          // «Así dice Yavé: …» ya dice quién habla.
           NarrationSection.quote =>
-            p.curated ? '${p.speaker} dijo: ${p.quote}' : p.quote,
+            p.quote.startsWith(RegExp(r'Así (?:dice|ha dicho|dijo)'))
+                ? p.quote
+                : '${p.speaker} dijo: ${p.quote}',
           NarrationSection.reference => '${spokenReference(p.reference)}.',
           NarrationSection.recipient =>
             '¿A quién habló Dios? A ${p.recipient}.',

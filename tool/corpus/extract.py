@@ -88,7 +88,7 @@ PRAYER = re.compile(
     rf'\boh {J}\b|\boh (?:Dios|Señor)\b|\btu siervo\b|\b[Tt]ú oirás\b|'
     r'\b[Oo]ye (?:pues )?(?:la oración|tú)\b|\bruégote\b', re.IGNORECASE)
 
-MAX_VERSES = 12
+MAX_VERSES = 1000  # un discurso = una palabra (la cita se escribe corta a mano)
 
 # Capítulos que empiezan a mitad de un discurso de Yavé que viene del capítulo
 # anterior (revisados a mano): la Ley dada a Moisés y la respuesta a Job.
