@@ -40,7 +40,9 @@ class MiniPlayer extends ConsumerWidget {
                   child: Row(
                     children: [
                       Icon(
-                        state.shuffle
+                        state.fromSearch
+                            ? Icons.search_rounded
+                            : state.shuffle
                             ? Icons.shuffle_rounded
                             : Icons.graphic_eq_rounded,
                         color: palette.gold,
@@ -63,7 +65,9 @@ class MiniPlayer extends ConsumerWidget {
                               style: theme.textTheme.titleSmall,
                             ),
                             Text(
-                              state.shuffle
+                              state.fromSearch
+                                  ? '«${state.searchQuery}» · ${state.step + 1} de ${state.order!.length} · ${state.section.title}'
+                                  : state.shuffle
                                   ? 'Aleatorio · ${state.step + 1} de ${content.passages.length} · ${state.section.title}'
                                   : 'Palabra ${state.passageIndex + 1} de ${content.passages.length} · ${state.section.title}',
                               maxLines: 1,

@@ -10,6 +10,7 @@ import '../../core/analytics.dart';
 import '../../core/theme/app_palette.dart';
 import '../../data/models/content_bundle.dart';
 import '../../data/models/passage.dart';
+import '../../domain/listening/listening_controller.dart';
 import '../../domain/random_word.dart';
 import '../../domain/search/search_engine.dart';
 import '../../shared/widgets/async_content.dart';
@@ -132,6 +133,17 @@ class _ReadingAppBar extends ConsumerWidget implements PreferredSizeWidget {
         style: Theme.of(context).textTheme.titleMedium,
       ),
       actions: [
+        IconButton(
+          tooltip: 'Repetir esta palabra',
+          icon: const Icon(Icons.repeat_one_rounded),
+          onPressed: () {
+            final listening = ref.read(listeningProvider.notifier);
+            if (ref.read(listeningProvider).repeat == ListenRepeat.off) {
+              listening.setRepeat(ListenRepeat.word);
+            }
+            context.push(Routes.listenFrom(passage.id));
+          },
+        ),
         IconButton(
           tooltip: saved ? 'Quitar de guardadas' : 'Guardar palabra',
           icon: AnimatedSwitcher(

@@ -9,6 +9,7 @@ import '../../app/router.dart';
 import '../../core/analytics.dart';
 import '../../core/theme/app_palette.dart';
 import '../../data/models/content_bundle.dart';
+import '../../domain/listening/listening_controller.dart';
 import '../../domain/search/search_engine.dart';
 import '../../shared/widgets/async_content.dart';
 import '../../shared/widgets/fade_slide_in.dart';
@@ -164,14 +165,38 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               ),
             );
           }
+          // Escuchar los resultados uno tras otro, desde [start].
+          void listen(int start) {
+            ref.read(listeningProvider.notifier).playSearch(_query, [
+              for (final r in results) content.indexOf(r.passage),
+            ], start: start);
+            Analytics.log('listen_search', {'mode': _mode.name});
+            context.push(Routes.listen);
+          }
+
           return ListView.separated(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 40),
             itemCount: results.length + 1,
             separatorBuilder: (_, _) => const SizedBox(height: 12),
             itemBuilder: (context, i) {
               if (i == 0) {
-                return SectionLabel(
-                  '${results.length} ${results.length == 1 ? 'palabra encontrada' : 'palabras encontradas'}',
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SectionLabel(
+                      '${results.length} ${results.length == 1 ? 'palabra encontrada' : 'palabras encontradas'}',
+                    ),
+                    const SizedBox(height: 10),
+                    FilledButton.tonalIcon(
+                      onPressed: () => listen(0),
+                      icon: const Icon(Icons.headphones_outlined),
+                      label: Text(
+                        results.length == 1
+                            ? 'Escuchar'
+                            : 'Escuchar todas, una tras otra',
+                      ),
+                    ),
+                  ],
                 );
               }
               final passage = results[i - 1].passage;
@@ -182,6 +207,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 child: PassageTile(
                   passage: passage,
                   onTap: () => context.push(Routes.passage(passage.id)),
+                  trailing: IconButton(
+                    tooltip: 'Escuchar desde esta palabra',
+                    color: palette.gold,
+                    onPressed: () => listen(i - 1),
+                    icon: const Icon(Icons.headphones_outlined),
+                  ),
                 ),
               );
             },

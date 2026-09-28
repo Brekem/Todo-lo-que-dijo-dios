@@ -59,6 +59,7 @@ Future<(ProviderContainer, FakeTts, SharedPreferences)> setUpContainer([
       sharedPreferencesProvider.overrideWithValue(prefs),
       contentProvider.overrideWith(() => _FakeContent(content)),
       ttsEngineProvider.overrideWithValue(tts),
+      repeatPauseProvider.overrideWithValue(Duration.zero),
     ],
   );
   await container.read(contentProvider.future);
@@ -73,6 +74,7 @@ Future<void> settle() async {
 
 void main() {
   shuffleTests();
+  repeatTests();
   final content = loadContent();
   final total = content.passages.length;
   const sections = NarrationSection.values;
@@ -298,6 +300,170 @@ void shuffleTests() {
       expect(s.order, isNot(equals(first)));
       expect(s.passageIndex, s.order!.first);
       await ctrl.pause();
+    });
+  });
+}
+
+void repeatTests() {
+  final content = loadContent();
+  final total = content.passages.length;
+  const sections = NarrationSection.values;
+
+  group('Repetir', () {
+    test('repite la palabra completa una y otra vez', () async {
+      final (c, tts, prefs) = await setUpContainer();
+      final ctrl = c.read(listeningProvider.notifier);
+      ctrl.cycleRepeat();
+      expect(c.read(listeningProvider).repeat, ListenRepeat.word);
+      expect(prefs.getString('listen_repeat'), 'word');
+      await ctrl.playFrom(3);
+      await settle();
+      for (var round = 1; round <= 3; round++) {
+        final from = round == 1 ? 0 : 1; // sin presentación al repetir
+        for (var i = from; i < sections.length; i++) {
+          expect(c.read(listeningProvider).section, sections[i]);
+          await tts.finish();
+        }
+        await settle();
+        final s = c.read(listeningProvider);
+        expect(s.passageIndex, 3);
+        expect(s.repetitions, round);
+        expect(s.section, NarrationSection.quote);
+      }
+      expect(
+        tts.spoken.where((t) => t.startsWith('Palabra 4 de $total')),
+        hasLength(1),
+      );
+      await ctrl.pause();
+    });
+
+    test('repite solo lo que Dios dijo y su referencia', () async {
+      final (c, tts, _) = await setUpContainer();
+      final ctrl = c.read(listeningProvider.notifier);
+      ctrl.setRepeat(ListenRepeat.quote);
+      await ctrl.playFrom(0);
+      await settle();
+      for (var i = 0; i < 7; i++) {
+        await tts.finish();
+        await settle();
+      }
+      expect(tts.spoken, [
+        'Palabra 1 de $total. Adán.',
+        for (var i = 0; i < 3; i++) ...[
+          'Dios dijo: Sea la luz.',
+          'Génesis, capítulo 1, versículo 3.',
+        ],
+        'Dios dijo: Sea la luz.',
+      ]);
+      expect(c.read(listeningProvider).passageIndex, 0);
+      await ctrl.pause();
+    });
+
+    test('se puede quitar la repetición y seguir con la siguiente', () async {
+      final (c, tts, _) = await setUpContainer();
+      final ctrl = c.read(listeningProvider.notifier);
+      ctrl.setRepeat(ListenRepeat.quote);
+      await ctrl.play();
+      await settle();
+      await ctrl.nextWord();
+      await settle();
+      expect(c.read(listeningProvider).passageIndex, 1);
+      expect(c.read(listeningProvider).repetitions, 0);
+      await tts.finish(); // presentación
+      await tts.finish(); // cita
+      ctrl.cycleRepeat(); // solo la cita → sin repetir
+      expect(c.read(listeningProvider).repeat, ListenRepeat.off);
+      for (var i = NarrationSection.reference.index; i < sections.length; i++) {
+        await tts.finish();
+      }
+      await settle();
+      expect(c.read(listeningProvider).passageIndex, 2);
+      await ctrl.pause();
+    });
+
+    test('recuerda el modo de repetición', () async {
+      final (c, _, _) = await setUpContainer({'listen_repeat': 'quote'});
+      expect(c.read(listeningProvider).repeat, ListenRepeat.quote);
+    });
+  });
+
+  group('Escuchar una búsqueda', () {
+    test('sigue con las palabras siguientes de la búsqueda', () async {
+      final (c, tts, prefs) = await setUpContainer();
+      final ctrl = c.read(listeningProvider.notifier);
+      const results = [40, 7, 300];
+      await ctrl.playSearch('miedo', results);
+      await settle();
+      var s = c.read(listeningProvider);
+      expect(s.fromSearch, isTrue);
+      expect(s.shuffle, isFalse);
+      expect(s.searchQuery, 'miedo');
+      expect(s.passageIndex, 40);
+      expect(prefs.getString('listen_search'), 'miedo');
+      for (final expected in [7, 300]) {
+        for (var i = 0; i < sections.length; i++) {
+          await tts.finish();
+        }
+        s = c.read(listeningProvider);
+        expect(s.passageIndex, expected);
+        expect(tts.spoken.last, startsWith('Palabra ${expected + 1} de'));
+      }
+      for (var i = 0; i < sections.length; i++) {
+        await tts.finish();
+      }
+      await settle();
+      s = c.read(listeningProvider);
+      expect(s.status, ListeningStatus.finished);
+      expect(s.passageIndex, 40);
+    });
+
+    test('empieza desde un resultado y salta dentro de la búsqueda', () async {
+      final (c, _, _) = await setUpContainer();
+      final ctrl = c.read(listeningProvider.notifier);
+      await ctrl.playSearch('fe', [5, 9, 12, 20], start: 2);
+      await settle();
+      expect(c.read(listeningProvider).passageIndex, 12);
+      await ctrl.nextWord();
+      expect(c.read(listeningProvider).passageIndex, 20);
+      await ctrl.nextWord(); // ya es la última
+      expect(c.read(listeningProvider).passageIndex, 20);
+      await ctrl.previousWord();
+      expect(c.read(listeningProvider).passageIndex, 12);
+      // «Escuchar desde aquí» de una palabra de la búsqueda sigue en ella.
+      await ctrl.playFrom(9);
+      expect(c.read(listeningProvider).step, 1);
+      expect(c.read(listeningProvider).fromSearch, isTrue);
+      await ctrl.pause();
+    });
+
+    test('recuerda la búsqueda entre sesiones y se puede dejar', () async {
+      final (c, _, prefs) = await setUpContainer();
+      final ctrl = c.read(listeningProvider.notifier);
+      await ctrl.playSearch('luz', [3, 1, 8]);
+      await ctrl.nextWord();
+      await ctrl.pause();
+      c.dispose();
+
+      final (c2, _, prefs2) = await setUpContainer({
+        'listen_passage': prefs.getInt('listen_passage')!,
+        'listen_section': 0,
+        'listen_step': prefs.getInt('listen_step')!,
+        'listen_order': prefs.getString('listen_order')!,
+        'listen_search': prefs.getString('listen_search')!,
+      });
+      var s = c2.read(listeningProvider);
+      expect(s.fromSearch, isTrue);
+      expect(s.searchQuery, 'luz');
+      expect(s.step, 1);
+      expect(s.passageIndex, 1);
+
+      c2.read(listeningProvider.notifier).leaveSearch();
+      s = c2.read(listeningProvider);
+      expect(s.fromSearch, isFalse);
+      expect(s.order, isNull);
+      expect(s.step, 1);
+      expect(prefs2.getString('listen_search'), isNull);
+      expect(prefs2.getString('listen_order'), isNull);
     });
   });
 }

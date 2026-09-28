@@ -77,7 +77,9 @@ class _ListenBody extends ConsumerWidget {
     final theme = Theme.of(context);
     final total = content.passages.length;
     final index = state.passageIndex.clamp(0, total - 1);
-    final step = state.step.clamp(0, total - 1);
+    final length = state.length(total);
+    final step = state.step.clamp(0, length - 1);
+    final query = state.searchQuery;
     final passage = content.passages[index];
     final era = content.eraById(passage.era)?.title ?? '';
     final sectionText =
@@ -106,19 +108,35 @@ class _ListenBody extends ConsumerWidget {
         Text('Escuchar la\nVoz de Dios', style: theme.textTheme.displaySmall),
         const SizedBox(height: 10),
         Text(
-          state.shuffle
+          state.fromSearch
+              ? 'Las $length ${length == 1 ? 'palabra' : 'palabras'} de tu '
+                    'búsqueda «$query», una tras otra, con su explicación, '
+                    'aplicación y oración. Se guarda dónde te quedas.'
+              : state.shuffle
               ? 'Las $total palabras en orden aleatorio, cada una con su '
                     'explicación, aplicación y oración. Se guarda dónde te quedas.'
               : 'Las $total palabras, de Génesis a Apocalipsis, con su '
                     'explicación, aplicación y oración. Se guarda dónde te quedas.',
           style: theme.textTheme.bodyMedium?.copyWith(color: palette.warmGray),
         ),
+        if (state.fromSearch)
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              style: TextButton.styleFrom(padding: EdgeInsets.zero),
+              onPressed: controller.leaveSearch,
+              icon: const Icon(Icons.close_rounded, size: 18),
+              label: Text('Escuchar las $total palabras'),
+            ),
+          ),
         const SizedBox(height: 24),
         if (state.status == ListeningStatus.finished)
           _Banner(
             icon: Icons.celebration_outlined,
             title: 'Completaste el recorrido',
-            subtitle: 'Escuchaste las $total palabras de Dios.',
+            subtitle: state.fromSearch
+                ? 'Escuchaste las $length palabras de tu búsqueda «$query».'
+                : 'Escuchaste las $total palabras de Dios.',
             primaryLabel: 'Comenzar de nuevo',
             onPrimary: controller.restart,
           )
@@ -126,7 +144,10 @@ class _ListenBody extends ConsumerWidget {
           _Banner(
             icon: Icons.bookmark_added_outlined,
             title: 'Te quedaste en la palabra ${index + 1} de $total',
-            subtitle: state.shuffle
+            subtitle: state.fromSearch
+                ? '${passage.reference} · ${state.section.title}\n'
+                      'Búsqueda «$query»: vas por la ${step + 1} de $length'
+                : state.shuffle
                 ? '${passage.reference} · ${state.section.title}\n'
                       'Orden aleatorio: vas por la ${step + 1} de $total'
                 : '${passage.reference} · ${state.section.title}',
@@ -154,9 +175,19 @@ class _ListenBody extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  state.shuffle
-                      ? 'ALEATORIO · ${step + 1} DE $total · ${era.toUpperCase()}'
-                      : 'PALABRA ${index + 1} DE $total · ${era.toUpperCase()}',
+                  [
+                    state.fromSearch
+                        ? 'BÚSQUEDA · ${step + 1} DE $length'
+                        : state.shuffle
+                        ? 'ALEATORIO · ${step + 1} DE $total'
+                        : 'PALABRA ${index + 1} DE $total',
+                    if (state.repeat != ListenRepeat.off)
+                      state.repetitions > 0
+                          ? 'REPETIDA ${state.repetitions} '
+                                '${state.repetitions == 1 ? 'VEZ' : 'VECES'}'
+                          : 'EN REPETICIÓN',
+                    era.toUpperCase(),
+                  ].join(' · '),
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: palette.gold,
                   ),
@@ -187,7 +218,7 @@ class _ListenBody extends ConsumerWidget {
                         (step +
                             (state.section.index + 1) /
                                 NarrationSection.values.length) /
-                        total,
+                        length,
                     minHeight: 3,
                     color: palette.gold,
                     backgroundColor: palette.warmGray.withValues(alpha: 0.15),
@@ -244,6 +275,9 @@ class _ListenBody extends ConsumerWidget {
                       content: Text(
                         state.shuffle
                             ? 'Orden cronológico: de Génesis a Apocalipsis'
+                            : state.fromSearch
+                            ? 'Orden aleatorio: dejas la búsqueda y se mezclan '
+                                  'las $total palabras'
                             : 'Orden aleatorio: las $total palabras mezcladas',
                       ),
                     ),
@@ -284,12 +318,14 @@ class _ListenBody extends ConsumerWidget {
             IconButton(
               tooltip: 'Palabra siguiente',
               iconSize: 32,
-              onPressed: step >= total - 1 ? null : controller.nextWord,
+              onPressed: step >= length - 1 ? null : controller.nextWord,
               icon: const Icon(Icons.skip_next_rounded),
             ),
             const SizedBox(width: 6),
             IconButton(
-              tooltip: state.shuffle
+              tooltip: state.fromSearch
+                  ? 'Comenzar de nuevo la búsqueda'
+                  : state.shuffle
                   ? 'Comenzar de nuevo con otro orden'
                   : 'Comenzar de nuevo desde la palabra 1',
               iconSize: 26,
@@ -302,12 +338,41 @@ class _ListenBody extends ConsumerWidget {
         const SizedBox(height: 18),
         Center(
           child: Text(
-            state.shuffle
+            state.fromSearch
+                ? 'Resultados de «$query», en orden'
+                : state.shuffle
                 ? 'Orden aleatorio'
                 : 'Orden cronológico · de Génesis a Apocalipsis',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: theme.textTheme.labelMedium?.copyWith(
-              color: state.shuffle ? palette.gold : palette.warmGray,
+              color: state.shuffle || state.fromSearch
+                  ? palette.gold
+                  : palette.warmGray,
             ),
+          ),
+        ),
+        const SizedBox(height: 14),
+        Center(
+          child: _RepeatButton(
+            mode: state.repeat,
+            onPressed: () {
+              final next = state.repeat.next;
+              controller.setRepeat(next);
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text(switch (next) {
+                      ListenRepeat.off => 'Sin repetir: sigue con la siguiente',
+                      ListenRepeat.word =>
+                        'Se repetirá esta palabra una y otra vez',
+                      ListenRepeat.quote =>
+                        'Se repetirá solo lo que Dios dijo, una y otra vez',
+                    }),
+                  ),
+                );
+            },
           ),
         ),
         const SizedBox(height: 18),
@@ -327,6 +392,37 @@ class _ListenBody extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Sin repetir → repetir la palabra → repetir solo lo que Dios dijo.
+class _RepeatButton extends StatelessWidget {
+  const _RepeatButton({required this.mode, required this.onPressed});
+
+  final ListenRepeat mode;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = AppPalette.of(context);
+    final on = mode != ListenRepeat.off;
+    return OutlinedButton.icon(
+      key: const Key('repeat-button'),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: on ? palette.gold : palette.warmGray,
+        backgroundColor: on ? palette.goldSoft : null,
+        side: BorderSide(
+          color: on ? palette.gold : palette.warmGray.withValues(alpha: 0.4),
+        ),
+      ),
+      onPressed: onPressed,
+      icon: Icon(switch (mode) {
+        ListenRepeat.off => Icons.repeat_rounded,
+        ListenRepeat.word => Icons.repeat_one_rounded,
+        ListenRepeat.quote => Icons.repeat_one_on_rounded,
+      }),
+      label: Text(mode.label),
     );
   }
 }

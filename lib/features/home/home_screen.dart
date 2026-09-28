@@ -345,6 +345,8 @@ class _ListenCard extends ConsumerWidget {
                           ? 'Escuchando la palabra ${state.passageIndex + 1}…'
                           : resume
                           ? 'Te quedaste en la palabra ${state.passageIndex + 1} de $total'
+                          : state.fromSearch
+                          ? 'Las palabras de tu búsqueda «${state.searchQuery}»'
                           : state.shuffle
                           ? 'En orden aleatorio, con oración y todo'
                           : 'De Génesis a Apocalipsis, con oración y todo',

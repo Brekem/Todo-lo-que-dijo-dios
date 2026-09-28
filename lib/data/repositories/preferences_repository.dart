@@ -21,6 +21,8 @@ class PreferencesRepository {
   static const _listenRateKey = 'listen_rate';
   static const _listenStepKey = 'listen_step';
   static const _listenOrderKey = 'listen_order';
+  static const _listenRepeatKey = 'listen_repeat';
+  static const _listenSearchKey = 'listen_search';
 
   List<SavedWord> get savedWords {
     final raw = _prefs.getString(_savedKey);
@@ -107,4 +109,16 @@ class PreferencesRepository {
   double get listeningRate => _prefs.getDouble(_listenRateKey) ?? 1.0;
   Future<void> setListeningRate(double rate) =>
       _prefs.setDouble(_listenRateKey, rate);
+
+  /// Modo de repetición guardado (nombre del enum), o `null` si no hay.
+  String? get listeningRepeat => _prefs.getString(_listenRepeatKey);
+  Future<void> setListeningRepeat(String mode) =>
+      _prefs.setString(_listenRepeatKey, mode);
+
+  /// Búsqueda cuyos resultados se están escuchando (el orden va en
+  /// [listeningOrder]), o `null`.
+  String? get listeningSearch => _prefs.getString(_listenSearchKey);
+  Future<void> setListeningSearch(String? query) => query == null
+      ? _prefs.remove(_listenSearchKey)
+      : _prefs.setString(_listenSearchKey, query);
 }

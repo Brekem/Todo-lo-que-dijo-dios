@@ -50,6 +50,8 @@ una nueva versión.
 | «Necesito esta palabra para mí» (IA con Gemini + respaldo offline) | `domain/personalization` |
 | Recorrido de la Voz de Dios (línea de tiempo) | `features/journey` |
 | Escuchar las palabras seguidas (en orden o al azar) en voz alta, con oración; recuerda dónde te quedaste | `features/listen`, `domain/listening` |
+| Repetir una palabra una y otra vez (completa o solo lo que Dios dijo) | `features/listen`, `domain/listening` |
+| Escuchar los resultados de una búsqueda, uno tras otro | `features/search`, `domain/listening` |
 | Búsqueda inteligente: palabra, problema, tema, personaje | `domain/search`, `features/search` |
 | Las palabras que guardé (versículo + aplicación + oración) | `features/favorites` |
 | Mi camino: leídas, días seguidos, temas, oraciones | `features/stats` |

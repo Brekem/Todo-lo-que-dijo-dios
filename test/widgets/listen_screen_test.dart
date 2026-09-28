@@ -6,6 +6,7 @@ import 'package:todo_lo_que_dios_dijo/app/app.dart';
 import 'package:todo_lo_que_dios_dijo/app/providers.dart';
 import 'package:todo_lo_que_dios_dijo/data/models/content_bundle.dart';
 import 'package:todo_lo_que_dios_dijo/domain/listening/listening_controller.dart';
+import 'package:todo_lo_que_dios_dijo/shared/widgets/rotating_search_bar.dart';
 
 import '../domain/listening_test.dart' show FakeTts;
 import '../helpers.dart';
@@ -105,6 +106,88 @@ void main() {
         find.text('Orden cronológico · de Génesis a Apocalipsis'),
         findsOneWidget,
       );
+
+      // Botón de repetir: sin repetir → palabra → solo lo que Dios dijo.
+      final repeat = find.byKey(const Key('repeat-button'));
+      await tester.ensureVisible(repeat);
+      expect(find.text('Sin repetir'), findsOneWidget);
+      await tester.tap(repeat);
+      await settle(tester);
+      expect(find.text('Repetir esta palabra'), findsOneWidget);
+      expect(find.textContaining('EN REPETICIÓN'), findsOneWidget);
+      await tester.tap(repeat);
+      await settle(tester);
+      expect(find.text('Repetir solo lo que Dios dijo'), findsOneWidget);
+      await tester.tap(repeat);
+      await settle(tester);
+      expect(find.text('Sin repetir'), findsOneWidget);
+      expect(prefs.getString('listen_repeat'), 'off');
     },
   );
+
+  testWidgets('escuchar los resultados de una búsqueda, uno tras otro', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1080, 2220);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final tts = FakeTts();
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(prefs),
+          contentProvider.overrideWith(() => _FakeContent(loadContent())),
+          ttsEngineProvider.overrideWithValue(tts),
+        ],
+        child: const TodoLoQueDiosDijoApp(),
+      ),
+    );
+    await settle(tester, 3);
+    await tester.ensureVisible(find.text('Comenzar recorrido'));
+    await tester.tap(find.text('Comenzar recorrido'));
+    await settle(tester);
+
+    await tester.tap(find.byType(RotatingSearchBar));
+    await settle(tester);
+    await tester.enterText(find.byType(TextField), 'miedo');
+    await settle(tester);
+    expect(find.textContaining('PALABRAS ENCONTRADAS'), findsOneWidget);
+    await tester.tap(find.text('Escuchar todas, una tras otra'));
+    await settle(tester);
+
+    expect(find.textContaining('BÚSQUEDA · 1 DE'), findsOneWidget);
+    expect(find.textContaining('búsqueda «miedo»'), findsOneWidget);
+    expect(tts.spoken.single, startsWith('Palabra '));
+    expect(prefs.getString('listen_search'), 'miedo');
+
+    await tester.scrollUntilVisible(
+      find.byTooltip('Palabra siguiente'),
+      200,
+      scrollable: find.byType(Scrollable).last,
+    );
+    await tester.tap(find.byTooltip('Palabra siguiente'));
+    await settle(tester);
+    expect(find.textContaining('BÚSQUEDA · 2 DE'), findsOneWidget);
+
+    // Dejar la búsqueda y volver a todas las palabras.
+    await tester.scrollUntilVisible(
+      find.text('Escuchar las $total palabras'),
+      -200,
+      scrollable: find.byType(Scrollable).last,
+    );
+    await tester.tap(find.text('Escuchar las $total palabras'));
+    await settle(tester);
+    expect(find.textContaining('BÚSQUEDA'), findsNothing);
+    expect(prefs.getString('listen_search'), isNull);
+    await tester.scrollUntilVisible(
+      find.byIcon(Icons.pause_rounded),
+      200,
+      scrollable: find.byType(Scrollable).last,
+    );
+    await tester.tap(find.byIcon(Icons.pause_rounded));
+    await settle(tester);
+  });
 }
