@@ -69,7 +69,7 @@ EXTRA = [
 ASI_DICE = re.compile(rf'[Aa]s[ií] (?:dice|ha dicho|dijo|habl[oó]) (?:el Señor )?{J}')
 # Fórmula de cierre o intermedia: pertenece al discurso en curso.
 DICE = re.compile(rf'(?:dice|ha dicho|dijo|habl[oó]) (?:el Señor )?{J}')
-VOZ = re.compile(rf'voz de {J}|voz del Señor')
+VOZ = re.compile(rf'[Vv]oz de {J}|[Vv]oz del Señor|[Vv]oz de Dios')
 
 # Señales de que vuelve la narración con otro personaje hablando o actuando.
 NARRATIVE = re.compile(
@@ -250,6 +250,20 @@ def extract():
             a['to'] -= 1
             b['from'] -= 1
 
+    # Une discursos contiguos y cortos del mismo capítulo (p. ej. los días de la
+    # creación). Cada «Así dice Yavé» se conserva como palabra propia.
+    merged = []
+    for u in units:
+        prev = merged[-1] if merged else None
+        if prev and (prev['book'], prev['chapter']) == (u['book'], u['chapter']) \
+                and u['from'] == prev['to'] + 1 and u['kind'] != 'asi-dice' \
+                and len(prev['raw']) + len(u['raw']) <= 6:
+            prev['raw'].extend(u['raw'])
+            prev['to'] = u['to']
+        else:
+            merged.append(u)
+    units[:] = merged
+
     for u in units:
         joined = ' '.join(u['raw'])
         u['formulas'] = sorted({
@@ -257,6 +271,7 @@ def extract():
             if rx.search(joined)
         })
         u['text'] = modernize(joined)
+        u['verses'] = [{'v': u['from'] + i, 'text': modernize(t)} for i, t in enumerate(u['raw'])]
         del u['raw']
     for v in voz:
         v['text'] = modernize(v.pop('raw'))

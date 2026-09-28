@@ -1,17 +1,14 @@
-# Fuente del contenido
+# Palabras explicadas a mano
 
-`assets/data/content.json` se genera a partir de estos archivos Python:
-
-- `part1.py` – Adán → Josué
-- `part2.py` – Profetas e Israel (exilio y regreso)
-- `part3.py` – Evangelios, Iglesia y Apocalipsis
-- `build.py` – define etapas y categorías, calcula el orden cronológico y valida cada palabra
+`part1.py`, `part2.py` y `part3.py` contienen las 71 palabras con explicación,
+aplicación y oración escritas a mano (curated). Se combinan con el corpus
+completo de la RV1909 (`tool/corpus/`) en un único archivo:
 
 ```bash
-cd tool/content
-python3 build.py ../../assets/data/content.json
+python3 tool/corpus/extract.py   # vuelve a extraer los discursos (si cambió el extractor)
+python3 tool/build_content.py    # genera assets/data/content.json
 ```
 
-Para añadir una palabra, agrega una llamada `add(...)` en la etapa correspondiente
-(el orden dentro del archivo es el orden cronológico) y vuelve a generar.
-Incrementa `version` en `build.py` si vas a publicarla por Firestore.
+Para añadir o mejorar una palabra explicada, agrega o edita una llamada `add(...)`.
+Si cubre versículos de un discurso automático, esos versículos se quitan de él.
+Incrementa `CONTENT_VERSION` en `tool/build_content.py` antes de publicar por Firestore.

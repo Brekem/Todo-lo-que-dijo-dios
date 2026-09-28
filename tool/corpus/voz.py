@@ -1,0 +1,28 @@
+"""Contexto de los pasajes sobre «la voz de Yavé» que no están dentro de un discurso."""
+
+VOZ_CH = {
+    'gen 3': ('Adán y Eva', 'Después de desobedecer, Adán y Eva oyen la voz de Yavé Dios que se paseaba en el huerto, y se esconden.'),
+    'exo 15': ('Israel, recién salido del mar Rojo', 'En Mara las aguas eran amargas; Dios las endulza y promete ser su sanador si oyen su voz.'),
+    'deu 5': ('El pueblo de Israel', 'El pueblo recuerda con temor el día en que oyó la voz de Dios en medio del fuego en el Horeb.'),
+    'deu 8': ('El pueblo de Israel', 'Moisés advierte que olvidar a Dios en la prosperidad lleva a la ruina de quienes no oyen su voz.'),
+    'deu 15': ('El pueblo de Israel', 'Moisés promete bendición y que no habrá pobres si escuchan fielmente la voz de Yavé.'),
+    'deu 18': ('El pueblo de Israel', 'En el Horeb el pueblo pidió no volver a oír la voz de Dios directamente; Dios prometió un profeta.'),
+    'deu 26': ('El israelita que presenta su diezmo', 'Oración de quien entrega su diezmo declarando que obedeció la voz de Yavé.'),
+    'deu 27': ('El pueblo de Israel', 'Antes de entrar en la tierra, Moisés llama al pueblo a oír la voz de Yavé y cumplir sus mandamientos.'),
+    'deu 28': ('El pueblo de Israel', 'Moisés presenta las bendiciones de oír la voz de Yavé y las consecuencias de no oírla.'),
+    'deu 30': ('El pueblo de Israel', 'Moisés promete que, aun después del exilio, si vuelven y oyen la voz de Yavé, él los restaurará.'),
+    'jos 5': ('La nueva generación de Israel', 'La generación que no oyó la voz de Yavé murió en el desierto; sus hijos entran en la tierra.'),
+    '1sa 12': ('El pueblo de Israel', 'En su despedida, Samuel exhorta al pueblo y a su rey a no rebelarse contra la voz de Yavé.'),
+    '1sa 15': ('El rey Saúl', 'Saúl insiste en que obedeció la voz de Yavé, aunque desobedeció; Samuel le dice que obedecer es mejor que los sacrificios.'),
+    '1sa 28': ('El rey Saúl', 'Saúl, desesperado, consulta a una adivina y escucha que perdió el reino por no obedecer la voz de Yavé.'),
+    '2re 18': ('El reino de Israel', 'Samaria cae ante Asiria porque no atendieron la voz de Yavé su Dios.'),
+    'sal 29': ('Toda la creación', 'David describe una tormenta sobre las aguas como imagen de la voz poderosa de Dios que quebranta los cedros.'),
+    'sal 106': ('Israel en el desierto', 'El salmista recuerda que el pueblo murmuró en sus tiendas y no oyó la voz de Yavé.'),
+    'isa 6': ('El profeta Isaías', 'En el templo, Isaías ve la gloria de Dios y oye su voz preguntando a quién enviará.'),
+    'jer 3': ('Israel', 'El pueblo reconoce su vergüenza: pecaron y no escucharon la voz de Yavé desde su juventud.'),
+    'jer 26': ('Los que adoran en el templo', 'Jeremías llama a mejorar sus caminos y oír la voz de Yavé para evitar el desastre.'),
+    'jer 38': ('El rey Sedequías', 'Jeremías ruega al rey que oiga la voz de Yavé y se rinda para salvar su vida y la ciudad.'),
+    'jer 43': ('El remanente de Judá', 'Johanán y los oficiales no obedecen la voz de Yavé y huyen a Egipto.'),
+    'jer 44': ('Los judíos en Egipto', 'Jeremías explica que el desastre vino porque no obedecieron la voz de Yavé.'),
+    'dan 9': ('Daniel, en oración', 'Daniel confiesa en nombre de su pueblo que no obedecieron la voz de Yavé.'),
+}
