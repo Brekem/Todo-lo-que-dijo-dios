@@ -10,6 +10,7 @@ import '../../core/analytics.dart';
 import '../../core/theme/app_palette.dart';
 import '../../data/models/content_bundle.dart';
 import '../../data/models/passage.dart';
+import '../../domain/random_word.dart';
 import '../../domain/search/search_engine.dart';
 import '../../shared/widgets/async_content.dart';
 import '../../shared/widgets/fade_slide_in.dart';
@@ -84,10 +85,26 @@ class _PassageScreenState extends ConsumerState<PassageScreen> {
             onNext: _index == content.passages.length - 1
                 ? null
                 : () => _go(_index + 1),
+            onRandom: () => _goRandom(content),
+            onListen: () => context.push(Routes.listenFrom(current.id)),
           ),
         );
       },
     );
+  }
+
+  /// Salta a cualquier palabra de la Biblia (sin animar las cientos de
+  /// páginas intermedias).
+  void _goRandom(ContentBundle content) {
+    final next = pickRandom(
+      content.passages,
+      ref.read(randomProvider),
+      except: content.passages[_index],
+    );
+    if (next == null) return;
+    HapticFeedback.mediumImpact();
+    _controller?.jumpToPage(content.indexOf(next));
+    Analytics.log('random_word', {'id': next.id});
   }
 
   void _go(int page) => _controller?.animateToPage(
@@ -115,11 +132,6 @@ class _ReadingAppBar extends ConsumerWidget implements PreferredSizeWidget {
         style: Theme.of(context).textTheme.titleMedium,
       ),
       actions: [
-        IconButton(
-          tooltip: 'Escuchar desde aquí',
-          icon: const Icon(Icons.headphones_outlined),
-          onPressed: () => context.push(Routes.listenFrom(passage.id)),
-        ),
         IconButton(
           tooltip: saved ? 'Quitar de guardadas' : 'Guardar palabra',
           icon: AnimatedSwitcher(
@@ -177,6 +189,8 @@ class _ChronologyBar extends StatelessWidget {
     required this.eraTitle,
     required this.onPrevious,
     required this.onNext,
+    required this.onRandom,
+    required this.onListen,
   });
 
   final int index;
@@ -184,6 +198,8 @@ class _ChronologyBar extends StatelessWidget {
   final String eraTitle;
   final VoidCallback? onPrevious;
   final VoidCallback? onNext;
+  final VoidCallback onRandom;
+  final VoidCallback onListen;
 
   @override
   Widget build(BuildContext context) {
@@ -197,9 +213,14 @@ class _ChronologyBar extends StatelessWidget {
             top: BorderSide(color: palette.warmGray.withValues(alpha: 0.12)),
           ),
         ),
-        padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
+        padding: const EdgeInsets.fromLTRB(4, 6, 4, 6),
         child: Row(
           children: [
+            IconButton(
+              tooltip: 'Palabra al azar',
+              onPressed: onRandom,
+              icon: Icon(Icons.shuffle_rounded, color: palette.gold),
+            ),
             IconButton(
               tooltip: 'Palabra anterior',
               onPressed: onPrevious,
@@ -237,6 +258,11 @@ class _ChronologyBar extends StatelessWidget {
               tooltip: 'Palabra siguiente',
               onPressed: onNext,
               icon: const Icon(Icons.chevron_right),
+            ),
+            IconButton(
+              tooltip: 'Escuchar desde aquí',
+              onPressed: onListen,
+              icon: Icon(Icons.headphones_outlined, color: palette.gold),
             ),
           ],
         ),

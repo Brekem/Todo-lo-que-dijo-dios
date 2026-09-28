@@ -72,6 +72,7 @@ Future<void> settle() async {
 }
 
 void main() {
+  shuffleTests();
   final content = loadContent();
   final total = content.passages.length;
   const sections = NarrationSection.values;
@@ -210,6 +211,93 @@ void main() {
       await settle();
       expect(c.read(listeningProvider).passageIndex, 0);
       expect(c.read(listeningProvider).isPlaying, isTrue);
+    });
+  });
+}
+
+void shuffleTests() {
+  final content = loadContent();
+  final total = content.passages.length;
+  const sections = NarrationSection.values;
+
+  group('Orden aleatorio', () {
+    test('mezcla sin cortar la palabra actual y recorre todas', () async {
+      final (c, tts, prefs) = await setUpContainer({
+        'listen_passage': 5,
+        'listen_section': 0,
+      });
+      final ctrl = c.read(listeningProvider.notifier);
+      await ctrl.toggleShuffle();
+      var s = c.read(listeningProvider);
+      expect(s.shuffle, isTrue);
+      expect(s.passageIndex, 5);
+      expect(s.step, 0);
+      expect(s.order!.toSet(), hasLength(total));
+      expect(prefs.getString('listen_order'), isNotNull);
+
+      await ctrl.play();
+      await settle();
+      for (var i = 0; i < sections.length; i++) {
+        await tts.finish();
+      }
+      s = c.read(listeningProvider);
+      expect(s.step, 1);
+      expect(s.passageIndex, s.order![1]);
+      expect(tts.spoken.last, startsWith('Palabra ${s.order![1] + 1} de'));
+
+      await ctrl.nextWord();
+      await settle();
+      expect(c.read(listeningProvider).passageIndex, s.order![2]);
+    });
+
+    test('recuerda el orden aleatorio entre sesiones', () async {
+      final (c, tts, prefs) = await setUpContainer();
+      final ctrl = c.read(listeningProvider.notifier);
+      await ctrl.toggleShuffle();
+      await ctrl.nextWord();
+      await ctrl.nextWord();
+      final before = c.read(listeningProvider);
+      c.dispose();
+
+      final (c2, _, _) = await setUpContainer({
+        'listen_passage': prefs.getInt('listen_passage')!,
+        'listen_section': 0,
+        'listen_step': prefs.getInt('listen_step')!,
+        'listen_order': prefs.getString('listen_order')!,
+      });
+      final s = c2.read(listeningProvider);
+      expect(s.shuffle, isTrue);
+      expect(s.step, 2);
+      expect(s.passageIndex, before.passageIndex);
+      expect(s.order, before.order);
+    });
+
+    test('quitar el aleatorio sigue en orden desde la misma palabra', () async {
+      final (c, _, prefs) = await setUpContainer();
+      final ctrl = c.read(listeningProvider.notifier);
+      await ctrl.toggleShuffle();
+      await ctrl.nextWord();
+      final index = c.read(listeningProvider).passageIndex;
+      await ctrl.toggleShuffle();
+      final s = c.read(listeningProvider);
+      expect(s.shuffle, isFalse);
+      expect(s.passageIndex, index);
+      expect(s.step, index);
+      expect(prefs.getString('listen_order'), isNull);
+    });
+
+    test('comenzar de nuevo en aleatorio crea otro orden', () async {
+      final (c, _, _) = await setUpContainer();
+      final ctrl = c.read(listeningProvider.notifier);
+      await ctrl.toggleShuffle();
+      final first = c.read(listeningProvider).order;
+      await ctrl.restart();
+      await settle();
+      final s = c.read(listeningProvider);
+      expect(s.step, 0);
+      expect(s.order, isNot(equals(first)));
+      expect(s.passageIndex, s.order!.first);
+      await ctrl.pause();
     });
   });
 }

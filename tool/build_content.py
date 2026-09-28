@@ -25,12 +25,13 @@ from chapters_1 import CH as CH1  # noqa: E402
 from chapters_2 import CH as CH2  # noqa: E402
 from chapters_3 import CH as CH3  # noqa: E402
 from chapters_4 import CH as CH4  # noqa: E402
+from chapters_5 import CH as CH5  # noqa: E402
 from voz import VOZ_CH  # noqa: E402
 
 # Increméntala cada vez que publiques contenido nuevo en Firestore.
-CONTENT_VERSION = 2
+CONTENT_VERSION = 3
 
-CH = {**CH1, **CH2, **CH3, **CH4}
+CH = {**CH1, **CH2, **CH3, **CH4, **CH5}
 OUT = ROOT / 'assets' / 'data' / 'content.json'
 
 ERAS = [
@@ -100,6 +101,12 @@ KEYWORDS = {
 }
 KEYWORDS_RE = {k: [re.compile(p) for p in v] for k, v in KEYWORDS.items()}
 
+LAW_BOOKS = ('exo', 'lev', 'num')
+LAW_RE = [re.compile(p) for p in (
+    r'\bharas\b', r'\bsantos? sereis\b', r'\bsantificare', r'\bdiles\b', r'sacerdote',
+    r'si alguno', r'cuando alguna persona', r'estatuto perpetuo',
+)]
+
 PROBLEMS = {
     'miedo': ['miedo'], 'ansiedad': ['ansiedad', 'falta de paz'], 'culpa': ['culpa', 'pecado'],
     'tristeza': ['tristeza', 'dolor'], 'soledad': ['soledad', 'abandono'], 'fe': ['duda', 'incredulidad'],
@@ -140,12 +147,25 @@ PROPHET_OF_BOOK = {'isa': 'Isaías', 'jer': 'Jeremías', 'eze': 'Ezequiel', 'ose
 
 def classify(book: str, text: str, formulas: list[str]) -> list[str]:
     t = norm(text)
+    law = book in LAW_BOOKS
     scores = Counter()
     for cat, pats in KEYWORDS_RE.items():
         for p in pats:
+            # En la Ley, «abominación» califica alimentos y prácticas impuras,
+            # no anuncia juicio.
+            if law and p.pattern == r'abominacion':
+                continue
             scores[cat] += len(p.findall(t))
-    # Un anuncio de juicio pesa más que palabras sueltas de otros temas.
-    scores['arrepentimiento'] *= 1.5
+    if law:
+        # Instrucciones dadas a Moisés: Dios enseña a su pueblo a vivir.
+        scores['obediencia'] += 4 + sum(len(p.findall(t)) for p in LAW_RE)
+    else:
+        # Un anuncio de juicio pesa más que palabras sueltas de otros temas.
+        scores['arrepentimiento'] *= 1.5
+    if book == 'job':
+        # Dios responde a un hombre que sufre mostrándole su grandeza.
+        scores['fe'] += 4
+        scores['tristeza'] += 2
     if 'voz-de-yave' in formulas:
         scores['voz'] += 5
     ranked = [c for c, s in scores.most_common() if s > 0]
@@ -431,6 +451,10 @@ def main():
             block.append(v)
         if block:
             parts.append(block)
+        # «Y respondió Yavé a Job…, y dijo:» sin las palabras (ya están en la
+        # palabra explicada a mano) no es una palabra por sí sola.
+        parts = [b for b in parts
+                 if not (len(b) == 1 and b[0]['text'].rstrip().endswith(':'))]
         return [{**u, 'from': b[0]['v'], 'to': b[-1]['v'], 'verses': b,
                  'text': ' '.join(x['text'] for x in b)} for b in parts]
 
@@ -462,7 +486,9 @@ def main():
 
     # «La voz de Yavé» fuera de los discursos: se agrupan versículos seguidos.
     in_units = lambda v: any(x['book'] == v['book'] and x['chapter'] == v['chapter']
-                             and x['from'] <= v['verse'] <= x['to'] for x in corpus['units'])
+                             and x['from'] <= v['verse'] <= x['to'] for x in corpus['units']) \
+        or any(p['_book'] == v['book'] and p['_chapter'] == v['chapter']
+               and p['_verse'] <= v['verse'] <= p['_to'] for p in curated)
     groups = []
     for v in corpus['voz']:
         if in_units(v):

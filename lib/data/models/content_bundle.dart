@@ -60,13 +60,17 @@ class ContentBundle {
   int indexOf(Passage passage) => passages.indexOf(passage);
 
   /// "Palabra de hoy": cambia cada día, estable durante el día.
+  static const _dayStride = 7919;
+
   Passage wordOfTheDay(DateTime now) {
     final day = DateTime.utc(
       now.year,
       now.month,
       now.day,
     ).difference(DateTime.utc(2024)).inDays;
-    return passages[day % passages.length];
+    // Salto grande y primo con el total: cada día una palabra de otra parte de
+    // la Biblia, y no se repite ninguna hasta haberlas visto todas.
+    return passages[(day * _dayStride) % passages.length];
   }
 
   List<String> get allPeople => _distinct(passages.expand((p) => p.people));

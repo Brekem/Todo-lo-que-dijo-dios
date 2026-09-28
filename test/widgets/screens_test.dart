@@ -70,6 +70,20 @@ void main() {
       // Abrir una palabra desde el timeline, guardarla y orar.
       await tester.tap(find.textContaining('«').hitTestable().first);
       await settle(tester, 3);
+      // Palabra al azar desde la lectura: cambia a otra palabra.
+      String title() => tester
+          .widget<Text>(
+            find.descendant(
+              of: find.byType(AppBar),
+              matching: find.byType(Text),
+            ),
+          )
+          .data!;
+      final before = title();
+      await tester.tap(find.byTooltip('Palabra al azar'));
+      await settle(tester, 3);
+      expect(title(), isNot(before));
+
       await tester.tap(find.byTooltip('Guardar palabra'));
       await settle(tester);
       await tester.scrollUntilVisible(

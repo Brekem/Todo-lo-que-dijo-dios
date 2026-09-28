@@ -92,6 +92,19 @@ void main() {
       await tester.tap(find.byIcon(Icons.pause_rounded));
       await settle(tester);
       expect(find.byIcon(Icons.play_arrow_rounded), findsOneWidget);
+
+      // Botón de orden aleatorio.
+      await tester.tap(find.byTooltip('Escuchar en orden aleatorio'));
+      await settle(tester);
+      expect(find.text('Orden aleatorio'), findsOneWidget);
+      expect(find.textContaining('ALEATORIO · 1 DE $total'), findsOneWidget);
+      expect(find.byTooltip('Quitar orden aleatorio'), findsOneWidget);
+      await tester.tap(find.byTooltip('Quitar orden aleatorio'));
+      await settle(tester);
+      expect(
+        find.text('Orden cronológico · de Génesis a Apocalipsis'),
+        findsOneWidget,
+      );
     },
   );
 }

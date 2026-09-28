@@ -77,6 +77,7 @@ class _ListenBody extends ConsumerWidget {
     final theme = Theme.of(context);
     final total = content.passages.length;
     final index = state.passageIndex.clamp(0, total - 1);
+    final step = state.step.clamp(0, total - 1);
     final passage = content.passages[index];
     final era = content.eraById(passage.era)?.title ?? '';
     final sectionText =
@@ -97,7 +98,7 @@ class _ListenBody extends ConsumerWidget {
         !startedFromWord &&
         state.status != ListeningStatus.playing &&
         state.hasSavedPosition &&
-        (index > 0 || state.section.index > 0);
+        state.started;
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
@@ -105,8 +106,11 @@ class _ListenBody extends ConsumerWidget {
         Text('Escuchar la\nVoz de Dios', style: theme.textTheme.displaySmall),
         const SizedBox(height: 10),
         Text(
-          'Las $total palabras, de Génesis a Apocalipsis, con su explicación, '
-          'aplicación y oración. Se guarda dónde te quedas.',
+          state.shuffle
+              ? 'Las $total palabras en orden aleatorio, cada una con su '
+                    'explicación, aplicación y oración. Se guarda dónde te quedas.'
+              : 'Las $total palabras, de Génesis a Apocalipsis, con su '
+                    'explicación, aplicación y oración. Se guarda dónde te quedas.',
           style: theme.textTheme.bodyMedium?.copyWith(color: palette.warmGray),
         ),
         const SizedBox(height: 24),
@@ -122,7 +126,10 @@ class _ListenBody extends ConsumerWidget {
           _Banner(
             icon: Icons.bookmark_added_outlined,
             title: 'Te quedaste en la palabra ${index + 1} de $total',
-            subtitle: '${passage.reference} · ${state.section.title}',
+            subtitle: state.shuffle
+                ? '${passage.reference} · ${state.section.title}\n'
+                      'Orden aleatorio: vas por la ${step + 1} de $total'
+                : '${passage.reference} · ${state.section.title}',
             primaryLabel: 'Continuar',
             onPrimary: controller.play,
             secondaryLabel: 'Comenzar de nuevo',
@@ -147,7 +154,9 @@ class _ListenBody extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'PALABRA ${index + 1} DE $total · ${era.toUpperCase()}',
+                  state.shuffle
+                      ? 'ALEATORIO · ${step + 1} DE $total · ${era.toUpperCase()}'
+                      : 'PALABRA ${index + 1} DE $total · ${era.toUpperCase()}',
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: palette.gold,
                   ),
@@ -175,7 +184,7 @@ class _ListenBody extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(2),
                   child: LinearProgressIndicator(
                     value:
-                        (index +
+                        (step +
                             (state.section.index + 1) /
                                 NarrationSection.values.length) /
                         total,
@@ -220,12 +229,37 @@ class _ListenBody extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
+              tooltip: state.shuffle
+                  ? 'Quitar orden aleatorio'
+                  : 'Escuchar en orden aleatorio',
+              iconSize: 26,
+              isSelected: state.shuffle,
+              style: IconButton.styleFrom(foregroundColor: palette.warmGray),
+              onPressed: () {
+                controller.toggleShuffle();
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        state.shuffle
+                            ? 'Orden cronológico: de Génesis a Apocalipsis'
+                            : 'Orden aleatorio: las $total palabras mezcladas',
+                      ),
+                    ),
+                  );
+              },
+              icon: const Icon(Icons.shuffle_rounded),
+              selectedIcon: Icon(Icons.shuffle_on_rounded, color: palette.gold),
+            ),
+            const SizedBox(width: 6),
+            IconButton(
               tooltip: 'Palabra anterior',
               iconSize: 32,
-              onPressed: index == 0 ? null : controller.previousWord,
+              onPressed: step == 0 ? null : controller.previousWord,
               icon: const Icon(Icons.skip_previous_rounded),
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 12),
             SizedBox(
               width: 76,
               height: 76,
@@ -246,21 +280,34 @@ class _ListenBody extends ConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 12),
             IconButton(
               tooltip: 'Palabra siguiente',
               iconSize: 32,
-              onPressed: index >= total - 1 ? null : controller.nextWord,
+              onPressed: step >= total - 1 ? null : controller.nextWord,
               icon: const Icon(Icons.skip_next_rounded),
+            ),
+            const SizedBox(width: 6),
+            IconButton(
+              tooltip: state.shuffle
+                  ? 'Comenzar de nuevo con otro orden'
+                  : 'Comenzar de nuevo desde la palabra 1',
+              iconSize: 26,
+              style: IconButton.styleFrom(foregroundColor: palette.warmGray),
+              onPressed: controller.restart,
+              icon: const Icon(Icons.replay_rounded),
             ),
           ],
         ),
         const SizedBox(height: 18),
         Center(
-          child: TextButton.icon(
-            onPressed: controller.restart,
-            icon: Icon(Icons.replay_rounded, color: palette.gold),
-            label: const Text('Comenzar de nuevo desde la palabra 1'),
+          child: Text(
+            state.shuffle
+                ? 'Orden aleatorio'
+                : 'Orden cronológico · de Génesis a Apocalipsis',
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: state.shuffle ? palette.gold : palette.warmGray,
+            ),
           ),
         ),
         const SizedBox(height: 18),

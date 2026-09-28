@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,6 +40,9 @@ final contentRepositoryProvider = Provider<ContentRepository>((ref) {
     remote: firebase ? RemoteContentSource(FirebaseFirestore.instance) : null,
   );
 });
+
+/// Azar para «Palabra al azar» y la escucha aleatoria (fijo en los tests).
+final randomProvider = Provider<Random>((ref) => Random());
 
 final personalizationServiceProvider = Provider<PersonalizationService>((ref) {
   const offline = OfflinePersonalizer();

@@ -9,6 +9,7 @@ import '../../data/models/content_bundle.dart';
 import '../../data/models/era.dart';
 import '../../data/models/passage.dart';
 import '../../shared/widgets/async_content.dart';
+import '../../shared/widgets/random_word.dart';
 
 /// "Recorrido de la Voz de Dios": línea de tiempo con cada momento en que Dios habló.
 class JourneyScreen extends StatelessWidget {
@@ -72,10 +73,22 @@ class _Timeline extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 18),
-                FilledButton.icon(
-                  onPressed: () => context.push(Routes.listen),
-                  icon: const Icon(Icons.headphones_rounded),
-                  label: const Text('Escuchar el recorrido completo'),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: [
+                    FilledButton.icon(
+                      onPressed: () => context.push(Routes.listen),
+                      icon: const Icon(Icons.headphones_rounded),
+                      label: const Text('Escuchar el recorrido completo'),
+                    ),
+                    OutlinedButton.icon(
+                      onPressed: () =>
+                          openRandomWord(context, ref, content.passages),
+                      icon: Icon(Icons.shuffle_rounded, color: palette.gold),
+                      label: const Text('Palabra al azar'),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 20),
                 SizedBox(

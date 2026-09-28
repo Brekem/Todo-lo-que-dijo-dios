@@ -19,6 +19,8 @@ class PreferencesRepository {
   static const _listenPassageKey = 'listen_passage';
   static const _listenSectionKey = 'listen_section';
   static const _listenRateKey = 'listen_rate';
+  static const _listenStepKey = 'listen_step';
+  static const _listenOrderKey = 'listen_order';
 
   List<SavedWord> get savedWords {
     final raw = _prefs.getString(_savedKey);
@@ -76,7 +78,31 @@ class PreferencesRepository {
   Future<void> clearListeningPosition() async {
     await _prefs.remove(_listenPassageKey);
     await _prefs.remove(_listenSectionKey);
+    await _prefs.remove(_listenStepKey);
   }
+
+  /// Posición dentro del orden de escucha (en aleatorio no coincide con la
+  /// palabra).
+  int? get listeningStep => _prefs.getInt(_listenStepKey);
+  Future<void> setListeningStep(int step) =>
+      _prefs.setInt(_listenStepKey, step);
+
+  /// Orden aleatorio de escucha; `null` si se escucha en orden cronológico.
+  List<int>? get listeningOrder {
+    final raw = _prefs.getString(_listenOrderKey);
+    if (raw == null || raw.isEmpty) return null;
+    final order = <int>[];
+    for (final part in raw.split(',')) {
+      final value = int.tryParse(part);
+      if (value == null) return null;
+      order.add(value);
+    }
+    return order;
+  }
+
+  Future<void> setListeningOrder(List<int>? order) => order == null
+      ? _prefs.remove(_listenOrderKey)
+      : _prefs.setString(_listenOrderKey, order.join(','));
 
   double get listeningRate => _prefs.getDouble(_listenRateKey) ?? 1.0;
   Future<void> setListeningRate(double rate) =>

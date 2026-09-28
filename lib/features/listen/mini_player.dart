@@ -39,7 +39,12 @@ class MiniPlayer extends ConsumerWidget {
                   padding: const EdgeInsets.fromLTRB(20, 8, 8, 8),
                   child: Row(
                     children: [
-                      Icon(Icons.graphic_eq_rounded, color: palette.gold),
+                      Icon(
+                        state.shuffle
+                            ? Icons.shuffle_rounded
+                            : Icons.graphic_eq_rounded,
+                        color: palette.gold,
+                      ),
                       const SizedBox(width: 14),
                       Expanded(
                         child: Column(
@@ -58,7 +63,9 @@ class MiniPlayer extends ConsumerWidget {
                               style: theme.textTheme.titleSmall,
                             ),
                             Text(
-                              'Palabra ${state.passageIndex + 1} de ${content.passages.length} · ${state.section.title}',
+                              state.shuffle
+                                  ? 'Aleatorio · ${state.step + 1} de ${content.passages.length} · ${state.section.title}'
+                                  : 'Palabra ${state.passageIndex + 1} de ${content.passages.length} · ${state.section.title}',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: theme.textTheme.bodySmall,

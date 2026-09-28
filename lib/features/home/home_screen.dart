@@ -11,6 +11,7 @@ import '../../domain/listening/listening_controller.dart';
 import '../../shared/widgets/async_content.dart';
 import '../../shared/widgets/category_card.dart';
 import '../../shared/widgets/fade_slide_in.dart';
+import '../../shared/widgets/random_word.dart';
 import '../../shared/widgets/rotating_search_bar.dart';
 import '../../shared/widgets/section_label.dart';
 
@@ -90,6 +91,11 @@ class _HomeBody extends ConsumerWidget {
               FadeSlideIn(
                 delay: const Duration(milliseconds: 100),
                 child: _ListenCard(total: content.passages.length),
+              ),
+              const SizedBox(height: 14),
+              FadeSlideIn(
+                delay: const Duration(milliseconds: 130),
+                child: _RandomWordCard(passages: content.passages),
               ),
               if (lastRead != null && lastRead != today) ...[
                 const SizedBox(height: 14),
@@ -261,6 +267,36 @@ class _ContinueJourney extends StatelessWidget {
   }
 }
 
+class _RandomWordCard extends ConsumerWidget {
+  const _RandomWordCard({required this.passages});
+
+  final List<Passage> passages;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final palette = AppPalette.of(context);
+    final theme = Theme.of(context);
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 22, vertical: 8),
+        leading: Icon(Icons.shuffle_rounded, color: palette.gold, size: 28),
+        title: const Text('Palabra al azar'),
+        subtitle: Text(
+          'Abre cualquiera de las ${passages.length} palabras de Dios',
+          style: theme.textTheme.bodySmall,
+        ),
+        trailing: Icon(
+          Icons.arrow_forward_ios_rounded,
+          size: 14,
+          color: palette.warmGray,
+        ),
+        onTap: () => openRandomWord(context, ref, passages),
+      ),
+    );
+  }
+}
+
 class _ListenCard extends ConsumerWidget {
   const _ListenCard({required this.total});
 
@@ -271,9 +307,7 @@ class _ListenCard extends ConsumerWidget {
     final state = ref.watch(listeningProvider);
     final palette = AppPalette.of(context);
     final theme = Theme.of(context);
-    final resume =
-        state.hasSavedPosition &&
-        (state.passageIndex > 0 || state.section.index > 0);
+    final resume = state.hasSavedPosition && state.started;
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -311,6 +345,8 @@ class _ListenCard extends ConsumerWidget {
                           ? 'Escuchando la palabra ${state.passageIndex + 1}…'
                           : resume
                           ? 'Te quedaste en la palabra ${state.passageIndex + 1} de $total'
+                          : state.shuffle
+                          ? 'En orden aleatorio, con oración y todo'
                           : 'De Génesis a Apocalipsis, con oración y todo',
                       style: theme.textTheme.bodySmall,
                     ),

@@ -88,7 +88,33 @@ void main() {
     );
     expect(asiDice.allMatches(all).length, greaterThan(300));
     expect(content.byCategory('voz').length, greaterThan(30));
-    expect(content.passages.length, greaterThan(900));
+    expect(content.passages.length, greaterThan(1050));
+  });
+
+  test('incluye la Ley dada a Moisés y la respuesta a Job completa', () {
+    final refs = content.passages.map((p) => p.reference).toSet();
+    expect(refs, containsAll(['Levítico 19:1-12', 'Éxodo 21:1-2']));
+    for (final chapter in [38, 39, 40, 41]) {
+      expect(
+        refs.where((r) => r.startsWith('Job $chapter:')),
+        isNotEmpty,
+        reason: 'Job $chapter',
+      );
+    }
+  });
+
+  test('sin palabras vacías ni repetidas', () {
+    final refs = <String>{};
+    final intro = RegExp(r'(?:diciendo|dijo|diciéndoles?):$');
+    final passages = content.passages;
+    for (final (i, p) in passages.indexed) {
+      // Solo la presentación («…, diciendo:») sin lo que Dios dijo, salvo que
+      // lo siguiente sea una palabra explicada a mano.
+      if (intro.hasMatch(p.quote.trimRight())) {
+        expect(passages[i + 1].curated, isTrue, reason: p.reference);
+      }
+      expect(refs.add(p.reference), isTrue, reason: p.reference);
+    }
   });
 
   test('las palabras explicadas a mano se conservan', () {

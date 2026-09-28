@@ -9,6 +9,7 @@ import '../../data/models/passage.dart';
 import '../../data/models/saved_word.dart';
 import '../../shared/widgets/async_content.dart';
 import '../../shared/widgets/praying_hands_icon.dart';
+import '../../shared/widgets/random_word.dart';
 
 /// "Las palabras que guardé": versículo, aplicación y oración.
 class SavedWordsScreen extends ConsumerWidget {
@@ -49,6 +50,19 @@ class SavedWordsScreen extends ConsumerWidget {
                             color: palette.warmGray,
                           ),
                         ),
+                        if (items.length > 1) ...[
+                          const SizedBox(height: 14),
+                          OutlinedButton.icon(
+                            onPressed: () => openRandomWord(context, ref, [
+                              for (final (_, p) in items) p,
+                            ]),
+                            icon: Icon(
+                              Icons.shuffle_rounded,
+                              color: palette.gold,
+                            ),
+                            label: const Text('Una de mis palabras al azar'),
+                          ),
+                        ],
                       ],
                     ),
                   ),

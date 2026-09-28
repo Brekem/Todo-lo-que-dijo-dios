@@ -14,14 +14,16 @@ cronológico, los pasajes bíblicos donde **Dios habla directamente**: de «Sea 
 
 ## Qué incluye
 
-**988 palabras de Dios** en orden cronológico, en 12 etapas (Adán, Noé, Abraham, Isaac,
+**1119 palabras de Dios** en orden cronológico, en 12 etapas (Adán, Noé, Abraham, Isaac,
 Jacob, Moisés, Josué, Profetas, Israel, Evangelios, La Iglesia, Apocalipsis):
 
 - **Cada lugar del Antiguo Testamento donde Yavé habla directamente**, extraído del
   texto completo de la RV1909: todos los «Así dice/ha dicho Yavé», «dice Yavé»,
-  «Y dijo Yavé…», «fue palabra de Yavé a…», los Salmos donde Dios habla, etc.
-  (`tool/corpus/extract.py`).
+  «Y dijo Yavé…», «fue palabra de Yavé a…», toda la Ley dada a Moisés, la respuesta a
+  Job desde el torbellino, los Salmos donde Dios habla, etc. (`tool/corpus/extract.py`).
 - **Cada pasaje sobre «la voz de Yavé»** (categoría propia).
+- **Palabra al azar** (inicio, lectura, recorrido, cada tema y tus guardadas) y
+  **escucha en orden aleatorio** con el botón 🔀, que recuerda el orden y dónde te quedaste.
 - **71 palabras explicadas a mano** (incluidas las del Nuevo Testamento: la voz del
   Padre y palabras de Jesús).
 

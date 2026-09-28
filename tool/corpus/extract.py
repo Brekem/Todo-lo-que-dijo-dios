@@ -90,6 +90,15 @@ PRAYER = re.compile(
 
 MAX_VERSES = 12
 
+# Capítulos que empiezan a mitad de un discurso de Yavé que viene del capítulo
+# anterior (revisados a mano): la Ley dada a Moisés y la respuesta a Job.
+CARRY = {
+    ('exo', 21), ('exo', 22), ('exo', 23), ('exo', 26), ('exo', 27),
+    ('exo', 28), ('exo', 29), ('exo', 30), ('lev', 2), ('lev', 3),
+    ('lev', 5), ('lev', 7), ('lev', 26), ('num', 29), ('job', 39),
+    ('job', 41),
+}
+
 # Ortografía actualizada (RV1909 usa tildes antiguas).
 WORD_FIXES = {
     'á': 'a', 'Á': 'A', 'é': 'e', 'ó': 'o', 'fué': 'fue', 'Fué': 'Fue',
@@ -107,6 +116,19 @@ def modernize(text: str) -> str:
     return re.sub(r'\s+', ' ', text).strip()
 
 
+CAPS = re.compile(r'\b[A-ZÁÉÍÓÚÑ]{2,}\b')
+
+
+def uncap(text: str) -> str:
+    """«Y HABLÓ Jehová…», «Y JEHOVÁ dijo…»: la RV1909 escribe en mayúsculas la
+    primera palabra de cada capítulo. Se normaliza para detectar los discursos."""
+    def fix(m):
+        word = m.group(0)
+        first = not re.search(r'\w', text[:m.start()])
+        return word.capitalize() if first or word.startswith('JEHOV') else word.lower()
+    return CAPS.sub(fix, text, count=1)
+
+
 def load():
     with SOURCE.open(encoding='utf-8') as f:
         rows = [r for r in csv.DictReader(f) if r['Book'] in BOOKS]
@@ -114,7 +136,7 @@ def load():
     for r in rows:
         key = (r['Book'], int(r['Chapter']))
         chapters.setdefault(key, []).append(
-            {'v': int(r['Verse']), 'text': r['Text']})
+            {'v': int(r['Verse']), 'text': uncap(r['Text'])})
     return chapters
 
 
@@ -177,9 +199,13 @@ def extract():
                 'raw': [x['text'] for x in part],
             })
 
+    carry = None  # libro cuyo discurso seguía abierto al acabar el capítulo
     for (book, chapter), verses in chapters.items():
         book_id, book_es = BOOKS[book]
-        current = None
+        # Un discurso que no terminó sigue en el capítulo siguiente (p. ej. Yavé
+        # responde a Job desde el torbellino en Job 38–41).
+        current = {'kind': 'continuacion', 'verses': []} \
+            if carry == book and (book_id, chapter) in CARRY else None
         for idx, verse in enumerate(verses):
             text = verse['text']
             kind = is_speech_start(text)
@@ -202,7 +228,7 @@ def extract():
                              or PRETERITE.search(text) or PRAYER.search(text)) \
                     and not DICE.search(text) and not FIRST_PERSON.search(text)
                 # Tras «…, diciendo:» siempre vienen las palabras de Dios.
-                if current['verses'][-1]['text'].rstrip().endswith(':'):
+                if current['verses'] and current['verses'][-1]['text'].rstrip().endswith(':'):
                     narrative = False
                 if narrative:
                     close(current, book_id, book_es, chapter)
@@ -222,6 +248,7 @@ def extract():
                                     and u['to'] >= verses[start - 1]['v'] for u in units[-3:]):
                     start -= 1
                 current = {'kind': 'oraculo', 'verses': verses[start:idx + 1]}
+        carry = book if current and current['verses'] else None
         if current:
             close(current, book_id, book_es, chapter)
 
@@ -249,6 +276,17 @@ def extract():
             b['raw'].insert(0, a['raw'].pop())
             a['to'] -= 1
             b['from'] -= 1
+    # Si lo que queda es solo la presentación («Mas fue palabra de Yavé a
+    # Semeías, diciendo:»), va entera con el discurso que sigue.
+    for i in range(len(units) - 1, 0, -1):
+        a, b = units[i - 1], units[i]
+        if a['raw'] and a['raw'][-1].rstrip().endswith(':') \
+                and (a['book'], a['chapter']) == (b['book'], b['chapter']) \
+                and b['from'] == a['to'] + 1 and len(a['raw']) <= 2:
+            b['raw'][:0] = a['raw']
+            b['from'] = a['from']
+            b['kind'] = a['kind']
+            del units[i - 1]
 
     # Une discursos contiguos y cortos del mismo capítulo (p. ej. los días de la
     # creación). Cada «Así dice Yavé» se conserva como palabra propia.
