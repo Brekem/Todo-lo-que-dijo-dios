@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../core/config/app_config.dart';
 import '../core/theme/app_theme.dart';
+import '../domain/listening/listening_controller.dart';
 import 'providers.dart';
 import 'router.dart';
 
@@ -26,6 +28,10 @@ class _AppState extends ConsumerState<TodoLoQueDiosDijoApp> {
 
   @override
   Widget build(BuildContext context) {
+    // Mantiene la pantalla encendida mientras se escucha.
+    ref.listen(listeningProvider.select((s) => s.isPlaying), (_, playing) {
+      WakelockPlus.toggle(enable: playing).catchError((_) {});
+    });
     final themeMode = ref.watch(themeModeProvider);
     final textScale = ref.watch(textScaleProvider);
     return MaterialApp.router(

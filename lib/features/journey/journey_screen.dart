@@ -62,6 +62,12 @@ class _Timeline extends ConsumerWidget {
                     color: palette.warmGray,
                   ),
                 ),
+                const SizedBox(height: 18),
+                FilledButton.icon(
+                  onPressed: () => context.push(Routes.listen),
+                  icon: const Icon(Icons.headphones_rounded),
+                  label: const Text('Escuchar el recorrido completo'),
+                ),
                 const SizedBox(height: 20),
                 SizedBox(
                   height: 40,

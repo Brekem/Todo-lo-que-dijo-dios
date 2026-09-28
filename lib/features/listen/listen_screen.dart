@@ -1,0 +1,347 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../app/providers.dart';
+import '../../core/theme/app_palette.dart';
+import '../../data/models/content_bundle.dart';
+import '../../domain/listening/listening_controller.dart';
+import '../../domain/listening/narration.dart';
+import '../../shared/widgets/async_content.dart';
+import '../../shared/widgets/sacred_background.dart';
+import '../../shared/widgets/section_label.dart';
+
+/// "Escuchar la Voz de Dios": lee en voz alta las palabras de la 1 a la última,
+/// con cita, contexto, explicación, aplicación y oración.
+class ListenScreen extends ConsumerStatefulWidget {
+  const ListenScreen({super.key, this.startPassageId});
+
+  /// Si se indica, empieza a leer desde esta palabra.
+  final String? startPassageId;
+
+  @override
+  ConsumerState<ListenScreen> createState() => _ListenScreenState();
+}
+
+class _ListenScreenState extends ConsumerState<ListenScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final id = widget.startPassageId;
+    if (id != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final content = await ref.read(contentProvider.future);
+        final passage = content.passageById(id);
+        if (passage != null && mounted) {
+          ref
+              .read(listeningProvider.notifier)
+              .playFrom(content.indexOf(passage));
+        }
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: const Text('Escuchar'),
+      ),
+      body: SacredBackground(
+        particles: 26,
+        child: SafeArea(
+          child: AsyncContent(
+            builder: (context, content) => _ListenBody(
+              content: content,
+              startedFromWord: widget.startPassageId != null,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ListenBody extends ConsumerWidget {
+  const _ListenBody({required this.content, required this.startedFromWord});
+
+  final ContentBundle content;
+  final bool startedFromWord;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(listeningProvider);
+    final controller = ref.read(listeningProvider.notifier);
+    final palette = AppPalette.of(context);
+    final theme = Theme.of(context);
+    final total = content.passages.length;
+    final index = state.passageIndex.clamp(0, total - 1);
+    final passage = content.passages[index];
+    final era = content.eraById(passage.era)?.title ?? '';
+    final sectionText =
+        Narration.segments(
+          passage,
+          position: index + 1,
+          total: total,
+          eraTitle: era,
+        )[state.section.index]
+        // El rótulo ya se muestra arriba: no repetirlo en el texto.
+        .replaceFirst(
+          RegExp('^${RegExp.escape(state.section.title)}[.]?\\s*'),
+          '',
+        );
+
+    // Al abrir: "Te quedaste en…" con continuar o comenzar de nuevo.
+    final showResume =
+        !startedFromWord &&
+        state.status != ListeningStatus.playing &&
+        state.hasSavedPosition &&
+        (index > 0 || state.section.index > 0);
+
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+      children: [
+        Text('Escuchar la\nVoz de Dios', style: theme.textTheme.displaySmall),
+        const SizedBox(height: 10),
+        Text(
+          'Las $total palabras, de Génesis a Apocalipsis, con su explicación, '
+          'aplicación y oración. Se guarda dónde te quedas.',
+          style: theme.textTheme.bodyMedium?.copyWith(color: palette.warmGray),
+        ),
+        const SizedBox(height: 24),
+        if (state.status == ListeningStatus.finished)
+          _Banner(
+            icon: Icons.celebration_outlined,
+            title: 'Completaste el recorrido',
+            subtitle: 'Escuchaste las $total palabras de Dios.',
+            primaryLabel: 'Comenzar de nuevo',
+            onPrimary: controller.restart,
+          )
+        else if (showResume)
+          _Banner(
+            icon: Icons.bookmark_added_outlined,
+            title: 'Te quedaste en la palabra ${index + 1} de $total',
+            subtitle: '${passage.reference} · ${state.section.title}',
+            primaryLabel: 'Continuar',
+            onPrimary: controller.play,
+            secondaryLabel: 'Comenzar de nuevo',
+            onSecondary: controller.restart,
+          ),
+        if (state.status == ListeningStatus.error)
+          _Banner(
+            icon: Icons.record_voice_over_outlined,
+            title: 'No se pudo usar la voz del teléfono',
+            subtitle:
+                'Instala o activa una voz en español en Ajustes del '
+                'teléfono → Texto a voz, y vuelve a intentarlo.',
+            primaryLabel: 'Reintentar',
+            onPrimary: controller.play,
+          ),
+        const SizedBox(height: 16),
+        // Palabra actual
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 22, 24, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'PALABRA ${index + 1} DE $total · ${era.toUpperCase()}',
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: palette.gold,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  '«${passage.quote}»',
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w500,
+                    height: 1.35,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  passage.reference,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: palette.gold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(2),
+                  child: LinearProgressIndicator(
+                    value:
+                        (index +
+                            (state.section.index + 1) /
+                                NarrationSection.values.length) /
+                        total,
+                    minHeight: 3,
+                    color: palette.gold,
+                    backgroundColor: palette.warmGray.withValues(alpha: 0.15),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        // Sección que se está leyendo (para seguir con la vista).
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 600),
+          child: Container(
+            key: ValueKey('$index-${state.section.index}'),
+            padding: const EdgeInsets.fromLTRB(22, 18, 22, 20),
+            decoration: BoxDecoration(
+              color: state.section == NarrationSection.prayer
+                  ? palette.blueSoft
+                  : state.section == NarrationSection.problem
+                  ? palette.goldSoft
+                  : palette.parchment.withValues(alpha: 0.85),
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(color: palette.gold.withValues(alpha: 0.3)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SectionLabel(state.section.title),
+                const SizedBox(height: 10),
+                Text(sectionText, style: theme.textTheme.bodyLarge),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 28),
+        // Controles
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              tooltip: 'Palabra anterior',
+              iconSize: 32,
+              onPressed: index == 0 ? null : controller.previousWord,
+              icon: const Icon(Icons.skip_previous_rounded),
+            ),
+            const SizedBox(width: 20),
+            SizedBox(
+              width: 76,
+              height: 76,
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                  shape: const CircleBorder(),
+                  padding: EdgeInsets.zero,
+                  backgroundColor: palette.gold,
+                  foregroundColor: const Color(0xFF1B1609),
+                ),
+                onPressed: controller.toggle,
+                child: Icon(
+                  state.isPlaying
+                      ? Icons.pause_rounded
+                      : Icons.play_arrow_rounded,
+                  size: 40,
+                  semanticLabel: state.isPlaying ? 'Pausar' : 'Escuchar',
+                ),
+              ),
+            ),
+            const SizedBox(width: 20),
+            IconButton(
+              tooltip: 'Palabra siguiente',
+              iconSize: 32,
+              onPressed: index >= total - 1 ? null : controller.nextWord,
+              icon: const Icon(Icons.skip_next_rounded),
+            ),
+          ],
+        ),
+        const SizedBox(height: 18),
+        Center(
+          child: TextButton.icon(
+            onPressed: controller.restart,
+            icon: Icon(Icons.replay_rounded, color: palette.gold),
+            label: const Text('Comenzar de nuevo desde la palabra 1'),
+          ),
+        ),
+        const SizedBox(height: 18),
+        Center(
+          child: SegmentedButton<double>(
+            showSelectedIcon: false,
+            style: SegmentedButton.styleFrom(
+              selectedBackgroundColor: palette.goldSoft,
+            ),
+            segments: const [
+              ButtonSegment(value: 0.8, label: Text('Lenta')),
+              ButtonSegment(value: 1.0, label: Text('Normal')),
+              ButtonSegment(value: 1.25, label: Text('Rápida')),
+            ],
+            selected: {state.rate},
+            onSelectionChanged: (s) => controller.setRate(s.first),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Banner extends StatelessWidget {
+  const _Banner({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.primaryLabel,
+    required this.onPrimary,
+    this.secondaryLabel,
+    this.onSecondary,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final String primaryLabel;
+  final VoidCallback onPrimary;
+  final String? secondaryLabel;
+  final VoidCallback? onSecondary;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = AppPalette.of(context);
+    final theme = Theme.of(context);
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.fromLTRB(22, 20, 22, 18),
+      decoration: BoxDecoration(
+        color: palette.goldSoft,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: palette.gold.withValues(alpha: 0.45)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: palette.gold),
+              const SizedBox(width: 12),
+              Expanded(child: Text(title, style: theme.textTheme.titleMedium)),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(subtitle, style: theme.textTheme.bodyMedium),
+          const SizedBox(height: 14),
+          Wrap(
+            spacing: 10,
+            runSpacing: 8,
+            children: [
+              FilledButton(onPressed: onPrimary, child: Text(primaryLabel)),
+              if (secondaryLabel != null)
+                OutlinedButton(
+                  onPressed: onSecondary,
+                  child: Text(secondaryLabel!),
+                ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -16,6 +16,9 @@ class PreferencesRepository {
   static const _themeModeKey = 'theme_mode';
   static const _textScaleKey = 'text_scale';
   static const _progressKey = 'reading_progress_v1';
+  static const _listenPassageKey = 'listen_passage';
+  static const _listenSectionKey = 'listen_section';
+  static const _listenRateKey = 'listen_rate';
 
   List<SavedWord> get savedWords {
     final raw = _prefs.getString(_savedKey);
@@ -57,4 +60,25 @@ class PreferencesRepository {
 
   Future<void> setProgress(ReadingProgress progress) =>
       _prefs.setString(_progressKey, jsonEncode(progress.toJson()));
+
+  /// Dónde se quedó la lectura en voz alta: (índice de palabra, sección).
+  (int, int)? get listeningPosition {
+    final passage = _prefs.getInt(_listenPassageKey);
+    if (passage == null) return null;
+    return (passage, _prefs.getInt(_listenSectionKey) ?? 0);
+  }
+
+  Future<void> setListeningPosition(int passage, int section) async {
+    await _prefs.setInt(_listenPassageKey, passage);
+    await _prefs.setInt(_listenSectionKey, section);
+  }
+
+  Future<void> clearListeningPosition() async {
+    await _prefs.remove(_listenPassageKey);
+    await _prefs.remove(_listenSectionKey);
+  }
+
+  double get listeningRate => _prefs.getDouble(_listenRateKey) ?? 1.0;
+  Future<void> setListeningRate(double rate) =>
+      _prefs.setDouble(_listenRateKey, rate);
 }

@@ -68,7 +68,7 @@ void main() {
       await settle(tester);
 
       // Abrir una palabra desde el timeline, guardarla y orar.
-      await tester.tap(find.textContaining('«').first);
+      await tester.tap(find.textContaining('«').hitTestable().first);
       await settle(tester, 3);
       await tester.tap(find.byTooltip('Guardar palabra'));
       await settle(tester);

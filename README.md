@@ -35,6 +35,7 @@ una nueva versión.
 | Lectura tipo pergamino, deslizar = avanzar cronológicamente | `features/passage` |
 | «Necesito esta palabra para mí» (IA con Gemini + respaldo offline) | `domain/personalization` |
 | Recorrido de la Voz de Dios (línea de tiempo) | `features/journey` |
+| Escuchar las 71 palabras seguidas en voz alta, con oración; recuerda dónde te quedaste | `features/listen`, `domain/listening` |
 | Búsqueda inteligente: palabra, problema, tema, personaje | `domain/search`, `features/search` |
 | Las palabras que guardé (versículo + aplicación + oración) | `features/favorites` |
 | Mi camino: leídas, días seguidos, temas, oraciones | `features/stats` |

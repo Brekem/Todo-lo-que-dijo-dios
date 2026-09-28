@@ -7,6 +7,7 @@ import '../../app/router.dart';
 import '../../core/theme/app_palette.dart';
 import '../../data/models/content_bundle.dart';
 import '../../data/models/passage.dart';
+import '../../domain/listening/listening_controller.dart';
 import '../../shared/widgets/async_content.dart';
 import '../../shared/widgets/category_card.dart';
 import '../../shared/widgets/fade_slide_in.dart';
@@ -84,6 +85,11 @@ class _HomeBody extends ConsumerWidget {
                   passage: today,
                   onTap: () => context.push(Routes.passage(today.id)),
                 ),
+              ),
+              const SizedBox(height: 14),
+              FadeSlideIn(
+                delay: const Duration(milliseconds: 100),
+                child: _ListenCard(total: content.passages.length),
               ),
               if (lastRead != null && lastRead != today) ...[
                 const SizedBox(height: 14),
@@ -250,6 +256,75 @@ class _ContinueJourney extends StatelessWidget {
           color: palette.warmGray,
         ),
         onTap: () => context.push(Routes.passage(passage.id)),
+      ),
+    );
+  }
+}
+
+class _ListenCard extends ConsumerWidget {
+  const _ListenCard({required this.total});
+
+  final int total;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(listeningProvider);
+    final palette = AppPalette.of(context);
+    final theme = Theme.of(context);
+    final resume =
+        state.hasSavedPosition &&
+        (state.passageIndex > 0 || state.section.index > 0);
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => context.push(Routes.listen),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(22, 18, 18, 18),
+          child: Row(
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: palette.gold,
+                ),
+                child: Icon(
+                  state.isPlaying
+                      ? Icons.graphic_eq_rounded
+                      : Icons.headphones_rounded,
+                  color: const Color(0xFF1B1609),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Escuchar las $total palabras',
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      state.isPlaying
+                          ? 'Escuchando la palabra ${state.passageIndex + 1}…'
+                          : resume
+                          ? 'Te quedaste en la palabra ${state.passageIndex + 1} de $total'
+                          : 'De Génesis a Apocalipsis, con oración y todo',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 14,
+                color: palette.warmGray,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

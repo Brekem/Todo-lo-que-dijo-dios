@@ -116,6 +116,11 @@ class _ReadingAppBar extends ConsumerWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
+          tooltip: 'Escuchar desde aquí',
+          icon: const Icon(Icons.headphones_outlined),
+          onPressed: () => context.push(Routes.listenFrom(passage.id)),
+        ),
+        IconButton(
           tooltip: saved ? 'Quitar de guardadas' : 'Guardar palabra',
           icon: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),

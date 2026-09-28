@@ -13,6 +13,9 @@ import 'package:todo_lo_que_dios_dijo/app/app.dart';
 import 'package:todo_lo_que_dios_dijo/app/providers.dart';
 import 'package:todo_lo_que_dios_dijo/data/models/content_bundle.dart';
 
+import 'package:todo_lo_que_dios_dijo/domain/listening/listening_controller.dart';
+
+import '../domain/listening_test.dart' show FakeTts;
 import '../helpers.dart';
 
 class _FakeContent extends ContentNotifier {
@@ -74,6 +77,8 @@ void main() {
       addTearDown(tester.view.reset);
       SharedPreferences.setMockInitialValues({
         'theme_mode': dark ? 'dark' : 'light',
+        'listen_passage': 6,
+        'listen_section': 9,
       });
       final prefs = await SharedPreferences.getInstance();
       await tester.pumpWidget(
@@ -81,6 +86,7 @@ void main() {
           overrides: [
             sharedPreferencesProvider.overrideWithValue(prefs),
             contentProvider.overrideWith(() => _FakeContent(loadContent())),
+            ttsEngineProvider.overrideWithValue(FakeTts()),
           ],
           child: const TodoLoQueDiosDijoApp(),
         ),
@@ -95,6 +101,11 @@ void main() {
       await tester.tap(find.text('Comenzar recorrido'));
       await settle(tester, 4000);
       await shot('2_inicio');
+      await tester.tap(find.text('Escuchar las 71 palabras'));
+      await settle(tester, 3000);
+      await shot('9_escuchar');
+      await tester.tap(find.byType(BackButton));
+      await settle(tester, 2000);
       await tester.drag(find.byType(CustomScrollView), const Offset(0, -520));
       await settle(tester, 3000);
       await shot('3_inicio_tarjetas');

@@ -6,6 +6,7 @@ import '../features/categories/category_screen.dart';
 import '../features/favorites/saved_words_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/journey/journey_screen.dart';
+import '../features/listen/listen_screen.dart';
 import '../features/passage/passage_screen.dart';
 import '../features/passage/personalize_screen.dart';
 import '../features/search/search_screen.dart';
@@ -22,6 +23,9 @@ abstract final class Routes {
   static const stats = '/progreso';
   static const search = '/buscar';
   static const settings = '/ajustes';
+  static const listen = '/escuchar';
+
+  static String listenFrom(String passageId) => '$listen?desde=$passageId';
 
   static String passage(String id) => '/palabra/$id';
   static String personalize(String id) => '/palabra/$id/para-mi';
@@ -128,6 +132,14 @@ GoRouter createRouter() => GoRouter(
       pageBuilder: (context, state) => _fadePage(
         state,
         CategoryScreen(categoryId: state.pathParameters['id']!),
+      ),
+    ),
+    GoRoute(
+      path: Routes.listen,
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (context, state) => _fadePage(
+        state,
+        ListenScreen(startPassageId: state.uri.queryParameters['desde']),
       ),
     ),
     GoRoute(
