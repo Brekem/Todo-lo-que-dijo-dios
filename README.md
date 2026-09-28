@@ -14,7 +14,7 @@ cronológico, los pasajes bíblicos donde **Dios habla directamente**: de «Sea 
 
 ## Qué incluye
 
-**1119 palabras de Dios** en orden cronológico, en 12 etapas (Adán, Noé, Abraham, Isaac,
+**960 palabras de Dios** en orden cronológico, en 12 etapas (Adán, Noé, Abraham, Isaac,
 Jacob, Moisés, Josué, Profetas, Israel, Evangelios, La Iglesia, Apocalipsis):
 
 - **Cada lugar del Antiguo Testamento donde Yavé habla directamente**, extraído del
@@ -24,15 +24,15 @@ Jacob, Moisés, Josué, Profetas, Israel, Evangelios, La Iglesia, Apocalipsis):
 - **Cada pasaje sobre «la voz de Yavé»** (categoría propia).
 - **Palabra al azar** (inicio, lectura, recorrido, cada tema y tus guardadas) y
   **escucha en orden aleatorio** con el botón 🔀, que recuerda el orden y dónde te quedaste.
-- **71 palabras explicadas a mano** (incluidas las del Nuevo Testamento: la voz del
-  Padre y palabras de Jesús).
+- **Las 960 palabras explicadas a mano** (incluidas las del Nuevo Testamento: la voz del
+  Padre y palabras de Jesús). De cada pasaje se muestra solo lo que Dios dijo, corto y
+  preciso, palabra por palabra de la RV1909.
 
 Cada una tiene: 1. Lo que Dios dijo · 2. Referencia · 3. A quién habló · 4. Contexto
 histórico (por libro) · 5. Qué estaba pasando (por capítulo) · 6. Problema que Dios
 estaba tratando · 7. Explicación sencilla · 8. Aplicación para hoy · 9. Oración.
-En las 71 palabras destacadas los apartados 6–9 están escritos a mano; en el resto se
-generan a partir del tema del pasaje (y «Necesito esta palabra para mí» ofrece una
-reflexión personalizada).
+Los apartados 6–9 están escritos a mano en todas las palabras (`tool/content/written/`),
+y «Necesito esta palabra para mí» ofrece además una reflexión personalizada.
 
 **Texto bíblico**: Reina-Valera 1909 completa (dominio público, heredera de la *Biblia
 del Oso* de Casiodoro de Reina, 1569) con ortografía actualizada y el nombre divino
@@ -49,7 +49,7 @@ una nueva versión.
 | Lectura tipo pergamino, deslizar = avanzar cronológicamente | `features/passage` |
 | «Necesito esta palabra para mí» (IA con Gemini + respaldo offline) | `domain/personalization` |
 | Recorrido de la Voz de Dios (línea de tiempo) | `features/journey` |
-| Escuchar las 71 palabras seguidas en voz alta, con oración; recuerda dónde te quedaste | `features/listen`, `domain/listening` |
+| Escuchar las palabras seguidas (en orden o al azar) en voz alta, con oración; recuerda dónde te quedaste | `features/listen`, `domain/listening` |
 | Búsqueda inteligente: palabra, problema, tema, personaje | `domain/search`, `features/search` |
 | Las palabras que guardé (versículo + aplicación + oración) | `features/favorites` |
 | Mi camino: leídas, días seguidos, temas, oraciones | `features/stats` |

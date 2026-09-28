@@ -82,11 +82,10 @@ void main() {
   });
 
   test('incluye todos los «Así dice Yavé» y «la voz de Yavé»', () {
-    final all = content.passages.map((p) => p.quote).join(' ');
-    final asiDice = RegExp(
-      r'[Aa]s[ií] (?:dice|ha dicho|dijo) (?:el Señor )?Yavé',
-    );
-    expect(asiDice.allMatches(all).length, greaterThan(300));
+    // Cada discurso de Yavé extraído de la RV1909 (id «y-…»); la cita muestra
+    // solo lo que Dios dijo, sin «Así dice Yavé».
+    final discursos = content.passages.where((p) => p.id.startsWith('y-'));
+    expect(discursos.length, greaterThan(800));
     expect(content.byCategory('voz').length, greaterThan(30));
     expect(content.passages.length, greaterThan(900));
   });
@@ -118,8 +117,21 @@ void main() {
     }
   });
 
-  test('las palabras explicadas a mano se conservan', () {
-    expect(content.passages.where((p) => p.curated).length, greaterThan(71));
+  test('todas las palabras están explicadas a mano', () {
+    for (final p in content.passages) {
+      expect(p.curated, isTrue, reason: p.reference);
+      expect(p.problem.trim(), isNotEmpty, reason: p.reference);
+      expect(p.explanation.trim(), isNotEmpty, reason: p.reference);
+      expect(p.application.trim(), isNotEmpty, reason: p.reference);
+      expect(p.prayer.trimRight(), endsWith('Amén.'), reason: p.reference);
+    }
     expect(content.passageById('isa-41-10')!.curated, isTrue);
+  });
+
+  test('lo que Dios dijo es corto y preciso', () {
+    for (final p in content.passages) {
+      expect(p.quote.trim(), isNotEmpty, reason: p.reference);
+      expect(p.quote.length, lessThanOrEqualTo(300), reason: p.reference);
+    }
   });
 }

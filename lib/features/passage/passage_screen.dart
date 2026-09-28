@@ -332,11 +332,13 @@ class _PassageView extends ConsumerWidget {
               children: [
                 Container(width: 26, height: 1.2, color: palette.gold),
                 const SizedBox(width: 12),
-                Text(
-                  passage.reference,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: palette.gold,
-                    letterSpacing: 0.6,
+                Flexible(
+                  child: Text(
+                    passage.reference,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: palette.gold,
+                      letterSpacing: 0.6,
+                    ),
                   ),
                 ),
               ],
@@ -380,23 +382,6 @@ class _PassageView extends ConsumerWidget {
             label: 'Explicación sencilla',
             text: passage.explanation,
           ),
-          if (!passage.curated) ...[
-            const SizedBox(height: 12),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(Icons.info_outline, size: 16, color: palette.warmGray),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Explicación general según el tema del pasaje. Para una '
-                    'reflexión sobre tu situación, usa «Necesito esta palabra para mí».',
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ),
-              ],
-            ),
-          ],
           const SizedBox(height: 36),
           // 8. Aplicación para hoy
           ApplicationCard(text: passage.application),
