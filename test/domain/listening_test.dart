@@ -73,6 +73,7 @@ Future<void> settle() async {
 
 void main() {
   final content = loadContent();
+  final total = content.passages.length;
   const sections = NarrationSection.values;
 
   group('Narration', () {
@@ -132,7 +133,7 @@ void main() {
       final s = c.read(listeningProvider);
       expect(s.passageIndex, 1);
       expect(s.section, NarrationSection.intro);
-      expect(tts.spoken.last, startsWith('Palabra 2 de 71'));
+      expect(tts.spoken.last, startsWith('Palabra 2 de $total'));
       expect(
         c.read(progressProvider).readIds,
         contains(content.passages[0].id),
@@ -175,7 +176,7 @@ void main() {
       await c.read(listeningProvider.notifier).restart();
       await settle();
       expect(c.read(listeningProvider).passageIndex, 0);
-      expect(tts.spoken.last, 'Palabra 1 de 71. Adán.');
+      expect(tts.spoken.last, 'Palabra 1 de $total. Adán.');
     });
 
     test('al terminar la última palabra marca el recorrido completo', () async {
@@ -193,7 +194,7 @@ void main() {
       // Volver a escuchar empieza desde el principio.
       await ctrl.play();
       await settle();
-      expect(tts.spoken.last, 'Palabra 1 de 71. Adán.');
+      expect(tts.spoken.last, 'Palabra 1 de $total. Adán.');
     });
 
     test('saltar a la palabra siguiente y anterior', () async {
@@ -204,7 +205,7 @@ void main() {
       await ctrl.nextWord();
       await settle();
       expect(c.read(listeningProvider).passageIndex, 1);
-      expect(tts.spoken.last, startsWith('Palabra 2 de 71'));
+      expect(tts.spoken.last, startsWith('Palabra 2 de $total'));
       await ctrl.previousWord();
       await settle();
       expect(c.read(listeningProvider).passageIndex, 0);

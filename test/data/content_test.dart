@@ -12,24 +12,31 @@ void main() {
     }
   });
 
-  test('las diez categorías pedidas existen y tienen palabras', () {
-    const expected = [
-      'miedo',
-      'ansiedad',
-      'culpa',
-      'tristeza',
-      'soledad',
-      'fe',
-      'obediencia',
-      'amor',
-      'perdon',
-      'esperanza',
-    ];
-    expect(content.categories.map((c) => c.id), expected);
-    for (final id in expected) {
-      expect(content.byCategory(id), isNotEmpty, reason: id);
-    }
-  });
+  test(
+    'las diez categorías pedidas (y las nuevas) existen y tienen palabras',
+    () {
+      const expected = [
+        'miedo',
+        'ansiedad',
+        'culpa',
+        'tristeza',
+        'soledad',
+        'fe',
+        'obediencia',
+        'amor',
+        'perdon',
+        'esperanza',
+      ];
+      expect(content.categories.map((c) => c.id), containsAll(expected));
+      expect(
+        content.categories.map((c) => c.id),
+        containsAll(['arrepentimiento', 'justicia', 'voz']),
+      );
+      for (final id in expected) {
+        expect(content.byCategory(id), isNotEmpty, reason: id);
+      }
+    },
+  );
 
   test('cada palabra tiene los nueve apartados completos', () {
     for (final p in content.passages) {
@@ -72,5 +79,20 @@ void main() {
     final c = content.wordOfTheDay(DateTime(2026, 9, 29, 7));
     expect(a, b);
     expect(a, isNot(c));
+  });
+
+  test('incluye todos los «Así dice Yavé» y «la voz de Yavé»', () {
+    final all = content.passages.map((p) => p.quote).join(' ');
+    final asiDice = RegExp(
+      r'[Aa]s[ií] (?:dice|ha dicho|dijo) (?:el Señor )?Yavé',
+    );
+    expect(asiDice.allMatches(all).length, greaterThan(300));
+    expect(content.byCategory('voz').length, greaterThan(30));
+    expect(content.passages.length, greaterThan(900));
+  });
+
+  test('las palabras explicadas a mano se conservan', () {
+    expect(content.passages.where((p) => p.curated).length, 71);
+    expect(content.passageById('isa-41-10')!.curated, isTrue);
   });
 }

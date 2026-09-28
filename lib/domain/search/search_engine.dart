@@ -18,9 +18,19 @@ class SearchResult {
 /// - pesos por campo según el modo elegido.
 class SearchEngine {
   SearchEngine(List<Passage> passages)
-    : _docs = [for (final p in passages) _IndexedPassage(p)];
+    : _docs = [for (final p in passages) _IndexedPassage(p)] {
+    for (final doc in _docs) {
+      for (final field in doc.fields) {
+        _vocabulary.addAll(field.tokens);
+      }
+    }
+  }
 
   final List<_IndexedPassage> _docs;
+
+  /// Todas las palabras del contenido: la búsqueda aproximada se hace una sola
+  /// vez contra este vocabulario, no contra cada pasaje.
+  final Set<String> _vocabulary = {};
 
   List<SearchResult> search(String query, {SearchMode mode = SearchMode.all}) {
     final queryTokens = TextNormalizer.tokens(query);
@@ -28,19 +38,22 @@ class SearchEngine {
 
     final normalizedQuery = TextNormalizer.normalize(query);
     final results = <SearchResult>[];
+    final expanded = [for (final t in queryTokens) _expand(t)];
+    final approximate = [for (final t in queryTokens) _approximate(t)];
 
     for (final doc in _docs) {
       var score = 0.0;
       var matchedTokens = 0;
 
-      for (final token in queryTokens) {
-        final variants = _expand(token);
+      for (final (i, token) in queryTokens.indexed) {
+        final variants = expanded[i];
+        final fuzzy = approximate[i];
         var best = 0.0;
         var sum = 0.0;
         for (final field in doc.fields) {
           final weight = field.weightFor(mode);
           if (weight == 0) continue;
-          final value = field.match(token, variants) * weight;
+          final value = field.match(token, variants, fuzzy) * weight;
           sum += value;
           if (value > best) best = value;
         }
@@ -71,6 +84,20 @@ class SearchEngine {
       return c != 0 ? c : a.passage.order.compareTo(b.passage.order);
     });
     return results;
+  }
+
+  /// Palabras del vocabulario a 1–2 errores de distancia (solo si no hay
+  /// coincidencia exacta ni por prefijo).
+  Set<String> _approximate(String token) {
+    if (token.length < 5 || _vocabulary.contains(token)) return const {};
+    if (_vocabulary.any((w) => w.startsWith(token))) return const {};
+    final maxDistance = token.length >= 8 ? 2 : 1;
+    return {
+      for (final w in _vocabulary)
+        if ((w.length - token.length).abs() <= maxDistance &&
+            _levenshtein(w, token, maxDistance) <= maxDistance)
+          w,
+    };
   }
 
   static Set<String> _expand(String token) {
@@ -180,7 +207,7 @@ class _Field {
   double weightFor(SearchMode mode) => _weights[mode.index];
 
   /// 1.0 exacta/sinónimo, 0.8 prefijo, 0.5 aproximada, 0 sin coincidencia.
-  double match(String token, Set<String> variants) {
+  double match(String token, Set<String> variants, Set<String> fuzzy) {
     for (final v in variants) {
       if (tokens.contains(v)) return 1.0;
     }
@@ -189,35 +216,30 @@ class _Field {
         if (t.startsWith(token)) return 0.8;
       }
     }
-    if (token.length >= 5) {
-      final maxDistance = token.length >= 8 ? 2 : 1;
-      for (final t in tokens) {
-        if ((t.length - token.length).abs() <= maxDistance &&
-            _levenshtein(t, token, maxDistance) <= maxDistance) {
-          return 0.5;
-        }
-      }
+    for (final f in fuzzy) {
+      if (tokens.contains(f)) return 0.5;
     }
     return 0;
   }
+}
 
-  static int _levenshtein(String a, String b, int max) {
-    var prev = List<int>.generate(b.length + 1, (i) => i);
-    for (var i = 1; i <= a.length; i++) {
-      final curr = List<int>.filled(b.length + 1, 0)..[0] = i;
-      var rowMin = curr[0];
-      for (var j = 1; j <= b.length; j++) {
-        final cost = a.codeUnitAt(i - 1) == b.codeUnitAt(j - 1) ? 0 : 1;
-        curr[j] = [
-          prev[j] + 1,
-          curr[j - 1] + 1,
-          prev[j - 1] + cost,
-        ].reduce((x, y) => x < y ? x : y);
-        if (curr[j] < rowMin) rowMin = curr[j];
-      }
-      if (rowMin > max) return max + 1;
-      prev = curr;
+int _levenshtein(String a, String b, int max) {
+  var prev = List<int>.generate(b.length + 1, (i) => i);
+  for (var i = 1; i <= a.length; i++) {
+    final curr = List<int>.filled(b.length + 1, 0)..[0] = i;
+    var rowMin = curr[0];
+    for (var j = 1; j <= b.length; j++) {
+      final cost = a.codeUnitAt(i - 1) == b.codeUnitAt(j - 1) ? 0 : 1;
+      final v = [
+        prev[j] + 1,
+        curr[j - 1] + 1,
+        prev[j - 1] + cost,
+      ].reduce((x, y) => x < y ? x : y);
+      curr[j] = v;
+      if (v < rowMin) rowMin = v;
     }
-    return prev[b.length];
+    if (rowMin > max) return max + 1;
+    prev = curr;
   }
+  return prev[b.length];
 }

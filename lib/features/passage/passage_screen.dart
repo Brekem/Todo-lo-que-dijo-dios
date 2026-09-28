@@ -285,7 +285,12 @@ class _PassageView extends ConsumerWidget {
               child: Text(
                 '«${passage.quote}»',
                 style: theme.textTheme.headlineMedium?.copyWith(
-                  fontSize: 29,
+                  // Pasajes largos: letra algo menor para leer con calma.
+                  fontSize: passage.quote.length > 700
+                      ? 21
+                      : passage.quote.length > 280
+                      ? 24
+                      : 29,
                   fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.w500,
                   height: 1.35,
@@ -349,6 +354,23 @@ class _PassageView extends ConsumerWidget {
             label: 'Explicación sencilla',
             text: passage.explanation,
           ),
+          if (!passage.curated) ...[
+            const SizedBox(height: 12),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.info_outline, size: 16, color: palette.warmGray),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Explicación general según el tema del pasaje. Para una '
+                    'reflexión sobre tu situación, usa «Necesito esta palabra para mí».',
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+              ],
+            ),
+          ],
           const SizedBox(height: 36),
           // 8. Aplicación para hoy
           ApplicationCard(text: passage.application),

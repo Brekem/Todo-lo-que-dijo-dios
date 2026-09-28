@@ -22,6 +22,7 @@ class Passage {
     required this.categories,
     required this.topics,
     required this.problems,
+    this.curated = true,
   });
 
   factory Passage.fromJson(Map<String, dynamic> json) => Passage(
@@ -43,6 +44,7 @@ class Passage {
     categories: _strings(json['categories']),
     topics: _strings(json['topics']),
     problems: _strings(json['problems']),
+    curated: json['curated'] as bool? ?? true,
   );
 
   final String id;
@@ -90,6 +92,10 @@ class Passage {
   final List<String> topics;
   final List<String> problems;
 
+  /// `true` si la explicación, aplicación y oración fueron escritas a mano;
+  /// `false` si se generaron a partir del tema del pasaje.
+  final bool curated;
+
   Map<String, dynamic> toJson() => {
     'id': id,
     'order': order,
@@ -109,6 +115,7 @@ class Passage {
     'categories': categories,
     'topics': topics,
     'problems': problems,
+    'curated': curated,
   };
 
   /// Texto listo para compartir.

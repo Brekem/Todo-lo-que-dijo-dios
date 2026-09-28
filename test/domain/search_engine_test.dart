@@ -44,7 +44,7 @@ void main() {
   test('busca por personaje bíblico', () {
     final moises = ids('Moisés', SearchMode.person);
     expect(moises, containsAll(['exo-3-14', 'exo-33-14']));
-    expect(ids('Elías', SearchMode.person).first, '1re-19-9');
+    expect(ids('Elías', SearchMode.person).take(15), contains('1re-19-9'));
   });
 
   test('busca por tema', () {

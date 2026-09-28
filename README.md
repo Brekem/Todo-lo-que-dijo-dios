@@ -14,15 +14,27 @@ cronológico, los pasajes bíblicos donde **Dios habla directamente**: de «Sea 
 
 ## Qué incluye
 
-**71 palabras de Dios** en 12 etapas (Adán, Noé, Abraham, Isaac, Jacob, Moisés, Josué,
-Profetas, Israel, Evangelios, La Iglesia, Apocalipsis). Cada una tiene:
+**988 palabras de Dios** en orden cronológico, en 12 etapas (Adán, Noé, Abraham, Isaac,
+Jacob, Moisés, Josué, Profetas, Israel, Evangelios, La Iglesia, Apocalipsis):
 
-1. Lo que Dios dijo · 2. Referencia · 3. A quién habló · 4. Contexto histórico ·
-5. Qué estaba pasando · 6. Problema que Dios estaba tratando · 7. Explicación sencilla ·
-8. Aplicación para hoy · 9. Oración de liberación
+- **Cada lugar del Antiguo Testamento donde Yavé habla directamente**, extraído del
+  texto completo de la RV1909: todos los «Así dice/ha dicho Yavé», «dice Yavé»,
+  «Y dijo Yavé…», «fue palabra de Yavé a…», los Salmos donde Dios habla, etc.
+  (`tool/corpus/extract.py`).
+- **Cada pasaje sobre «la voz de Yavé»** (categoría propia).
+- **71 palabras explicadas a mano** (incluidas las del Nuevo Testamento: la voz del
+  Padre y palabras de Jesús).
 
-**Texto bíblico**: Reina-Valera 1909 (dominio público, heredera de la *Biblia del Oso*
-de Casiodoro de Reina, 1569) con ortografía actualizada y el nombre divino **Yavé**.
+Cada una tiene: 1. Lo que Dios dijo · 2. Referencia · 3. A quién habló · 4. Contexto
+histórico (por libro) · 5. Qué estaba pasando (por capítulo) · 6. Problema que Dios
+estaba tratando · 7. Explicación sencilla · 8. Aplicación para hoy · 9. Oración.
+En las 71 palabras destacadas los apartados 6–9 están escritos a mano; en el resto se
+generan a partir del tema del pasaje (y «Necesito esta palabra para mí» ofrece una
+reflexión personalizada).
+
+**Texto bíblico**: Reina-Valera 1909 completa (dominio público, heredera de la *Biblia
+del Oso* de Casiodoro de Reina, 1569) con ortografía actualizada y el nombre divino
+**Yavé**. Fuente: `tool/corpus/source/`.
 Las traducciones que usan «Yavé/Yahvé» de forma nativa (Nácar-Colunga, Biblia de
 Jerusalén, Biblia Latinoamericana) tienen derechos vigentes: para usarlas hace falta
 licencia de la editorial. El contenido se puede reemplazar por Firestore sin publicar
@@ -73,7 +85,7 @@ flutter run                 # emulador o dispositivo Android
 flutter analyze && flutter test
 ```
 
-- Contenido: `tool/content/` (ver su README) → genera `assets/data/content.json`.
+- Contenido: `python3 tool/corpus/extract.py && python3 tool/build_content.py` → `assets/data/content.json` (ver `tool/content/README.md`).
 - Iconos: `flutter test tool/icon/generate_icons_test.dart`.
 - Capturas: `flutter test test/screenshots --update-goldens --run-skipped`.
 - CI: `.github/workflows/android.yml` analiza, prueba y genera APK y AAB como artefactos.

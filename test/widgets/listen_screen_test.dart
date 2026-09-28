@@ -22,6 +22,8 @@ Future<void> settle(WidgetTester tester, [int seconds = 2]) async {
   await tester.pump(Duration(seconds: seconds));
 }
 
+final total = loadContent().passages.length;
+
 void main() {
   testWidgets(
     'escuchar: te quedaste en…, continuar, mini reproductor y comenzar de nuevo',
@@ -52,11 +54,17 @@ void main() {
       await settle(tester);
 
       // Inicio muestra dónde se quedó.
-      expect(find.text('Te quedaste en la palabra 12 de 71'), findsOneWidget);
-      await tester.tap(find.text('Escuchar las 71 palabras'));
+      expect(
+        find.text('Te quedaste en la palabra 12 de $total'),
+        findsOneWidget,
+      );
+      await tester.tap(find.text('Escuchar las $total palabras'));
       await settle(tester);
 
-      expect(find.text('Te quedaste en la palabra 12 de 71'), findsOneWidget);
+      expect(
+        find.text('Te quedaste en la palabra 12 de $total'),
+        findsOneWidget,
+      );
       expect(find.textContaining('Contexto histórico'), findsWidgets);
       await tester.tap(find.text('Continuar'));
       await settle(tester);
@@ -65,17 +73,17 @@ void main() {
       // Al volver, el mini reproductor sigue visible.
       await tester.tap(find.byType(BackButton));
       await settle(tester);
-      expect(find.textContaining('Palabra 12 de 71 ·'), findsOneWidget);
+      expect(find.textContaining('Palabra 12 de $total ·'), findsOneWidget);
       await tester.tap(find.byTooltip('Pausar'));
       await settle(tester);
       expect(find.byTooltip('Continuar'), findsOneWidget);
 
       // Comenzar de nuevo desde la pantalla de escuchar.
-      await tester.tap(find.textContaining('Palabra 12 de 71 ·'));
+      await tester.tap(find.textContaining('Palabra 12 de $total ·'));
       await settle(tester);
       await tester.tap(find.text('Comenzar de nuevo').first);
       await settle(tester);
-      expect(tts.spoken.last, 'Palabra 1 de 71. Adán.');
+      expect(tts.spoken.last, 'Palabra 1 de $total. Adán.');
       await tester.scrollUntilVisible(
         find.byIcon(Icons.pause_rounded),
         200,

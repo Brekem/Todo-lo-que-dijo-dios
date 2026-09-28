@@ -43,5 +43,8 @@ class Category {
     'favorite': Icons.favorite_outline,
     'handshake': Icons.handshake_outlined,
     'sunny': Icons.wb_sunny_outlined,
+    'undo': Icons.u_turn_left_rounded,
+    'balance': Icons.balance_outlined,
+    'record_voice': Icons.record_voice_over_outlined,
   };
 }

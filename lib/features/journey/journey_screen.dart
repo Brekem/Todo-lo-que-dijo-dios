@@ -9,7 +9,6 @@ import '../../data/models/content_bundle.dart';
 import '../../data/models/era.dart';
 import '../../data/models/passage.dart';
 import '../../shared/widgets/async_content.dart';
-import '../../shared/widgets/fade_slide_in.dart';
 
 /// "Recorrido de la Voz de Dios": línea de tiempo con cada momento en que Dios habló.
 class JourneyScreen extends StatelessWidget {
@@ -41,6 +40,16 @@ class _Timeline extends ConsumerWidget {
     final eras = content.eras
         .where((e) => content.byEra(e.id).isNotEmpty)
         .toList();
+    final rows = <_Row>[];
+    for (final (i, era) in eras.indexed) {
+      final passages = content.byEra(era.id);
+      rows.add(_EraRow(era, passages));
+      for (final (j, p) in passages.indexed) {
+        rows.add(
+          _WordRow(p, last: i == eras.length - 1 && j == passages.length - 1),
+        );
+      }
+    }
 
     return CustomScrollView(
       slivers: [
@@ -88,124 +97,131 @@ class _Timeline extends ConsumerWidget {
             ),
           ),
         ),
-        for (final (i, era) in eras.indexed)
-          SliverToBoxAdapter(
-            child: FadeSlideIn(
-              delay: Duration(milliseconds: 60 * i.clamp(0, 6)),
-              child: _EraSection(
-                era: era,
-                passages: content.byEra(era.id),
-                read: read,
-                isLast: i == eras.length - 1,
+        // Lista perezosa: con cientos de palabras solo se construye lo visible.
+        SliverList.builder(
+          itemCount: rows.length,
+          itemBuilder: (context, i) => switch (rows[i]) {
+            _EraRow(:final era, :final passages) => _EraHeader(
+              era: era,
+              done: passages.where((p) => read.contains(p.id)).length,
+              total: passages.length,
+            ),
+            _WordRow(:final passage, :final last) => Padding(
+              padding: const EdgeInsets.only(left: 24, right: 20),
+              child: _TimelineWord(
+                passage: passage,
+                read: read.contains(passage.id),
+                drawLine: !last,
               ),
             ),
-          ),
+          },
+        ),
         const SliverToBoxAdapter(child: SizedBox(height: 48)),
       ],
     );
   }
 }
 
-class _EraSection extends StatelessWidget {
-  const _EraSection({
+sealed class _Row {
+  const _Row();
+}
+
+class _EraRow extends _Row {
+  const _EraRow(this.era, this.passages);
+  final Era era;
+  final List<Passage> passages;
+}
+
+class _WordRow extends _Row {
+  const _WordRow(this.passage, {required this.last});
+  final Passage passage;
+  final bool last;
+}
+
+class _EraHeader extends StatelessWidget {
+  const _EraHeader({
     required this.era,
-    required this.passages,
-    required this.read,
-    required this.isLast,
+    required this.done,
+    required this.total,
   });
 
   final Era era;
-  final List<Passage> passages;
-  final Set<String> read;
-  final bool isLast;
+  final int done;
+  final int total;
 
   @override
   Widget build(BuildContext context) {
     final palette = AppPalette.of(context);
     final theme = Theme.of(context);
-    final done = passages.where((p) => read.contains(p.id)).length;
     return Padding(
       padding: const EdgeInsets.only(left: 24, right: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Hito de la etapa
-          IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(
-                  width: 28,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 28),
-                      Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: palette.background,
-                          border: Border.all(color: palette.gold, width: 2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: palette.glow,
-                              blurRadius: 12,
-                              spreadRadius: 2,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          width: 1.2,
-                          color: palette.gold.withValues(alpha: 0.4),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 22, bottom: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          era.period.toUpperCase(),
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            color: palette.gold,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(era.title, style: theme.textTheme.headlineMedium),
-                        const SizedBox(height: 4),
-                        Text(
-                          era.subtitle,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: palette.warmGray,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          '$done / ${passages.length} escuchadas',
-                          style: theme.textTheme.labelSmall,
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              width: 28,
+              child: Column(
+                children: [
+                  const SizedBox(height: 28),
+                  Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: palette.background,
+                      border: Border.all(color: palette.gold, width: 2),
+                      boxShadow: [
+                        BoxShadow(
+                          color: palette.glow,
+                          blurRadius: 12,
+                          spreadRadius: 2,
                         ),
                       ],
                     ),
                   ),
+                  Expanded(
+                    child: Container(
+                      width: 1.2,
+                      color: palette.gold.withValues(alpha: 0.4),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 22, bottom: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      era.period.toUpperCase(),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: palette.gold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(era.title, style: theme.textTheme.headlineMedium),
+                    const SizedBox(height: 4),
+                    Text(
+                      era.subtitle,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: palette.warmGray,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '$done / $total escuchadas',
+                      style: theme.textTheme.labelSmall,
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-          // Palabras de la etapa
-          for (final (j, p) in passages.indexed)
-            _TimelineWord(
-              passage: p,
-              read: read.contains(p.id),
-              drawLine: !(isLast && j == passages.length - 1),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

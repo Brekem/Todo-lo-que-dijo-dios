@@ -25,7 +25,7 @@ En la consola de Firebase:
 Publicar contenido nuevo sin sacar versión:
 
 ```bash
-cd tool/content && python3 build.py ../../assets/data/content.json   # sube CONTENT_VERSION antes
+python3 tool/build_content.py   # sube CONTENT_VERSION antes
 cd ../firestore && npm install && GOOGLE_APPLICATION_CREDENTIALS=... node seed.mjs
 ```
 
@@ -86,8 +86,8 @@ moderna, necesitas licencia escrita de su editorial antes de publicar.
 
 ## 5. Descripción larga sugerida
 
-> Todo lo que Dios Dijo reúne, en orden cronológico, los momentos en que Dios habló
-> directamente en la Biblia: desde «Sea la luz» en Génesis hasta «Ciertamente, vengo en
+> Todo lo que Dios Dijo reúne, en orden cronológico, casi mil momentos en que Dios habló
+> directamente en la Biblia —incluidos todos los «Así dice Yavé»—: desde «Sea la luz» en Génesis hasta «Ciertamente, vengo en
 > breve» en Apocalipsis.
 >
 > Cada palabra incluye: a quién habló Dios, el contexto histórico, qué estaba pasando,

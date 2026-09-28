@@ -66,6 +66,8 @@ Future<void> settle(WidgetTester tester, [int ms = 2500]) async {
   }
 }
 
+final total = loadContent().passages.length;
+
 void main() {
   setUpAll(_loadFonts);
 
@@ -101,7 +103,7 @@ void main() {
       await tester.tap(find.text('Comenzar recorrido'));
       await settle(tester, 4000);
       await shot('2_inicio');
-      await tester.tap(find.text('Escuchar las 71 palabras'));
+      await tester.tap(find.text('Escuchar las $total palabras'));
       await settle(tester, 3000);
       await shot('9_escuchar');
       await tester.tap(find.byType(BackButton));

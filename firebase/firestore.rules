@@ -7,6 +7,10 @@ service cloud.firestore {
     match /content/{docId} {
       allow read: if true;
       allow write: if false;
+      match /chunks/{chunkId} {
+        allow read: if true;
+        allow write: if false;
+      }
     }
     match /{document=**} {
       allow read, write: if false;
