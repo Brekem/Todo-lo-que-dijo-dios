@@ -1,0 +1,2628 @@
+{
+ "version": 1,
+ "translation": "Reina-Valera 1909 (dominio público), heredera de la Biblia del Oso de Casiodoro de Reina (1569), con ortografía actualizada y el nombre divino «Yavé».",
+ "eras": [
+  {
+   "id": "adan",
+   "title": "Adán",
+   "subtitle": "La creación y el principio",
+   "period": "El principio"
+  },
+  {
+   "id": "noe",
+   "title": "Noé",
+   "subtitle": "El diluvio y el primer pacto",
+   "period": "Tiempos antiguos"
+  },
+  {
+   "id": "abraham",
+   "title": "Abraham",
+   "subtitle": "El llamado y la promesa",
+   "period": "c. 2000 a. C."
+  },
+  {
+   "id": "isaac",
+   "title": "Isaac",
+   "subtitle": "El hijo de la promesa",
+   "period": "c. 1900 a. C."
+  },
+  {
+   "id": "jacob",
+   "title": "Jacob",
+   "subtitle": "De Betel a Egipto",
+   "period": "c. 1850 a. C."
+  },
+  {
+   "id": "moises",
+   "title": "Moisés",
+   "subtitle": "Liberación y pacto en el Sinaí",
+   "period": "c. 1450 a. C."
+  },
+  {
+   "id": "josue",
+   "title": "Josué",
+   "subtitle": "La tierra prometida y los jueces",
+   "period": "c. 1400–1100 a. C."
+  },
+  {
+   "id": "profetas",
+   "title": "Profetas",
+   "subtitle": "Reyes, salmistas y profetas",
+   "period": "c. 1050–587 a. C."
+  },
+  {
+   "id": "israel",
+   "title": "Israel",
+   "subtitle": "Exilio en Babilonia y regreso",
+   "period": "c. 597–430 a. C."
+  },
+  {
+   "id": "evangelios",
+   "title": "Evangelios",
+   "subtitle": "Dios hecho hombre en Jesús",
+   "period": "c. 27–30 d. C."
+  },
+  {
+   "id": "iglesia",
+   "title": "La Iglesia",
+   "subtitle": "El Resucitado guía a los apóstoles",
+   "period": "c. 34–56 d. C."
+  },
+  {
+   "id": "apocalipsis",
+   "title": "Apocalipsis",
+   "subtitle": "La revelación final",
+   "period": "c. 95 d. C."
+  }
+ ],
+ "categories": [
+  {
+   "id": "miedo",
+   "title": "Dios libera el miedo",
+   "headline": "Dios habla sobre el miedo",
+   "description": "Cuando el temor te paraliza, Dios dice «no temas» y te recuerda que Él está contigo.",
+   "icon": "shield",
+   "color": "FF2F4A7A"
+  },
+  {
+   "id": "ansiedad",
+   "title": "Dios libera la ansiedad",
+   "headline": "Dios habla sobre la ansiedad",
+   "description": "Palabras para aquietar la mente, soltar el mañana y descansar en su cuidado.",
+   "icon": "spa",
+   "color": "FF3E5C8A"
+  },
+  {
+   "id": "culpa",
+   "title": "Dios libera la culpa",
+   "headline": "Dios habla sobre la culpa",
+   "description": "Dios no te busca para condenarte, sino para limpiarte y darte una vida nueva.",
+   "icon": "water_drop",
+   "color": "FF8E3B46"
+  },
+  {
+   "id": "tristeza",
+   "title": "Dios libera la tristeza",
+   "headline": "Dios habla sobre la tristeza",
+   "description": "En el duelo, el agotamiento y las lágrimas, Dios consuela y promete hacer nuevas todas las cosas.",
+   "icon": "sentiment",
+   "color": "FF5A6A8F"
+  },
+  {
+   "id": "soledad",
+   "title": "Dios libera la soledad",
+   "headline": "Dios habla sobre la soledad",
+   "description": "Nunca estás solo: Dios promete estar contigo todos los días.",
+   "icon": "group",
+   "color": "FF6B5A86"
+  },
+  {
+   "id": "fe",
+   "title": "Dios fortalece la fe",
+   "headline": "Dios habla sobre la fe",
+   "description": "Promesas que parecen imposibles y un Dios para quien nada es difícil.",
+   "icon": "anchor",
+   "color": "FFB08A3E"
+  },
+  {
+   "id": "obediencia",
+   "title": "Dios enseña obediencia",
+   "headline": "Dios habla sobre la obediencia",
+   "description": "Llamados a salir, a caminar y a confiar cuando Dios dice «ve».",
+   "icon": "route",
+   "color": "FF7A6A3A"
+  },
+  {
+   "id": "amor",
+   "title": "Dios enseña amor",
+   "headline": "Dios habla sobre el amor",
+   "description": "Un amor eterno que te busca, te llama por tu nombre y te enseña a amar.",
+   "icon": "favorite",
+   "color": "FFA3424C"
+  },
+  {
+   "id": "perdon",
+   "title": "Dios enseña perdón",
+   "headline": "Dios habla sobre el perdón",
+   "description": "Dios borra, olvida y restaura; y te enseña a soltar las deudas de otros.",
+   "icon": "handshake",
+   "color": "FF9A6A3A"
+  },
+  {
+   "id": "esperanza",
+   "title": "Dios enseña esperanza",
+   "headline": "Dios habla sobre la esperanza",
+   "description": "Pensamientos de paz, caminos en el desierto y una historia que termina bien.",
+   "icon": "sunny",
+   "color": "FFC29B45"
+  }
+ ],
+ "passages": [
+  {
+   "id": "gen-1-3",
+   "order": 1,
+   "era": "adan",
+   "reference": "Génesis 1:3",
+   "book": "Génesis",
+   "speaker": "Dios",
+   "quote": "Sea la luz.",
+   "recipient": "La creación entera",
+   "people": [
+    "Dios creador"
+   ],
+   "historicalContext": "Es el principio de todo. Antes de que existiera el ser humano, Dios habla por primera vez en la Biblia y su palabra crea.",
+   "situation": "La tierra estaba desordenada y vacía, y las tinieblas cubrían el abismo. No había forma, ni vida, ni luz.",
+   "problem": "El caos y la oscuridad. Dios no deja la creación en tinieblas: su primera palabra trae orden y claridad.",
+   "explanation": "La primera vez que Dios habla, lo que dice sucede. Su voz no solo informa: transforma. Donde había oscuridad, su palabra pone luz.",
+   "application": "Si hoy estás enfrentando una etapa oscura, confusa o sin forma, recuerda que Dios empezó la historia hablando luz sobre el caos. Tu vida no es demasiado desordenada para que su voz la ilumine. Empieza el día leyendo una sola palabra suya y pídele luz para el siguiente paso.",
+   "prayer": "Señor, hoy traigo ante ti la oscuridad que hay en mí. Tú que dijiste «sea la luz», habla sobre mi confusión y mi desorden. Renuncio a creer que mi vida no tiene arreglo. Pon tu luz donde yo solo veo tinieblas. Amén.",
+   "categories": [
+    "esperanza",
+    "fe"
+   ],
+   "topics": [
+    "creación",
+    "luz",
+    "poder de Dios",
+    "nuevo comienzo"
+   ],
+   "problems": [
+    "confusión",
+    "oscuridad",
+    "desorden"
+   ]
+  },
+  {
+   "id": "gen-2-18",
+   "order": 2,
+   "era": "adan",
+   "reference": "Génesis 2:18",
+   "book": "Génesis",
+   "speaker": "Yavé",
+   "quote": "No es bueno que el hombre esté solo; haréle ayuda idónea para él.",
+   "recipient": "Adán (el primer ser humano)",
+   "people": [
+    "Adán",
+    "Eva"
+   ],
+   "historicalContext": "En el jardín del Edén, recién creado el ser humano, todo lo que Dios había hecho era «bueno». Esta es la primera cosa que Dios declara «no buena».",
+   "situation": "Adán vivía en un lugar perfecto y tenía comunión con Dios, pero no tenía a nadie como él con quien compartir la vida.",
+   "problem": "La soledad. Dios mismo reconoce que el ser humano no fue hecho para vivir aislado.",
+   "explanation": "Dios diseñó al ser humano para la relación. La soledad no es un defecto tuyo ni un castigo: es una necesidad que Dios mismo vio y quiso llenar. Por eso creó a Eva y, con ella, la familia y la comunidad.",
+   "application": "Si hoy estás enfrentando soledad, no te avergüences: Dios mismo dijo que no es bueno estar solo. Pídele que te conduzca a personas con quienes caminar. Da un paso pequeño: escribe a alguien, acepta una invitación, acércate a una comunidad de fe.",
+   "prayer": "Señor, tú ves mi soledad y no la desprecias. Hoy renuncio a la mentira de que no le importo a nadie. Tú dijiste que no es bueno que esté solo; trae a mi vida compañía verdadera y hazme también compañía para otros. Amén.",
+   "categories": [
+    "soledad",
+    "amor"
+   ],
+   "topics": [
+    "relaciones",
+    "familia",
+    "matrimonio",
+    "comunidad"
+   ],
+   "problems": [
+    "soledad",
+    "aislamiento"
+   ]
+  },
+  {
+   "id": "gen-3-9",
+   "order": 3,
+   "era": "adan",
+   "reference": "Génesis 3:9",
+   "book": "Génesis",
+   "speaker": "Yavé",
+   "quote": "¿Dónde estás tú?",
+   "recipient": "Adán, escondido junto a Eva",
+   "people": [
+    "Adán",
+    "Eva"
+   ],
+   "historicalContext": "Tras la creación, Adán y Eva desobedecieron a Dios comiendo del árbol prohibido. Es el relato de la caída y el origen del pecado en el mundo.",
+   "situation": "Al oír la voz de Dios que se paseaba en el huerto, Adán y Eva se escondieron entre los árboles, avergonzados y con miedo.",
+   "problem": "La culpa y la vergüenza que empujan a esconderse de Dios. Él no se esconde del pecador: lo busca.",
+   "explanation": "Dios sabía perfectamente dónde estaba Adán. La pregunta no era para informarse, sino para invitarlo a salir. Después de fallar, la primera palabra de Dios no es un grito de condena, sino una búsqueda.",
+   "application": "Si hoy estás enfrentando culpa por algo que hiciste y sientes ganas de alejarte de Dios, escucha esta pregunta como una invitación. No sigas escondido. Dile con honestidad dónde estás y qué pasó. Dios te busca para restaurarte, no para destruirte.",
+   "prayer": "Señor, aquí estoy. Ya no quiero esconderme de ti. Te confieso lo que hice y la vergüenza que siento. Hoy renuncio a la culpa que me aleja de ti y acepto que tú me buscas porque me amas. Cúbreme con tu misericordia. Amén.",
+   "categories": [
+    "culpa",
+    "perdon"
+   ],
+   "topics": [
+    "pecado",
+    "vergüenza",
+    "búsqueda de Dios",
+    "restauración"
+   ],
+   "problems": [
+    "culpa",
+    "vergüenza",
+    "miedo",
+    "desobediencia"
+   ]
+  },
+  {
+   "id": "gen-4-6",
+   "order": 4,
+   "era": "adan",
+   "reference": "Génesis 4:6-7",
+   "book": "Génesis",
+   "speaker": "Yavé",
+   "quote": "¿Por qué te has ensañado, y por qué se ha inmutado tu rostro? Si bien hicieres, ¿no serás ensalzado? y si no hicieres bien, el pecado está a la puerta: con todo esto, a ti será su deseo, y tú te enseñorearás de él.",
+   "recipient": "Caín",
+   "people": [
+    "Caín",
+    "Abel"
+   ],
+   "historicalContext": "Primera generación fuera del Edén. Caín, labrador, y Abel, pastor, eran hijos de Adán y Eva y presentaron ofrendas a Dios.",
+   "situation": "Dios miró con agrado la ofrenda de Abel, pero no la de Caín. Caín se llenó de enojo y envidia contra su hermano.",
+   "problem": "La ira, la envidia y la tentación de hacer daño. Dios advierte a Caín antes de que el enojo se convierta en pecado.",
+   "explanation": "Dios habla a Caín antes de que cometa el crimen. Le muestra que su enojo es como una fiera agazapada a la puerta, pero que él todavía puede dominarlo. Dios siempre da una oportunidad para elegir el bien.",
+   "application": "Si hoy estás enfrentando enojo, envidia o resentimiento hacia alguien, detente y escucha esta advertencia. Pon nombre a lo que sientes y no dejes que gobierne tus decisiones. Aléjate de la situación, ora y busca hacer lo correcto antes de actuar.",
+   "prayer": "Señor, reconozco el enojo y la envidia que hay en mi corazón. Hoy renuncio a dejar que la ira me domine. Ayúdame a enseñorearme de ella antes de que haga daño. Dame un corazón en paz con mi hermano. Amén.",
+   "categories": [
+    "obediencia",
+    "culpa"
+   ],
+   "topics": [
+    "ira",
+    "envidia",
+    "tentación",
+    "dominio propio"
+   ],
+   "problems": [
+    "ira",
+    "envidia",
+    "resentimiento"
+   ]
+  },
+  {
+   "id": "gen-6-14",
+   "order": 5,
+   "era": "noe",
+   "reference": "Génesis 6:14, 18",
+   "book": "Génesis",
+   "speaker": "Yavé",
+   "quote": "Hazte un arca de madera de Gopher… Mas estableceré mi pacto contigo, y entrarás en el arca tú, y tus hijos y tu mujer, y las mujeres de tus hijos contigo.",
+   "recipient": "Noé",
+   "people": [
+    "Noé"
+   ],
+   "historicalContext": "Generaciones después de Adán, la maldad humana se había multiplicado sobre la tierra y la violencia llenaba el mundo.",
+   "situation": "Noé era un hombre justo en medio de una generación corrompida. Dios le anuncia el diluvio y le da instrucciones precisas para salvar a su familia.",
+   "problem": "La corrupción del mundo y la presión de vivir distinto. Dios llama a Noé a obedecer aunque nadie más lo haga.",
+   "explanation": "Dios le pidió a Noé algo que parecía absurdo: construir un barco enorme lejos del mar. Junto con la orden le dio una promesa: «estableceré mi pacto contigo». La obediencia de Noé salvó a su familia.",
+   "application": "Si hoy estás enfrentando la presión de un entorno que va en otra dirección, recuerda a Noé. Obedecer a Dios puede parecer extraño a otros, pero su instrucción siempre viene con su protección. Sigue construyendo lo que Dios te pidió, paso a paso.",
+   "prayer": "Señor, dame la fe de Noé para obedecerte aunque nadie a mi alrededor lo entienda. Hoy renuncio al miedo al qué dirán. Guarda a mi familia dentro de tu pacto y ayúdame a construir lo que tú me pides. Amén.",
+   "categories": [
+    "obediencia",
+    "fe"
+   ],
+   "topics": [
+    "obediencia",
+    "familia",
+    "pacto",
+    "protección"
+   ],
+   "problems": [
+    "presión social",
+    "desobediencia",
+    "corrupción"
+   ]
+  },
+  {
+   "id": "gen-9-13",
+   "order": 6,
+   "era": "noe",
+   "reference": "Génesis 9:13, 15",
+   "book": "Génesis",
+   "speaker": "Yavé",
+   "quote": "Mi arco pondré en las nubes, el cual será por señal de convenio entre mí y la tierra… y no serán más las aguas por diluvio para destruir toda carne.",
+   "recipient": "Noé y sus hijos",
+   "people": [
+    "Noé",
+    "Sem",
+    "Cam",
+    "Jafet"
+   ],
+   "historicalContext": "Después del diluvio, Noé y su familia salen del arca a un mundo completamente nuevo. Es el primer pacto explícito de Dios con toda la humanidad.",
+   "situation": "Tras meses de encierro y destrucción, la familia de Noé debía empezar de cero. Podían temer que otra catástrofe volviera a ocurrir.",
+   "problem": "El temor a que el desastre se repita. Dios da una señal visible para que la humanidad viva con seguridad.",
+   "explanation": "Dios pone el arco iris como recordatorio de su promesa. Después de la tormenta, Dios no solo deja de juzgar: se compromete. Cada vez que aparece el arco en las nubes, Dios dice: «me acuerdo de mi pacto».",
+   "application": "Si hoy estás enfrentando las consecuencias de una tormenta —una pérdida, una crisis, un fracaso—, mira las promesas de Dios como ese arco en las nubes. Escribe una promesa suya y colócala donde la veas. Empieza de nuevo sabiendo que Dios se acuerda de ti.",
+   "prayer": "Señor, después de mis tormentas, tú pones señales de esperanza. Hoy renuncio al miedo de que todo vuelva a derrumbarse. Recuerda tu pacto conmigo y ayúdame a empezar de nuevo, confiando en tu fidelidad. Amén.",
+   "categories": [
+    "esperanza",
+    "miedo"
+   ],
+   "topics": [
+    "pacto",
+    "promesa",
+    "nuevo comienzo",
+    "fidelidad"
+   ],
+   "problems": [
+    "miedo",
+    "trauma",
+    "incertidumbre"
+   ]
+  },
+  {
+   "id": "gen-12-1",
+   "order": 7,
+   "era": "abraham",
+   "reference": "Génesis 12:1-2",
+   "book": "Génesis",
+   "speaker": "Yavé",
+   "quote": "Vete de tu tierra y de tu parentela, y de la casa de tu padre, a la tierra que te mostraré; y haré de ti una nación grande, y bendecirte he, y engrandeceré tu nombre, y serás bendición.",
+   "recipient": "Abram (Abraham)",
+   "people": [
+    "Abraham",
+    "Abram",
+    "Sara"
+   ],
+   "historicalContext": "Hacia el año 2000 a. C., en Harán, Mesopotamia. Abram venía de Ur de los caldeos, una región de muchos dioses.",
+   "situation": "Abram tenía 75 años, estaba casado con Sarai, que era estéril, y vivía cómodamente con su familia. Dios le pide dejarlo todo sin decirle adónde irá.",
+   "problem": "La seguridad de lo conocido y el miedo a lo desconocido. Dios llama a Abram a confiar más en su promesa que en su comodidad.",
+   "explanation": "Dios le pide a Abram salir sin mapa, solo con una promesa. No le explica el destino, pero le asegura que lo bendecirá y que, por medio de él, bendecirá a otros. Así empieza la historia del pueblo de Dios.",
+   "application": "Si hoy estás enfrentando una decisión que te obliga a dejar algo conocido —un lugar, un trabajo, una relación, un hábito—, recuerda que Dios no siempre muestra todo el camino, pero siempre acompaña. Da el primer paso que tengas claro y confía el resto.",
+   "prayer": "Señor, como a Abraham, me llamas a salir de lo conocido. Hoy renuncio al miedo a lo que no puedo ver. Muéstrame la tierra que tienes para mí y hazme bendición para otros. Camino confiando en tu promesa. Amén.",
+   "categories": [
+    "obediencia",
+    "fe"
+   ],
+   "topics": [
+    "llamado",
+    "propósito",
+    "promesa",
+    "bendición"
+   ],
+   "problems": [
+    "miedo al cambio",
+    "inseguridad",
+    "duda"
+   ]
+  },
+  {
+   "id": "gen-15-1",
+   "order": 8,
+   "era": "abraham",
+   "reference": "Génesis 15:1",
+   "book": "Génesis",
+   "speaker": "Yavé",
+   "quote": "No temas, Abram; yo soy tu escudo, y tu galardón sobremanera grande.",
+   "recipient": "Abram",
+   "people": [
+    "Abraham",
+    "Abram"
+   ],
+   "historicalContext": "Abram vivía como extranjero en Canaán. Acababa de rescatar a su sobrino Lot en una batalla contra cuatro reyes.",
+   "situation": "Después de la victoria, Abram podía temer represalias de sus enemigos. Además, seguía sin tener el hijo que Dios le había prometido.",
+   "problem": "El miedo a los enemigos y la inquietud por las promesas que aún no se cumplen.",
+   "explanation": "Dios no le promete a Abram una vida sin enemigos, sino ser él mismo su escudo. Y no solo le da recompensas: Dios mismo es su recompensa. Es la primera vez que la Biblia registra «no temas».",
+   "application": "Si hoy estás enfrentando miedo a lo que otros puedan hacerte o a que tus sueños no se cumplan, escucha esta palabra: Dios es tu escudo. Cuando llegue el temor, repítelo en voz alta y recuerda que lo más valioso que tienes es a Dios mismo.",
+   "prayer": "Señor, hoy renuncio al miedo. Tú eres mi escudo cuando me siento atacado y mi mayor recompensa cuando mis sueños tardan. Guárdame y enséñame a descansar en ti. Amén.",
+   "categories": [
+    "miedo",
+    "fe"
+   ],
+   "topics": [
+    "protección",
+    "promesa",
+    "recompensa"
+   ],
+   "problems": [
+    "miedo",
+    "inseguridad",
+    "espera"
+   ]
+  },
+  {
+   "id": "gen-15-5",
+   "order": 9,
+   "era": "abraham",
+   "reference": "Génesis 15:5",
+   "book": "Génesis",
+   "speaker": "Yavé",
+   "quote": "Mira ahora a los cielos, y cuenta las estrellas, si las puedes contar… Así será tu simiente.",
+   "recipient": "Abram",
+   "people": [
+    "Abraham",
+    "Abram"
+   ],
+   "historicalContext": "Misma noche que la visión anterior. Abram le había dicho a Dios que, sin hijos, su heredero sería un siervo llamado Eliezer.",
+   "situation": "Abram estaba desanimado: los años pasaban y la promesa de descendencia parecía imposible. Dios lo saca de la tienda a mirar el cielo.",
+   "problem": "La duda y el desánimo ante una promesa que parece imposible.",
+   "explanation": "Dios responde a la duda de Abram con una imagen: las estrellas. El versículo siguiente dice que Abram creyó a Dios y le fue contado por justicia. La fe no es ver el cumplimiento, sino confiar en quien promete.",
+   "application": "Si hoy estás enfrentando dudas porque lo que esperas no llega, sal a mirar el cielo como Abram. Cambia la mirada de tus limitaciones a la grandeza de Dios. Escribe lo que esperas y entrégaselo, confiando en su tiempo.",
+   "prayer": "Señor, a veces tus promesas me parecen imposibles. Hoy renuncio a la duda que me encierra en mi tienda. Llévame a mirar tu grandeza, y como Abraham, decido creerte. Amén.",
+   "categories": [
+    "fe",
+    "esperanza"
+   ],
+   "topics": [
+    "promesa",
+    "fe",
+    "descendencia",
+    "espera"
+   ],
+   "problems": [
+    "duda",
+    "desánimo",
+    "impaciencia"
+   ]
+  },
+  {
+   "id": "gen-18-14",
+   "order": 10,
+   "era": "abraham",
+   "reference": "Génesis 18:14",
+   "book": "Génesis",
+   "speaker": "Yavé",
+   "quote": "¿Hay para Dios alguna cosa difícil? Al tiempo señalado volveré a ti, según el tiempo de la vida, y Sara tendrá un hijo.",
+   "recipient": "Abraham y Sara",
+   "people": [
+    "Abraham",
+    "Sara"
+   ],
+   "historicalContext": "Abraham tenía casi 100 años y Sara unos 90. Yavé se les aparece en el encinar de Mamre en forma de tres visitantes.",
+   "situation": "Al oír que tendría un hijo, Sara se rió dentro de sí, pensando que era imposible por su edad.",
+   "problem": "La incredulidad y la resignación ante lo que parece humanamente imposible.",
+   "explanation": "Dios escucha la risa incrédula de Sara y responde con una pregunta que atraviesa toda la Biblia: ¿hay algo difícil para Dios? Un año después nació Isaac, cuyo nombre significa «risa».",
+   "application": "Si hoy estás enfrentando una situación que ya diste por perdida, deja que esta pregunta te desafíe. Nombra esa situación delante de Dios y pregúntate: ¿es demasiado difícil para Él? Ora con fe renovada, aunque te cueste creer.",
+   "prayer": "Señor, confieso que me he resignado ante lo imposible. Hoy renuncio a la incredulidad. Para ti no hay nada difícil. Cambia mi risa de duda en risa de alegría, en tu tiempo señalado. Amén.",
+   "categories": [
+    "fe",
+    "esperanza"
+   ],
+   "topics": [
+    "milagros",
+    "imposible",
+    "promesa"
+   ],
+   "problems": [
+    "incredulidad",
+    "resignación",
+    "duda"
+   ]
+  },
+  {
+   "id": "job-38-4",
+   "order": 11,
+   "era": "abraham",
+   "reference": "Job 38:2, 4",
+   "book": "Job",
+   "speaker": "Yavé",
+   "quote": "¿Quién es ése que oscurece el consejo con palabras sin sabiduría?… ¿Dónde estabas cuando yo fundaba la tierra? Házme saber, si tienes inteligencia.",
+   "recipient": "Job",
+   "people": [
+    "Job"
+   ],
+   "historicalContext": "La tradición sitúa a Job en la época de los patriarcas, en la tierra de Uz. Era un hombre íntegro y muy próspero.",
+   "situation": "Job lo perdió todo: hijos, bienes y salud. Tras largos discursos con sus amigos, reclama a Dios una explicación. Dios le responde desde un torbellino.",
+   "problem": "El dolor sin explicación y la tentación de exigirle cuentas a Dios.",
+   "explanation": "Dios no le da a Job una explicación de su sufrimiento, sino una revelación de sí mismo. Le muestra que su sabiduría sostiene el universo. Job no recibe todas las respuestas, pero encuentra a Dios, y eso le basta.",
+   "application": "Si hoy estás enfrentando un dolor que no entiendes, está bien llevarle a Dios tus preguntas. Pero, como Job, permite que Él te muestre su grandeza. A veces la paz no llega con la respuesta, sino con la presencia de Dios.",
+   "prayer": "Señor, no entiendo lo que estoy viviendo. Hoy renuncio a exigir que me expliques todo. Tú fundaste la tierra y sostienes mi vida. Aunque no comprenda, decido confiar en tu sabiduría. Amén.",
+   "categories": [
+    "fe",
+    "tristeza"
+   ],
+   "topics": [
+    "sufrimiento",
+    "soberanía de Dios",
+    "sabiduría"
+   ],
+   "problems": [
+    "sufrimiento",
+    "tristeza",
+    "duda",
+    "enojo con Dios"
+   ]
+  },
+  {
+   "id": "gen-26-24",
+   "order": 12,
+   "era": "isaac",
+   "reference": "Génesis 26:24",
+   "book": "Génesis",
+   "speaker": "Yavé",
+   "quote": "Yo soy el Dios de Abraham tu padre; no temas, que yo soy contigo, y yo te bendeciré, y multiplicaré tu simiente por amor de Abraham mi siervo.",
+   "recipient": "Isaac",
+   "people": [
+    "Isaac"
+   ],
+   "historicalContext": "Isaac, el hijo de la promesa, vivía como extranjero entre los filisteos tras la muerte de su padre Abraham.",
+   "situation": "Los filisteos le envidiaban, le cegaban los pozos y le obligaban a mudarse una y otra vez. Esa noche, en Beerseba, Yavé se le aparece.",
+   "problem": "El miedo y el agotamiento de vivir en conflicto constante con otros.",
+   "explanation": "Isaac había cedido pozo tras pozo para evitar peleas. Dios le recuerda que no está solo: el mismo Dios fiel de su padre está con él. La bendición no dependía de ganar las discusiones, sino de la presencia de Dios.",
+   "application": "Si hoy estás enfrentando conflictos que te desgastan —en el trabajo, con vecinos, en la familia—, escucha: Dios está contigo. No necesitas ganar cada pelea. Busca la paz, sigue adelante y confía en que Dios te bendice.",
+   "prayer": "Señor, estoy cansado de los conflictos. Hoy renuncio al miedo y a la necesidad de defenderme siempre. Tú estás conmigo como estuviste con mis padres en la fe. Bendíceme y dame paz. Amén.",
+   "categories": [
+    "miedo",
+    "fe"
+   ],
+   "topics": [
+    "presencia de Dios",
+    "conflictos",
+    "bendición",
+    "fidelidad"
+   ],
+   "problems": [
+    "miedo",
+    "conflictos",
+    "agotamiento"
+   ]
+  },
+  {
+   "id": "gen-28-15",
+   "order": 13,
+   "era": "jacob",
+   "reference": "Génesis 28:15",
+   "book": "Génesis",
+   "speaker": "Yavé",
+   "quote": "Y he aquí, yo soy contigo, y te guardaré por donde quiera que fueres, y te volveré a esta tierra; porque no te dejaré hasta tanto que haya hecho lo que te he dicho.",
+   "recipient": "Jacob",
+   "people": [
+    "Jacob"
+   ],
+   "historicalContext": "Jacob, nieto de Abraham, había engañado a su padre Isaac para quitarle la bendición a su hermano Esaú.",
+   "situation": "Jacob huía de Esaú, que quería matarlo. Solo, de noche y con una piedra por almohada, soñó una escalera que unía la tierra con el cielo.",
+   "problem": "La soledad, el miedo y la culpa de quien huye de sus propios errores.",
+   "explanation": "Jacob no merecía esta visita: acababa de mentir y huía. Aun así, Dios se le presenta con una promesa completa: estar con él, guardarlo, traerlo de vuelta y no dejarlo. La gracia de Dios llega antes que nuestro cambio.",
+   "application": "Si hoy estás enfrentando soledad o sientes que tus errores te alejaron de todo, recuerda la noche de Jacob. Dios puede encontrarte en el lugar más solitario. Hoy, en tu «piedra de almohada», háblale con sinceridad y recibe su promesa.",
+   "prayer": "Señor, como Jacob, a veces huyo solo y cargado de errores. Hoy renuncio a creer que me has abandonado. Tú prometiste no dejarme. Guárdame por dondequiera que vaya y termina lo que empezaste en mí. Amén.",
+   "categories": [
+    "soledad",
+    "miedo"
+   ],
+   "topics": [
+    "presencia de Dios",
+    "promesa",
+    "protección",
+    "gracia"
+   ],
+   "problems": [
+    "soledad",
+    "miedo",
+    "culpa"
+   ]
+  },
+  {
+   "id": "gen-31-3",
+   "order": 14,
+   "era": "jacob",
+   "reference": "Génesis 31:3",
+   "book": "Génesis",
+   "speaker": "Yavé",
+   "quote": "Vuélvete a la tierra de tus padres, y a tu parentela; que yo seré contigo.",
+   "recipient": "Jacob",
+   "people": [
+    "Jacob",
+    "Labán"
+   ],
+   "historicalContext": "Jacob llevaba veinte años trabajando para su tío Labán en Harán. Se había casado con Lea y Raquel y tenía muchos hijos.",
+   "situation": "Labán lo había engañado y cambiado su salario muchas veces. La relación se había vuelto hostil. Volver a casa significaba también enfrentar a Esaú.",
+   "problem": "El estancamiento en un lugar de abuso y el miedo a enfrentar el pasado.",
+   "explanation": "Dios le dice a Jacob que es momento de volver, y le da la misma garantía de siempre: «yo seré contigo». A veces Dios nos saca de lugares donde ya no debemos estar, aunque el camino de regreso implique sanar viejas heridas.",
+   "application": "Si hoy estás enfrentando una situación donde te sientes usado o estancado, pregúntale a Dios si es tiempo de moverte. Y si volver implica reconciliarte con alguien, no lo harás solo: Él va contigo.",
+   "prayer": "Señor, dame valor para salir de donde ya no debo estar y para enfrentar lo que dejé pendiente. Hoy renuncio al miedo al pasado. Tú estás conmigo en el camino de regreso. Amén.",
+   "categories": [
+    "obediencia",
+    "miedo"
+   ],
+   "topics": [
+    "dirección",
+    "reconciliación",
+    "presencia de Dios"
+   ],
+   "problems": [
+    "estancamiento",
+    "abuso",
+    "miedo al pasado"
+   ]
+  },
+  {
+   "id": "gen-46-3",
+   "order": 15,
+   "era": "jacob",
+   "reference": "Génesis 46:3-4",
+   "book": "Génesis",
+   "speaker": "Dios",
+   "quote": "Yo soy Dios, el Dios de tu padre; no temas de descender a Egipto, porque yo te pondré allí en gran gente. Yo descenderé contigo a Egipto, y yo también te volveré: y José pondrá su mano sobre tus ojos.",
+   "recipient": "Jacob (Israel), ya anciano",
+   "people": [
+    "Jacob",
+    "Israel",
+    "José"
+   ],
+   "historicalContext": "Hubo una gran hambruna en Canaán. José, el hijo que Jacob creía muerto, estaba vivo y gobernaba Egipto.",
+   "situation": "Jacob, con 130 años, debía dejar la tierra prometida y mudarse a un país extranjero con toda su familia. Estaba lleno de emoción, pero también de temor.",
+   "problem": "El miedo a los grandes cambios en la vejez y la tristeza de años de duelo.",
+   "explanation": "Dios tranquiliza a Jacob: Egipto no sería el fin de la promesa, sino el lugar donde su familia se convertiría en nación. Y le da un consuelo tierno: José, el hijo que lloró por años, estaría a su lado al final de su vida.",
+   "application": "Si hoy estás enfrentando un cambio grande que te asusta —mudanza, jubilación, una nueva etapa—, escucha: Dios desciende contigo. Lo que parece un destierro puede ser el lugar donde Él te multiplique. Ve con Él.",
+   "prayer": "Señor, este cambio me da miedo. Hoy renuncio al temor de lo desconocido. Tú desciendes conmigo y me harás volver. Consuela mis duelos antiguos y guíame en esta nueva etapa. Amén.",
+   "categories": [
+    "miedo",
+    "tristeza"
+   ],
+   "topics": [
+    "cambios",
+    "vejez",
+    "familia",
+    "providencia"
+   ],
+   "problems": [
+    "miedo al cambio",
+    "duelo",
+    "tristeza"
+   ]
+  },
+  {
+   "id": "exo-3-7",
+   "order": 16,
+   "era": "moises",
+   "reference": "Éxodo 3:7-8",
+   "book": "Éxodo",
+   "speaker": "Yavé",
+   "quote": "Bien he visto la aflicción de mi pueblo que está en Egipto, y he oído su clamor a causa de sus exactores; pues tengo conocidas sus angustias: y he descendido para librarlos de mano de los egipcios.",
+   "recipient": "Moisés, ante la zarza ardiente",
+   "people": [
+    "Moisés"
+   ],
+   "historicalContext": "Hacia el siglo XV a. C. Los descendientes de Jacob llevaban unos 400 años en Egipto y habían sido reducidos a esclavitud.",
+   "situation": "Moisés, que había huido de Egipto cuarenta años antes, pastoreaba ovejas en el desierto de Madián cuando vio una zarza que ardía sin consumirse.",
+   "problem": "La opresión, el sufrimiento prolongado y la sensación de que Dios no escucha.",
+   "explanation": "Dios usa cuatro verbos llenos de ternura: he visto, he oído, conozco y he descendido. El sufrimiento de su pueblo no le era indiferente. Dios no solo se compadece: actúa para liberar.",
+   "application": "Si hoy estás enfrentando una situación de opresión o dolor que parece no terminar, recuerda que Dios ve, oye y conoce tus angustias. Clama a Él con sinceridad; tu clamor no se pierde en el aire.",
+   "prayer": "Señor, tú ves mi aflicción y oyes mi clamor. Hoy renuncio a pensar que no te importa lo que sufro. Desciende a mi situación y líbrame. Confío en que tú conoces mis angustias. Amén.",
+   "categories": [
+    "tristeza",
+    "esperanza"
+   ],
+   "topics": [
+    "liberación",
+    "compasión de Dios",
+    "sufrimiento",
+    "clamor"
+   ],
+   "problems": [
+    "opresión",
+    "sufrimiento",
+    "desesperanza"
+   ]
+  },
+  {
+   "id": "exo-3-14",
+   "order": 17,
+   "era": "moises",
+   "reference": "Éxodo 3:14",
+   "book": "Éxodo",
+   "speaker": "Yavé",
+   "quote": "YO SOY EL QUE SOY… Así dirás a los hijos de Israel: YO SOY me ha enviado a vosotros.",
+   "recipient": "Moisés",
+   "people": [
+    "Moisés"
+   ],
+   "historicalContext": "En la zarza ardiente, Dios envía a Moisés a liberar a Israel. Moisés pregunta qué nombre debe decir si el pueblo le pregunta quién lo envía.",
+   "situation": "Moisés se sentía inseguro y temía que nadie le creyera. Necesitaba saber quién respaldaba su misión.",
+   "problem": "La inseguridad y la necesidad de un fundamento firme en medio de la incertidumbre.",
+   "explanation": "Dios revela su nombre: «YO SOY». De esa expresión viene el nombre Yavé. Significa que Dios existe por sí mismo, que no cambia y que siempre está presente. La misión de Moisés no se apoyaba en su capacidad, sino en quién era Dios.",
+   "application": "Si hoy estás enfrentando inseguridad sobre tu futuro o tu capacidad, apóyate en el nombre de Dios. Él es el que es: fiel, presente y suficiente. Completa esta frase delante de Él: «Tú eres… lo que yo necesito hoy».",
+   "prayer": "Yavé, tú eres el que eres. Hoy renuncio a apoyarme en mis fuerzas. Tú me envías y me respaldas. Sé tú mi fundamento cuando todo lo demás tiembla. Amén.",
+   "categories": [
+    "fe"
+   ],
+   "topics": [
+    "nombre de Dios",
+    "identidad de Dios",
+    "llamado",
+    "Yavé"
+   ],
+   "problems": [
+    "inseguridad",
+    "duda",
+    "incertidumbre"
+   ]
+  },
+  {
+   "id": "exo-4-11",
+   "order": 18,
+   "era": "moises",
+   "reference": "Éxodo 4:11-12",
+   "book": "Éxodo",
+   "speaker": "Yavé",
+   "quote": "¿Quién dio la boca al hombre? ¿o quién hizo al mudo y al sordo, al que ve y al ciego? ¿no soy yo Yavé? Ahora pues, ve, que yo seré en tu boca, y te enseñaré lo que hayas de hablar.",
+   "recipient": "Moisés",
+   "people": [
+    "Moisés",
+    "Aarón"
+   ],
+   "historicalContext": "Continúa el diálogo en la zarza. Dios ya le ha dado a Moisés señales milagrosas para que el pueblo le crea.",
+   "situation": "Moisés sigue poniendo excusas: dice que no es hombre de palabras, que es «tardo en el habla y torpe de lengua».",
+   "problem": "La sensación de incapacidad, el complejo de inferioridad y las excusas que nacen del miedo.",
+   "explanation": "Dios no niega la debilidad de Moisés, pero le recuerda quién lo creó. El mismo que hizo su boca estaría en ella. Dios no llama a los capacitados; capacita a los que llama.",
+   "application": "Si hoy estás enfrentando un reto para el que te sientes incapaz —hablar, liderar, empezar algo nuevo—, deja de enumerar tus limitaciones. Preséntalas a Dios y pídele que esté en tu boca y en tus manos. Luego da el paso.",
+   "prayer": "Señor, tú me hiciste y conoces mis debilidades. Hoy renuncio a las excusas y al complejo de incapacidad. Sé tú en mi boca y enséñame lo que debo decir y hacer. Amén.",
+   "categories": [
+    "miedo",
+    "fe"
+   ],
+   "topics": [
+    "llamado",
+    "capacitación",
+    "debilidad",
+    "propósito"
+   ],
+   "problems": [
+    "inseguridad",
+    "complejo de inferioridad",
+    "miedo a hablar"
+   ]
+  },
+  {
+   "id": "exo-14-15",
+   "order": 19,
+   "era": "moises",
+   "reference": "Éxodo 14:15",
+   "book": "Éxodo",
+   "speaker": "Yavé",
+   "quote": "¿Por qué me das voces? Di a los hijos de Israel que marchen.",
+   "recipient": "Moisés, frente al mar Rojo",
+   "people": [
+    "Moisés"
+   ],
+   "historicalContext": "Tras diez plagas, el faraón dejó salir a Israel. Pero luego cambió de opinión y persiguió al pueblo con su ejército.",
+   "situation": "Israel quedó atrapado entre el mar y los carros egipcios. El pueblo gritaba aterrado y Moisés clamaba a Dios.",
+   "problem": "El pánico que paraliza cuando parece que no hay salida.",
+   "explanation": "Hay momentos para clamar y momentos para avanzar. Dios le dice a Moisés que es hora de moverse: Él abriría el mar. La fe no es quedarse quieto esperando, sino caminar hacia donde Dios indica, aunque todavía no se vea el camino.",
+   "application": "Si hoy estás enfrentando una situación sin salida aparente, ora, pero también pregunta a Dios cuál es tu siguiente paso. A veces el mar se abre cuando empiezas a caminar. Identifica una acción concreta de fe y hazla hoy.",
+   "prayer": "Señor, estoy entre el mar y el enemigo. Hoy renuncio al pánico que me paraliza. Dame valor para marchar cuando tú lo dices, confiando en que abrirás camino donde no lo hay. Amén.",
+   "categories": [
+    "fe",
+    "miedo"
+   ],
+   "topics": [
+    "milagros",
+    "liberación",
+    "acción",
+    "fe"
+   ],
+   "problems": [
+    "pánico",
+    "parálisis",
+    "miedo"
+   ]
+  },
+  {
+   "id": "exo-20-2",
+   "order": 20,
+   "era": "moises",
+   "reference": "Éxodo 20:2-3",
+   "book": "Éxodo",
+   "speaker": "Yavé",
+   "quote": "Yo soy Yavé tu Dios, que te saqué de la tierra de Egipto, de casa de siervos. No tendrás dioses ajenos delante de mí.",
+   "recipient": "Todo el pueblo de Israel, al pie del monte Sinaí",
+   "people": [
+    "Moisés",
+    "Israel"
+   ],
+   "historicalContext": "Tres meses después de salir de Egipto, Israel acampa frente al monte Sinaí. Dios desciende con truenos, fuego y humo para hablar con su pueblo.",
+   "situation": "El pueblo, recién liberado, necesitaba aprender a vivir como pueblo libre. Dios les da los Diez Mandamientos.",
+   "problem": "La idolatría y la tendencia a poner la confianza en cualquier cosa menos en Dios.",
+   "explanation": "Antes de dar un solo mandamiento, Dios recuerda lo que ya hizo: «te saqué». Los mandamientos no son el precio para ganarse su amor, sino la respuesta a su liberación. El primero es el fundamento de todos: que nada ocupe el lugar de Dios.",
+   "application": "Si hoy estás enfrentando una vida dispersa, donde el dinero, el trabajo, una persona o una adicción ocupan el centro, escucha este mandamiento como una invitación a la libertad. Pregúntate qué ocupa el lugar de Dios y entrégaselo.",
+   "prayer": "Yavé, tú me sacaste de mi esclavitud. Hoy renuncio a todo ídolo que he puesto en tu lugar. Ocupa el centro de mi corazón. Quiero vivir como alguien que ha sido liberado. Amén.",
+   "categories": [
+    "obediencia",
+    "amor"
+   ],
+   "topics": [
+    "mandamientos",
+    "idolatría",
+    "libertad",
+    "ley"
+   ],
+   "problems": [
+    "idolatría",
+    "adicción",
+    "desobediencia"
+   ]
+  },
+  {
+   "id": "exo-33-14",
+   "order": 21,
+   "era": "moises",
+   "reference": "Éxodo 33:14",
+   "book": "Éxodo",
+   "speaker": "Yavé",
+   "quote": "Mi rostro irá contigo, y te haré descansar.",
+   "recipient": "Moisés",
+   "people": [
+    "Moisés"
+   ],
+   "historicalContext": "Después del pecado del becerro de oro, Dios había dicho que enviaría un ángel delante del pueblo, pero que Él no iría en medio de ellos.",
+   "situation": "Moisés intercede y le dice a Dios que no quiere avanzar sin su presencia. Estaba cansado de guiar a un pueblo rebelde.",
+   "problem": "El agotamiento del liderazgo y la ansiedad de avanzar sin la presencia de Dios.",
+   "explanation": "Dios responde a la súplica de Moisés con dos regalos: su presencia y su descanso. Moisés entendió que lo más importante no era llegar a la tierra prometida, sino ir con Dios.",
+   "application": "Si hoy estás enfrentando agotamiento o ansiedad por todo lo que tienes que llevar, recuerda que el descanso verdadero no es la ausencia de tareas, sino la presencia de Dios en ellas. Antes de empezar tu día, pídele: «que tu rostro vaya conmigo».",
+   "prayer": "Señor, no quiero dar un paso sin ti. Hoy renuncio a la ansiedad y al cansancio de cargar todo solo. Que tu rostro vaya conmigo y hazme descansar. Amén.",
+   "categories": [
+    "ansiedad",
+    "soledad"
+   ],
+   "topics": [
+    "presencia de Dios",
+    "descanso",
+    "liderazgo"
+   ],
+   "problems": [
+    "ansiedad",
+    "agotamiento",
+    "estrés"
+   ]
+  },
+  {
+   "id": "exo-34-6",
+   "order": 22,
+   "era": "moises",
+   "reference": "Éxodo 34:6-7",
+   "book": "Éxodo",
+   "speaker": "Yavé",
+   "quote": "¡Yavé, Yavé, fuerte, misericordioso, y piadoso; tardo para la ira, y grande en benignidad y verdad; que guarda la misericordia en millares, que perdona la iniquidad, la rebelión, y el pecado!",
+   "recipient": "Moisés, en el monte Sinaí",
+   "people": [
+    "Moisés"
+   ],
+   "historicalContext": "Moisés había roto las primeras tablas de la ley al ver la idolatría del pueblo. Dios lo llama de nuevo al monte para renovar el pacto.",
+   "situation": "Moisés le había pedido: «Muéstrame tu gloria». Dios pasa delante de él y proclama su propio nombre y carácter.",
+   "problem": "La culpa de un pueblo que había traicionado a Dios y el temor de que Él los rechazara para siempre.",
+   "explanation": "Cuando Dios describe quién es, lo primero que dice es: misericordioso, piadoso, lento para enojarse, lleno de amor fiel y dispuesto a perdonar. Después del peor pecado del pueblo, Dios revela su corazón perdonador.",
+   "application": "Si hoy estás enfrentando la culpa de haber fallado de nuevo, lee despacio esta descripción de Dios. Él no es como tu culpa te lo pinta. Acércate a Él tal como es: misericordioso y perdonador.",
+   "prayer": "Yavé, tú eres misericordioso y lento para la ira. Hoy renuncio a la imagen de un Dios que solo espera castigarme. Perdona mi rebelión y mi pecado. Gracias porque tu amor es más grande que mi falta. Amén.",
+   "categories": [
+    "perdon",
+    "culpa",
+    "amor"
+   ],
+   "topics": [
+    "carácter de Dios",
+    "misericordia",
+    "perdón",
+    "gloria"
+   ],
+   "problems": [
+    "culpa",
+    "miedo al castigo",
+    "vergüenza"
+   ]
+  },
+  {
+   "id": "lev-19-18",
+   "order": 23,
+   "era": "moises",
+   "reference": "Levítico 19:18",
+   "book": "Levítico",
+   "speaker": "Yavé",
+   "quote": "No te vengarás, ni guardarás rencor a los hijos de tu pueblo: mas amarás a tu prójimo como a ti mismo: Yo Yavé.",
+   "recipient": "Moisés, para todo Israel",
+   "people": [
+    "Moisés",
+    "Israel"
+   ],
+   "historicalContext": "En el desierto del Sinaí, Dios da a su pueblo leyes para vivir en santidad en la vida diaria: en el trabajo, en la familia y con los vecinos.",
+   "situation": "Israel era un pueblo numeroso que convivía en campamentos. Los conflictos, las ofensas y los deseos de venganza eran parte de la vida cotidiana.",
+   "problem": "La venganza y el rencor que destruyen la convivencia.",
+   "explanation": "Dios une dos cosas: dejar el rencor y amar al prójimo. Jesús citaría este mandamiento como el segundo más importante de toda la ley. Y lo firma con su nombre, «Yo Yavé», porque amar así refleja su propio carácter.",
+   "application": "Si hoy estás enfrentando rencor hacia alguien que te hizo daño, no alimentes la venganza en tu mente. Decide delante de Dios soltar la deuda y busca una forma concreta de desearle el bien, aunque sea en oración.",
+   "prayer": "Señor, tú conoces el rencor que guardo. Hoy renuncio a la venganza. Enséñame a amar a mi prójimo como a mí mismo, como tú me amas a mí. Amén.",
+   "categories": [
+    "amor",
+    "perdon"
+   ],
+   "topics": [
+    "amor al prójimo",
+    "rencor",
+    "santidad",
+    "convivencia"
+   ],
+   "problems": [
+    "rencor",
+    "venganza",
+    "resentimiento"
+   ]
+  },
+  {
+   "id": "num-6-24",
+   "order": 24,
+   "era": "moises",
+   "reference": "Números 6:24-26",
+   "book": "Números",
+   "speaker": "Yavé",
+   "quote": "Yavé te bendiga, y te guarde: haga resplandecer Yavé su rostro sobre ti, y haya de ti misericordia: Yavé alce a ti su rostro, y ponga en ti paz.",
+   "recipient": "Aarón y sus hijos, los sacerdotes, para bendecir a Israel",
+   "people": [
+    "Aarón",
+    "Moisés"
+   ],
+   "historicalContext": "En el desierto, Dios organiza la vida del pueblo alrededor del tabernáculo. Los sacerdotes eran los encargados de bendecir al pueblo.",
+   "situation": "Israel estaba a punto de emprender un largo camino por el desierto. Dios mismo dicta las palabras exactas con que quiere bendecirlos.",
+   "problem": "La inquietud y la falta de paz en medio de un camino incierto.",
+   "explanation": "Es Dios quien redacta su propia bendición. Quiere que su pueblo escuche que Él los guarda, que su rostro brilla sobre ellos con favor, que los mira con misericordia y que les da paz. Dios desea bendecir.",
+   "application": "Si hoy estás enfrentando inquietud o te cuesta sentir paz, lee esta bendición en voz alta, poniendo tu nombre. Pronúnciala también sobre las personas que amas. Dios quiere que vivas bajo la luz de su rostro.",
+   "prayer": "Yavé, bendíceme y guárdame. Haz resplandecer tu rostro sobre mí y ten misericordia de mí. Alza tu rostro hacia mí y pon en mí tu paz. Hoy renuncio a la inquietud y recibo tu bendición. Amén.",
+   "categories": [
+    "esperanza",
+    "ansiedad"
+   ],
+   "topics": [
+    "bendición",
+    "paz",
+    "protección",
+    "rostro de Dios"
+   ],
+   "problems": [
+    "ansiedad",
+    "inquietud",
+    "falta de paz"
+   ]
+  },
+  {
+   "id": "jos-1-9",
+   "order": 25,
+   "era": "josue",
+   "reference": "Josué 1:9",
+   "book": "Josué",
+   "speaker": "Yavé",
+   "quote": "Mira que te mando que te esfuerces y seas valiente: no temas ni desmayes, porque Yavé tu Dios será contigo en donde quiera que fueres.",
+   "recipient": "Josué",
+   "people": [
+    "Josué"
+   ],
+   "historicalContext": "Moisés acababa de morir. Tras cuarenta años en el desierto, Israel estaba a las puertas de la tierra prometida, al otro lado del río Jordán.",
+   "situation": "Josué debía reemplazar al gran líder Moisés y conducir a todo un pueblo a conquistar una tierra con ciudades amuralladas.",
+   "problem": "El miedo y el desánimo ante una responsabilidad enorme.",
+   "explanation": "Dios repite tres veces a Josué «esfuérzate y sé valiente». La valentía que Dios pide no se basa en la fuerza de Josué, sino en una promesa: «Yavé tu Dios será contigo». El valor nace de la compañía de Dios.",
+   "application": "Si hoy estás enfrentando una responsabilidad que te supera —un nuevo trabajo, cuidar a alguien, liderar—, escucha esta orden como una promesa. No tienes que sentirte valiente para actuar con valentía. Dios va contigo a cada lugar al que vayas hoy.",
+   "prayer": "Señor, esta tarea me queda grande. Hoy renuncio al miedo y al desánimo. Tú me mandas ser valiente porque vas conmigo. Esfuérzame y acompáñame a dondequiera que vaya. Amén.",
+   "categories": [
+    "miedo",
+    "fe"
+   ],
+   "topics": [
+    "valentía",
+    "liderazgo",
+    "presencia de Dios"
+   ],
+   "problems": [
+    "miedo",
+    "desánimo",
+    "responsabilidad"
+   ]
+  },
+  {
+   "id": "jue-6-14",
+   "order": 26,
+   "era": "josue",
+   "reference": "Jueces 6:14, 16",
+   "book": "Jueces",
+   "speaker": "Yavé",
+   "quote": "Ve con esta tu fortaleza, y salvarás a Israel de la mano de los madianitas. ¿No te envío yo?… Porque yo seré contigo, y herirás a los madianitas como a un solo hombre.",
+   "recipient": "Gedeón",
+   "people": [
+    "Gedeón"
+   ],
+   "historicalContext": "Época de los jueces, después de Josué. Israel caía una y otra vez en idolatría y sufría la opresión de pueblos vecinos.",
+   "situation": "Los madianitas saqueaban las cosechas de Israel desde hacía siete años. Gedeón trillaba trigo escondido en un lagar, por miedo.",
+   "problem": "El miedo, la baja autoestima y la sensación de ser el menos capaz.",
+   "explanation": "El ángel de Yavé saluda a Gedeón como «varón esforzado» mientras está escondido. Gedeón responde que su familia es la más pobre y él el menor. Dios no discute: le dice que vaya con la fuerza que tiene, porque Él lo envía y estará con él.",
+   "application": "Si hoy estás enfrentando la sensación de ser demasiado pequeño o débil, recuerda que Dios te ve de manera distinta a como te ves tú. Ofrécele «esta tu fortaleza», la poca que tengas, y confía en que Él pondrá el resto.",
+   "prayer": "Señor, me siento pequeño y sin fuerzas. Hoy renuncio a la mentira de que no sirvo. Tomo lo poco que tengo y te lo entrego. Envíame tú, y ve conmigo. Amén.",
+   "categories": [
+    "fe",
+    "miedo"
+   ],
+   "topics": [
+    "llamado",
+    "autoestima",
+    "valentía",
+    "propósito"
+   ],
+   "problems": [
+    "miedo",
+    "baja autoestima",
+    "inseguridad"
+   ]
+  },
+  {
+   "id": "1sa-16-7",
+   "order": 27,
+   "era": "profetas",
+   "reference": "1 Samuel 16:7",
+   "book": "1 Samuel",
+   "speaker": "Yavé",
+   "quote": "No mires a su parecer, ni a lo grande de su estatura, porque yo lo desecho; porque Yavé mira no lo que el hombre mira; pues que el hombre mira lo que está delante de sus ojos, mas Yavé mira el corazón.",
+   "recipient": "El profeta Samuel",
+   "people": [
+    "Samuel",
+    "David",
+    "Isaí",
+    "Eliab"
+   ],
+   "historicalContext": "Hacia el año 1025 a. C. El rey Saúl había sido rechazado por su desobediencia y Dios envía a Samuel a Belén para ungir a un nuevo rey entre los hijos de Isaí.",
+   "situation": "Samuel vio a Eliab, el hijo mayor, alto y de buena presencia, y pensó que era el elegido. Pero Dios había escogido al menor, David, que cuidaba las ovejas.",
+   "problem": "Juzgar por las apariencias y sentirse invisible o menospreciado.",
+   "explanation": "Dios corrige incluso al profeta: el valor de una persona no está en su aspecto, su estatura o su posición. David, el que ni siquiera fue invitado a la reunión, era el elegido. Dios mira el corazón.",
+   "application": "Si hoy estás enfrentando rechazo por tu apariencia, tu edad o tu origen, o sientes que nadie te toma en cuenta, recuerda que Dios te mira de otra manera. Y si tú estás juzgando a otros por lo externo, pide a Dios ojos como los suyos.",
+   "prayer": "Señor, tú miras mi corazón. Hoy renuncio a medir mi valor por la opinión de los demás o por mi apariencia. Dame un corazón conforme al tuyo y enséñame a mirar a otros como tú los miras. Amén.",
+   "categories": [
+    "fe",
+    "tristeza"
+   ],
+   "topics": [
+    "autoestima",
+    "elección de Dios",
+    "corazón",
+    "apariencias"
+   ],
+   "problems": [
+    "rechazo",
+    "baja autoestima",
+    "prejuicio"
+   ]
+  },
+  {
+   "id": "sal-32-8",
+   "order": 28,
+   "era": "profetas",
+   "reference": "Salmos 32:8",
+   "book": "Salmos",
+   "speaker": "Yavé",
+   "quote": "Te haré entender, y te enseñaré el camino en que debes andar: sobre ti fijaré mis ojos.",
+   "recipient": "David (y quien ora con este salmo)",
+   "people": [
+    "David"
+   ],
+   "historicalContext": "Salmo de David, rey de Israel hacia el año 1000 a. C. En medio del salmo, la voz cambia y es Dios mismo quien responde.",
+   "situation": "David describe cómo, mientras calló su pecado, se le secaban los huesos; y cómo encontró alivio al confesarlo. Entonces Dios le promete guiarlo.",
+   "problem": "La confusión sobre qué camino tomar y el peso de un pecado no confesado.",
+   "explanation": "Después de la confesión viene la dirección. Dios promete tres cosas: hacer entender, enseñar el camino y mantener sus ojos sobre nosotros. No nos deja adivinar solos.",
+   "application": "Si hoy estás enfrentando una decisión y no sabes qué camino tomar, primero pon en orden tu corazón delante de Dios. Luego pídele dirección concreta y mantente atento: Él promete enseñarte y no quitarte la mirada de encima.",
+   "prayer": "Señor, no sé qué camino tomar. Hoy renuncio a la ansiedad de decidir solo. Enséñame el camino en que debo andar y fija tus ojos sobre mí. Amén.",
+   "categories": [
+    "obediencia",
+    "ansiedad"
+   ],
+   "topics": [
+    "dirección",
+    "decisiones",
+    "sabiduría",
+    "confesión"
+   ],
+   "problems": [
+    "confusión",
+    "indecisión",
+    "ansiedad"
+   ]
+  },
+  {
+   "id": "sal-46-10",
+   "order": 29,
+   "era": "profetas",
+   "reference": "Salmos 46:10",
+   "book": "Salmos",
+   "speaker": "Dios",
+   "quote": "Estad quietos, y conoced que yo soy Dios: ensalzado he de ser entre las gentes, ensalzado seré en la tierra.",
+   "recipient": "El pueblo de Israel en tiempos de guerra",
+   "people": [
+    "hijos de Coré"
+   ],
+   "historicalContext": "Salmo de los hijos de Coré, cantado en el templo de Jerusalén. Celebra que Dios es refugio de su pueblo.",
+   "situation": "El salmo describe la tierra temblando, montes cayendo al mar y naciones en guerra. En medio del caos, Dios habla.",
+   "problem": "La agitación, el ruido interior y la ansiedad ante un mundo que parece derrumbarse.",
+   "explanation": "«Estad quietos» significa literalmente «soltad, dejad de luchar». Dios invita a detener el esfuerzo desesperado para reconocer que Él tiene el control. La quietud no es pasividad, sino confianza.",
+   "application": "Si hoy estás enfrentando ansiedad o sientes que todo se mueve a tu alrededor, detente. Apaga el ruido cinco minutos, respira despacio y repite: «Tú eres Dios, yo no». Suelta lo que no puedes controlar.",
+   "prayer": "Señor, mi mente no para y todo a mi alrededor tiembla. Hoy renuncio a la ansiedad y a querer controlarlo todo. Me quedo quieto y reconozco que tú eres Dios. Amén.",
+   "categories": [
+    "ansiedad",
+    "fe"
+   ],
+   "topics": [
+    "paz",
+    "quietud",
+    "soberanía de Dios",
+    "refugio"
+   ],
+   "problems": [
+    "ansiedad",
+    "estrés",
+    "control",
+    "agitación"
+   ]
+  },
+  {
+   "id": "sal-91-14",
+   "order": 30,
+   "era": "profetas",
+   "reference": "Salmos 91:14-15",
+   "book": "Salmos",
+   "speaker": "Dios",
+   "quote": "Por cuanto en mí ha puesto su voluntad, yo también lo libraré: pondrélo en alto, por cuanto ha conocido mi nombre. Me invocará, y yo le responderé: con él estaré yo en la angustia: lo libraré, y le glorificaré.",
+   "recipient": "Quien habita al abrigo del Altísimo",
+   "people": [
+    "Moisés",
+    "David"
+   ],
+   "historicalContext": "Salmo de protección, atribuido por la tradición a Moisés o a David. En los últimos versículos, Dios mismo toma la palabra.",
+   "situation": "El salmo habla de peligros reales: el terror nocturno, la flecha de día, la pestilencia. La vida estaba llena de amenazas.",
+   "problem": "El miedo al peligro, la enfermedad y la angustia.",
+   "explanation": "Dios no promete que nunca habrá angustia, sino que estará con nosotros en ella. Quien lo ama y lo invoca recibe su respuesta, su compañía y su liberación.",
+   "application": "Si hoy estás enfrentando miedo por tu salud, tu seguridad o tu familia, invoca a Dios por su nombre. No tienes que fingir que no hay peligro: Él promete estar contigo en medio de la angustia. Ora este salmo cada noche.",
+   "prayer": "Señor, pongo en ti mi amor y mi confianza. Hoy renuncio al miedo que me roba la paz. Tú prometiste responderme y estar conmigo en la angustia. Líbrame y guárdame. Amén.",
+   "categories": [
+    "miedo",
+    "ansiedad"
+   ],
+   "topics": [
+    "protección",
+    "refugio",
+    "oración",
+    "liberación"
+   ],
+   "problems": [
+    "miedo",
+    "angustia",
+    "enfermedad"
+   ]
+  },
+  {
+   "id": "2cr-7-14",
+   "order": 31,
+   "era": "profetas",
+   "reference": "2 Crónicas 7:14",
+   "book": "2 Crónicas",
+   "speaker": "Yavé",
+   "quote": "Si se humillare mi pueblo, sobre los cuales mi nombre es invocado, y oraren, y buscaren mi rostro, y se volvieren de sus malos caminos; entonces yo oiré desde los cielos, y perdonaré sus pecados, y sanaré su tierra.",
+   "recipient": "El rey Salomón",
+   "people": [
+    "Salomón"
+   ],
+   "historicalContext": "Hacia el año 960 a. C. Salomón acababa de dedicar el templo de Jerusalén con una gran oración y fiesta.",
+   "situation": "Esa noche Yavé se le aparece para responder su oración, anticipando que el pueblo fallaría y necesitaría volver a Él.",
+   "problem": "El alejamiento de Dios y las heridas que el pecado deja en un pueblo.",
+   "explanation": "Dios pone el camino de regreso en cuatro pasos: humillarse, orar, buscar su rostro y volverse de lo malo. Y responde con tres promesas: oír, perdonar y sanar. El perdón de Dios también restaura lo que se había dañado.",
+   "application": "Si hoy estás enfrentando las consecuencias de haberte alejado de Dios —en tu vida, tu familia o tu comunidad—, sigue estos cuatro pasos. Dedica hoy un tiempo a humillarte y orar con sinceridad. Dios promete sanar.",
+   "prayer": "Señor, me humillo delante de ti. Busco tu rostro y me vuelvo de mis malos caminos. Hoy renuncio al orgullo. Oye desde los cielos, perdona mi pecado y sana mi tierra, mi casa y mi corazón. Amén.",
+   "categories": [
+    "perdon",
+    "esperanza"
+   ],
+   "topics": [
+    "arrepentimiento",
+    "oración",
+    "sanidad",
+    "restauración"
+   ],
+   "problems": [
+    "pecado",
+    "orgullo",
+    "alejamiento de Dios"
+   ]
+  },
+  {
+   "id": "1re-19-9",
+   "order": 32,
+   "era": "profetas",
+   "reference": "1 Reyes 19:9, 18",
+   "book": "1 Reyes",
+   "speaker": "Yavé",
+   "quote": "¿Qué haces aquí, Elías?… Y yo haré que queden en Israel siete mil; todas rodillas que no se encorvaron a Baal, y bocas todas que no lo besaron.",
+   "recipient": "El profeta Elías",
+   "people": [
+    "Elías",
+    "Jezabel",
+    "Acab"
+   ],
+   "historicalContext": "Hacia el año 860 a. C., en tiempos del rey Acab y la reina Jezabel, que promovían el culto a Baal.",
+   "situation": "Elías acababa de vencer a los profetas de Baal en el monte Carmelo, pero Jezabel juró matarlo. Huyó al desierto, deseó morir y se escondió en una cueva.",
+   "problem": "El agotamiento, la depresión y la sensación de estar completamente solo.",
+   "explanation": "Dios primero cuida el cuerpo de Elías: le da comida y sueño. Luego le habla en un silbo apacible y le hace una pregunta. Finalmente le revela que no está solo: hay siete mil fieles. La soledad de Elías era real, pero no era toda la verdad.",
+   "application": "Si hoy estás enfrentando agotamiento o tristeza profunda después de un gran esfuerzo, cuida tu cuerpo: descansa, come, duerme. Luego escucha la voz suave de Dios. Y si la tristeza no se va, busca ayuda: no eres el único que sigue en pie.",
+   "prayer": "Señor, estoy agotado y me siento solo. Hoy renuncio a la mentira de que todo depende de mí y de que nadie más te es fiel. Háblame en tu silbo apacible y renueva mis fuerzas. Amén.",
+   "categories": [
+    "tristeza",
+    "soledad"
+   ],
+   "topics": [
+    "depresión",
+    "agotamiento",
+    "voz de Dios",
+    "descanso"
+   ],
+   "problems": [
+    "depresión",
+    "agotamiento",
+    "soledad",
+    "tristeza"
+   ]
+  },
+  {
+   "id": "joe-2-25",
+   "order": 33,
+   "era": "profetas",
+   "reference": "Joel 2:25",
+   "book": "Joel",
+   "speaker": "Yavé",
+   "quote": "Y os restituiré los años que comió la oruga, la langosta, el pulgón, y el revoltón; mi grande ejército que envié contra vosotros.",
+   "recipient": "El pueblo de Judá, por medio del profeta Joel",
+   "people": [
+    "Joel"
+   ],
+   "historicalContext": "El profeta Joel habla a Judá después de una plaga de langostas devastadora, que se había convertido en imagen del juicio de Dios.",
+   "situation": "Las cosechas estaban destruidas, los campos vacíos y el pueblo había perdido años de trabajo. Joel llamó al pueblo a volver a Dios con ayuno y llanto.",
+   "problem": "El dolor por el tiempo perdido y las pérdidas que parecen irreparables.",
+   "explanation": "Dios promete algo imposible: devolver años. No solo detiene la plaga, sino que restituye lo que se perdió. Su restauración alcanza incluso el pasado.",
+   "application": "Si hoy estás enfrentando el dolor de años perdidos —por malas decisiones, una enfermedad, una relación o una crisis—, entrégale a Dios ese tiempo. Pídele que lo restituya y empieza hoy a sembrar de nuevo.",
+   "prayer": "Señor, siento que he perdido años que no volverán. Hoy renuncio a la amargura por el tiempo perdido. Tú puedes restituir lo que la langosta comió. Restáurame y hazme fructificar de nuevo. Amén.",
+   "categories": [
+    "esperanza",
+    "tristeza"
+   ],
+   "topics": [
+    "restauración",
+    "tiempo perdido",
+    "nuevo comienzo"
+   ],
+   "problems": [
+    "pérdida",
+    "arrepentimiento",
+    "amargura"
+   ]
+  },
+  {
+   "id": "isa-6-8",
+   "order": 34,
+   "era": "profetas",
+   "reference": "Isaías 6:8",
+   "book": "Isaías",
+   "speaker": "Yavé",
+   "quote": "¿A quién enviaré, y quién nos irá?",
+   "recipient": "El profeta Isaías",
+   "people": [
+    "Isaías"
+   ],
+   "historicalContext": "Hacia el año 740 a. C., el año en que murió el rey Uzías. Isaías tiene una visión de Dios sentado en un trono alto en el templo.",
+   "situation": "Ante la santidad de Dios, Isaías exclama «¡Ay de mí!», consciente de sus labios impuros. Un serafín toca su boca con un carbón encendido y le dice que su culpa ha sido quitada.",
+   "problem": "La indiferencia ante la misión y la sensación de no ser digno de servir.",
+   "explanation": "Primero Dios limpia a Isaías; después pregunta. No exige perfección para servir, pero sí un corazón disponible. Isaías respondió: «Heme aquí, envíame a mí».",
+   "application": "Si hoy estás enfrentando la duda de si Dios podría usarte, recuerda que Él limpia antes de enviar. Pregúntale dónde quiere que sirvas esta semana —en tu casa, tu trabajo o tu iglesia— y responde como Isaías.",
+   "prayer": "Señor, tú me has limpiado. Hoy renuncio a sentirme indigno de servirte. Cuando preguntas «¿a quién enviaré?», quiero responder: heme aquí, envíame a mí. Amén.",
+   "categories": [
+    "obediencia"
+   ],
+   "topics": [
+    "llamado",
+    "misión",
+    "santidad",
+    "servicio"
+   ],
+   "problems": [
+    "indiferencia",
+    "sentirse indigno",
+    "culpa"
+   ]
+  },
+  {
+   "id": "isa-1-18",
+   "order": 35,
+   "era": "profetas",
+   "reference": "Isaías 1:18",
+   "book": "Isaías",
+   "speaker": "Yavé",
+   "quote": "Venid luego, dirá Yavé, y estemos a cuenta: si vuestros pecados fueren como la grana, como la nieve serán emblanquecidos: si fueren rojos como el carmesí, vendrán a ser como blanca lana.",
+   "recipient": "Judá y Jerusalén, por medio de Isaías",
+   "people": [
+    "Isaías"
+   ],
+   "historicalContext": "Siglo VIII a. C. Judá cumplía con rituales religiosos, pero vivía en injusticia: se oprimía a huérfanos y viudas.",
+   "situation": "Dios acusa al pueblo como en un juicio. Sus sacrificios y fiestas le cansaban porque sus manos estaban llenas de injusticia.",
+   "problem": "La culpa profunda y la religión vacía que intenta cubrirla.",
+   "explanation": "En medio del juicio, Dios hace una invitación sorprendente: «venid y razonemos». El rojo intenso de la grana era un tinte imposible de quitar. Dios promete lo imposible: dejar blanco como la nieve lo que parecía manchado para siempre.",
+   "application": "Si hoy estás enfrentando una culpa que sientes imposible de borrar, acepta la invitación: ve a Dios y habla con Él con honestidad. No hay mancha demasiado profunda para su perdón. Confiesa y recibe su limpieza.",
+   "prayer": "Señor, mis pecados son como la grana. Hoy renuncio a la culpa que me dice que no tengo remedio. Acepto tu invitación. Emblanquéceme como la nieve y hazme nuevo. Amén.",
+   "categories": [
+    "culpa",
+    "perdon"
+   ],
+   "topics": [
+    "perdón",
+    "limpieza",
+    "pecado",
+    "justicia"
+   ],
+   "problems": [
+    "culpa",
+    "vergüenza",
+    "pecado"
+   ]
+  },
+  {
+   "id": "jer-1-5",
+   "order": 36,
+   "era": "profetas",
+   "reference": "Jeremías 1:5, 7-8",
+   "book": "Jeremías",
+   "speaker": "Yavé",
+   "quote": "Antes que te formase en el vientre te conocí, y antes que salieses de la matriz te santifiqué, te di por profeta a las gentes… No digas, soy niño; porque a todo lo que te enviaré irás tú, y dirás todo lo que te mandaré. No temas delante de ellos, porque contigo soy para librarte, dice Yavé.",
+   "recipient": "El joven Jeremías",
+   "people": [
+    "Jeremías"
+   ],
+   "historicalContext": "Hacia el año 627 a. C., en tiempos del rey Josías. Judá se acercaba a su momento más oscuro: la invasión de Babilonia.",
+   "situation": "Jeremías era muy joven, hijo de sacerdotes de Anatot. Al oír el llamado, respondió: «¡Ah, Señor Yavé! He aquí, no sé hablar, porque soy niño».",
+   "problem": "El miedo por la juventud, la inexperiencia y el temor al rechazo de la gente.",
+   "explanation": "Dios le dice a Jeremías que lo conocía antes de nacer. Su vida no fue un accidente: tenía propósito desde el vientre. Y ante su miedo, Dios no le promete que no habrá oposición, sino su presencia para librarlo.",
+   "application": "Si hoy estás enfrentando la sensación de ser demasiado joven, inexperto o insignificante, recuerda que Dios te conoció antes de que nacieras. Tu vida tiene propósito. Deja de decir «no puedo» y pregúntale: «¿a dónde me envías?».",
+   "prayer": "Señor, tú me conociste antes de formarme. Hoy renuncio al miedo y a la excusa de mi debilidad. Envíame, pon tus palabras en mi boca y sé conmigo para librarme. Amén.",
+   "categories": [
+    "miedo",
+    "obediencia"
+   ],
+   "topics": [
+    "propósito",
+    "identidad",
+    "llamado",
+    "vida antes de nacer"
+   ],
+   "problems": [
+    "miedo",
+    "inseguridad",
+    "inexperiencia"
+   ]
+  },
+  {
+   "id": "jer-31-3",
+   "order": 37,
+   "era": "profetas",
+   "reference": "Jeremías 31:3",
+   "book": "Jeremías",
+   "speaker": "Yavé",
+   "quote": "Con amor eterno te he amado; por tanto te soporté con misericordia.",
+   "recipient": "Israel, el pueblo disperso",
+   "people": [
+    "Jeremías"
+   ],
+   "historicalContext": "Jeremías profetizó durante la caída de Jerusalén. Los capítulos 30 al 33 se conocen como el «Libro de la consolación».",
+   "situation": "El pueblo había sido infiel durante siglos y enfrentaba el exilio. Muchos pensaban que Dios los había desechado para siempre.",
+   "problem": "La sensación de no ser amado y el miedo a haber agotado la paciencia de Dios.",
+   "explanation": "Dios declara que su amor no depende del comportamiento del pueblo: es un amor eterno. Porque los ama así, los ha atraído y sostenido con misericordia, incluso durante su infidelidad.",
+   "application": "Si hoy estás enfrentando la sensación de no ser amado o de haber decepcionado a Dios demasiadas veces, lee esta frase con tu nombre. Su amor por ti no empezó cuando lo merecías y no terminará cuando falles.",
+   "prayer": "Señor, me cuesta creer que me amas así. Hoy renuncio a la mentira de que tu amor se ha agotado. Tú me amas con amor eterno. Atráeme a ti con tu misericordia. Amén.",
+   "categories": [
+    "amor",
+    "tristeza"
+   ],
+   "topics": [
+    "amor de Dios",
+    "misericordia",
+    "fidelidad",
+    "identidad"
+   ],
+   "problems": [
+    "sentirse no amado",
+    "rechazo",
+    "culpa"
+   ]
+  },
+  {
+   "id": "jer-33-3",
+   "order": 38,
+   "era": "profetas",
+   "reference": "Jeremías 33:3",
+   "book": "Jeremías",
+   "speaker": "Yavé",
+   "quote": "Clama a mí, y te responderé, y te enseñaré cosas grandes y dificultosas que tú no sabes.",
+   "recipient": "Jeremías, preso en el patio de la cárcel",
+   "people": [
+    "Jeremías"
+   ],
+   "historicalContext": "Hacia el año 587 a. C. El ejército babilonio sitiaba Jerusalén y la caída de la ciudad era inminente.",
+   "situation": "Jeremías estaba encarcelado por el rey Sedequías por anunciar la verdad. Desde la prisión, Dios le habla por segunda vez.",
+   "problem": "La desesperanza ante circunstancias cerradas y la sensación de que no hay salida.",
+   "explanation": "Encerrado y con la ciudad a punto de caer, Jeremías recibe una invitación: clamar. Dios promete responder y revelar cosas que él no podía imaginar. Las circunstancias estaban cerradas, pero el cielo no.",
+   "application": "Si hoy estás enfrentando una situación que te tiene «preso» —una enfermedad, una deuda, una espera—, no dejes de clamar. Dedica un tiempo cada día a orar por ello y a escuchar. Dios puede mostrarte salidas que hoy no ves.",
+   "prayer": "Señor, clamo a ti desde mi encierro. Hoy renuncio a la desesperanza. Respóndeme y enséñame las cosas grandes que no sé. Abre caminos donde yo solo veo muros. Amén.",
+   "categories": [
+    "fe",
+    "esperanza"
+   ],
+   "topics": [
+    "oración",
+    "revelación",
+    "respuesta de Dios"
+   ],
+   "problems": [
+    "desesperanza",
+    "encierro",
+    "ansiedad"
+   ]
+  },
+  {
+   "id": "jer-29-11",
+   "order": 39,
+   "era": "israel",
+   "reference": "Jeremías 29:11-13",
+   "book": "Jeremías",
+   "speaker": "Yavé",
+   "quote": "Porque yo sé los pensamientos que tengo acerca de vosotros, dice Yavé, pensamientos de paz, y no de mal, para daros el fin que esperáis. Entonces me invocaréis, e iréis y oraréis a mí, y yo os oiré: y me buscaréis y hallaréis, porque me buscaréis de todo vuestro corazón.",
+   "recipient": "Los judíos deportados en Babilonia",
+   "people": [
+    "Jeremías"
+   ],
+   "historicalContext": "Hacia el año 597 a. C. Nabucodonosor había llevado cautivos a Babilonia a miles de habitantes de Jerusalén. Jeremías les envía una carta.",
+   "situation": "Los exiliados esperaban volver pronto, pero Dios les anuncia que el exilio duraría setenta años. Debían edificar casas, plantar huertos y buscar la paz de la ciudad donde estaban.",
+   "problem": "La desesperanza de vivir en una situación que no se elegía y que no terminaría pronto.",
+   "explanation": "Esta famosa promesa fue dada a personas que no verían un cambio rápido. Dios no niega la dificultad, pero les asegura que sus planes son de paz y que el final será bueno. Mientras tanto, los invita a buscarlo de todo corazón.",
+   "application": "Si hoy estás enfrentando una situación larga que no elegiste, no vivas solo esperando que termine. Construye, siembra y busca a Dios donde estás. Sus pensamientos hacia ti son de paz, aunque el proceso tarde.",
+   "prayer": "Señor, estoy en un lugar que no elegí. Hoy renuncio a la desesperanza y a la impaciencia. Creo que tus pensamientos sobre mí son de paz. Te busco de todo corazón, y sé que te hallaré. Amén.",
+   "categories": [
+    "esperanza",
+    "fe"
+   ],
+   "topics": [
+    "futuro",
+    "planes de Dios",
+    "exilio",
+    "paciencia"
+   ],
+   "problems": [
+    "desesperanza",
+    "impaciencia",
+    "incertidumbre"
+   ]
+  },
+  {
+   "id": "eze-36-26",
+   "order": 40,
+   "era": "israel",
+   "reference": "Ezequiel 36:26",
+   "book": "Ezequiel",
+   "speaker": "Yavé",
+   "quote": "Y os daré corazón nuevo, y pondré espíritu nuevo dentro de vosotros; y quitaré de vuestra carne el corazón de piedra, y os daré corazón de carne.",
+   "recipient": "Israel en el exilio, por medio de Ezequiel",
+   "people": [
+    "Ezequiel"
+   ],
+   "historicalContext": "Ezequiel era sacerdote y profeta entre los exiliados en Babilonia, junto al río Quebar, hacia el año 586 a. C.",
+   "situation": "Jerusalén y su templo habían sido destruidos. El pueblo cargaba con la vergüenza de su historia de infidelidad.",
+   "problem": "El corazón endurecido que ya no puede cambiar por sí mismo.",
+   "explanation": "Dios no le pide al pueblo que se fabrique un corazón nuevo: promete dárselo. Cambiará la dureza por sensibilidad y pondrá su propio Espíritu dentro de ellos. La transformación verdadera es un regalo de Dios.",
+   "application": "Si hoy estás enfrentando la frustración de no poder cambiar —hábitos, reacciones, frialdad espiritual—, deja de intentarlo solo con fuerza de voluntad. Pídele a Dios que haga en ti lo que prometió: un corazón nuevo.",
+   "prayer": "Señor, mi corazón se ha endurecido. Hoy renuncio a intentar cambiar solo con mis fuerzas. Quita mi corazón de piedra y dame un corazón de carne. Pon tu Espíritu dentro de mí. Amén.",
+   "categories": [
+    "esperanza",
+    "culpa"
+   ],
+   "topics": [
+    "transformación",
+    "corazón nuevo",
+    "Espíritu",
+    "restauración"
+   ],
+   "problems": [
+    "dureza de corazón",
+    "frialdad espiritual",
+    "hábitos"
+   ]
+  },
+  {
+   "id": "isa-41-10",
+   "order": 41,
+   "era": "israel",
+   "reference": "Isaías 41:10",
+   "book": "Isaías",
+   "speaker": "Yavé",
+   "quote": "No temas, que yo soy contigo; no desmayes, que yo soy tu Dios que te esfuerzo: siempre te ayudaré, siempre te sustentaré con la diestra de mi justicia.",
+   "recipient": "Israel, «mi siervo», en tiempos de exilio",
+   "people": [
+    "Isaías",
+    "Israel"
+   ],
+   "historicalContext": "Los capítulos 40 al 55 de Isaías son palabras de consuelo para el pueblo que viviría el exilio en Babilonia, en el siglo VI a. C.",
+   "situation": "Las naciones temblaban ante el avance de un nuevo conquistador. Israel, pequeño y derrotado, se sentía indefenso.",
+   "problem": "El miedo, la debilidad y la sensación de estar a punto de desmayar.",
+   "explanation": "Dios da cinco promesas en un solo versículo: estoy contigo, soy tu Dios, te esfuerzo, te ayudo y te sostengo. La mano derecha era símbolo de fuerza: Dios sostiene a su pueblo con su mano más fuerte.",
+   "application": "Si hoy estás enfrentando miedo o sientes que te faltan las fuerzas, repite estas cinco promesas despacio, una por una. Cuando llegue la ansiedad, imagina la mano de Dios sosteniéndote.",
+   "prayer": "Señor, hoy renuncio al miedo y al desmayo. Tú estás conmigo, eres mi Dios, me das fuerzas, me ayudas y me sostienes con tu mano. Me apoyo en ti. Amén.",
+   "categories": [
+    "miedo",
+    "ansiedad",
+    "fe"
+   ],
+   "topics": [
+    "fortaleza",
+    "presencia de Dios",
+    "ayuda",
+    "protección"
+   ],
+   "problems": [
+    "miedo",
+    "debilidad",
+    "ansiedad",
+    "desánimo"
+   ]
+  },
+  {
+   "id": "isa-43-1",
+   "order": 42,
+   "era": "israel",
+   "reference": "Isaías 43:1-2",
+   "book": "Isaías",
+   "speaker": "Yavé",
+   "quote": "No temas, porque yo te redimí; te puse nombre, mío eres tú. Cuando pasares por las aguas, yo seré contigo; y por los ríos, no te anegarán. Cuando pasares por el fuego, no te quemarás, ni la llama arderá en ti.",
+   "recipient": "Jacob e Israel, el pueblo formado por Dios",
+   "people": [
+    "Israel",
+    "Jacob"
+   ],
+   "historicalContext": "Palabras de consuelo para el pueblo en el exilio. Dios se presenta como su Creador y Formador.",
+   "situation": "El pueblo había pasado por el «agua» y el «fuego» de la guerra, la deportación y la pérdida. Se sentía olvidado.",
+   "problem": "El miedo a las pruebas y la soledad de atravesarlas.",
+   "explanation": "Dios no dice «si pasas», sino «cuando pases» por las aguas y el fuego. Las pruebas llegarán, pero no nos destruirán, porque Él pasará con nosotros. Y nos recuerda nuestra identidad: «te puse nombre, mío eres tú».",
+   "application": "Si hoy estás enfrentando una prueba que te ahoga o te quema, escucha: no estás solo en ella. Di en voz alta tu nombre y añade: «soy de Dios». Él atraviesa contigo este río.",
+   "prayer": "Señor, estoy pasando por aguas profundas. Hoy renuncio al miedo y a la soledad. Tú me redimiste, me llamaste por mi nombre y soy tuyo. Pasa conmigo por este río y este fuego. Amén.",
+   "categories": [
+    "miedo",
+    "soledad"
+   ],
+   "topics": [
+    "identidad",
+    "pruebas",
+    "presencia de Dios",
+    "redención"
+   ],
+   "problems": [
+    "miedo",
+    "soledad",
+    "pruebas"
+   ]
+  },
+  {
+   "id": "isa-43-18",
+   "order": 43,
+   "era": "israel",
+   "reference": "Isaías 43:18-19",
+   "book": "Isaías",
+   "speaker": "Yavé",
+   "quote": "No os acordéis de las cosas pasadas, ni traigáis a memoria las cosas antiguas. He aquí que yo hago cosa nueva: presto saldrá a luz: ¿no la sabréis? Otra vez pondré camino en el desierto, y ríos en la soledad.",
+   "recipient": "Israel en el exilio",
+   "people": [
+    "Israel"
+   ],
+   "historicalContext": "Dios acababa de recordar el éxodo, cuando abrió camino en el mar. Ahora anuncia un nuevo éxodo: el regreso desde Babilonia.",
+   "situation": "El pueblo vivía mirando atrás: a sus glorias perdidas y a sus fracasos. Le costaba imaginar un futuro distinto.",
+   "problem": "Vivir atado al pasado, ya sea por nostalgia o por culpa.",
+   "explanation": "Dios pide dejar de mirar atrás, no porque el pasado no importe, sino porque Él está haciendo algo nuevo. Donde hay desierto, abrirá camino; donde hay soledad, hará brotar ríos.",
+   "application": "Si hoy estás enfrentando un pasado que te pesa —errores, heridas o «tiempos mejores»—, pídele a Dios ojos para ver lo nuevo que está haciendo. Anota una señal de vida nueva que veas esta semana.",
+   "prayer": "Señor, hoy renuncio a vivir atado a mi pasado. Tú haces cosas nuevas. Abre camino en mi desierto y ríos en mi soledad. Dame ojos para ver lo que ya estás haciendo. Amén.",
+   "categories": [
+    "esperanza",
+    "culpa"
+   ],
+   "topics": [
+    "nuevo comienzo",
+    "pasado",
+    "futuro",
+    "restauración"
+   ],
+   "problems": [
+    "culpa",
+    "nostalgia",
+    "estancamiento"
+   ]
+  },
+  {
+   "id": "isa-43-25",
+   "order": 44,
+   "era": "israel",
+   "reference": "Isaías 43:25",
+   "book": "Isaías",
+   "speaker": "Yavé",
+   "quote": "Yo, yo soy el que borro tus rebeliones por amor de mí; y no me acordaré de tus pecados.",
+   "recipient": "Israel",
+   "people": [
+    "Israel",
+    "Jacob"
+   ],
+   "historicalContext": "En el mismo discurso de consuelo a los exiliados, Dios recuerda al pueblo cómo lo habían cansado con sus pecados.",
+   "situation": "Israel no había honrado a Dios; en lugar de ofrendas, le había traído pecados. Merecía el rechazo.",
+   "problem": "La culpa que se recuerda una y otra vez y no deja vivir en paz.",
+   "explanation": "Dios repite «yo, yo» para dejar claro que el perdón es obra suya y nace de su propio amor, no de los méritos del pueblo. Y hace una promesa asombrosa: no se acordará más de esos pecados.",
+   "application": "Si hoy estás enfrentando el recuerdo constante de tus errores, recuerda que Dios ha decidido no recordarlos. Cuando tu mente vuelva a acusarte, responde: «Dios lo borró». Deja de desenterrar lo que Él perdonó.",
+   "prayer": "Señor, tú borras mis rebeliones por amor. Hoy renuncio a la culpa que sigue acusándome. Si tú no te acuerdas de mis pecados, yo tampoco viviré atado a ellos. Gracias por tu perdón. Amén.",
+   "categories": [
+    "culpa",
+    "perdon"
+   ],
+   "topics": [
+    "perdón",
+    "gracia",
+    "olvido de Dios",
+    "pecado"
+   ],
+   "problems": [
+    "culpa",
+    "remordimiento",
+    "autocondena"
+   ]
+  },
+  {
+   "id": "isa-49-15",
+   "order": 45,
+   "era": "israel",
+   "reference": "Isaías 49:15",
+   "book": "Isaías",
+   "speaker": "Yavé",
+   "quote": "¿Olvidaráse la mujer de lo que parió, para dejar de compadecerse del hijo de su vientre? Aunque se olviden ellas, yo no me olvidaré de ti.",
+   "recipient": "Sion (Jerusalén), que se sentía abandonada",
+   "people": [
+    "Israel"
+   ],
+   "historicalContext": "Palabras a Jerusalén durante el exilio, cuando la ciudad estaba en ruinas y sus habitantes deportados.",
+   "situation": "Sion había dicho: «Me dejó Yavé, y el Señor se olvidó de mí». Dios responde a esa queja.",
+   "problem": "El abandono y la sensación de haber sido olvidado por Dios.",
+   "explanation": "Dios usa la imagen del amor más fuerte que conocemos: el de una madre por su bebé. Y dice que su amor es aún más firme. En el versículo siguiente añade: «en las palmas te tengo esculpida».",
+   "application": "Si hoy estás enfrentando abandono —de tu familia, tu pareja o tus amigos— o sientes que Dios se olvidó de ti, lee esta promesa despacio. Aunque otros se olviden, Él no. Mira tus manos y recuerda que tu nombre está escrito en las suyas.",
+   "prayer": "Señor, me he sentido olvidado. Hoy renuncio a la mentira del abandono. Tu amor es más fiel que el de una madre. Tú no te olvidas de mí; me tienes grabado en tus manos. Amén.",
+   "categories": [
+    "soledad",
+    "amor"
+   ],
+   "topics": [
+    "amor de Dios",
+    "abandono",
+    "fidelidad",
+    "maternidad"
+   ],
+   "problems": [
+    "abandono",
+    "soledad",
+    "rechazo"
+   ]
+  },
+  {
+   "id": "isa-55-8",
+   "order": 46,
+   "era": "israel",
+   "reference": "Isaías 55:8-9",
+   "book": "Isaías",
+   "speaker": "Yavé",
+   "quote": "Porque mis pensamientos no son vuestros pensamientos, ni vuestros caminos mis caminos, dijo Yavé. Como son más altos los cielos que la tierra, así son mis caminos más altos que vuestros caminos, y mis pensamientos más que vuestros pensamientos.",
+   "recipient": "Todo el que tenga sed, en Israel y las naciones",
+   "people": [
+    "Isaías"
+   ],
+   "historicalContext": "Final de las palabras de consolación. Dios invita a todos a venir a Él gratuitamente, como a un banquete.",
+   "situation": "El pueblo no entendía cómo Dios podía perdonar tan ampliamente ni por qué sus planes eran tan distintos de lo esperado.",
+   "problem": "La frustración cuando la vida no sale como planeamos y no entendemos a Dios.",
+   "explanation": "Dios no pide que entendamos todo, sino que confiemos en que su perspectiva es más alta. En el versículo anterior acaba de hablar de su amplio perdón: incluso su misericordia supera nuestra lógica.",
+   "application": "Si hoy estás enfrentando una situación que no tiene sentido para ti, reconoce que tu vista es limitada. Escribe lo que no entiendes y, al lado, escribe: «Tus caminos son más altos». Suelta la necesidad de comprenderlo todo hoy.",
+   "prayer": "Señor, no entiendo tus caminos. Hoy renuncio a exigir que todo tenga sentido para mí. Tus pensamientos son más altos que los míos. Confío en ti aunque no vea el cuadro completo. Amén.",
+   "categories": [
+    "fe"
+   ],
+   "topics": [
+    "soberanía de Dios",
+    "planes de Dios",
+    "confianza",
+    "sabiduría"
+   ],
+   "problems": [
+    "frustración",
+    "confusión",
+    "control"
+   ]
+  },
+  {
+   "id": "zac-4-6",
+   "order": 47,
+   "era": "israel",
+   "reference": "Zacarías 4:6",
+   "book": "Zacarías",
+   "speaker": "Yavé",
+   "quote": "No con ejército, ni con fuerza, sino con mi espíritu, ha dicho Yavé de los ejércitos.",
+   "recipient": "Zorobabel, gobernador de Judá",
+   "people": [
+    "Zorobabel",
+    "Zacarías"
+   ],
+   "historicalContext": "Hacia el año 520 a. C. Un grupo de judíos había regresado del exilio a Jerusalén para reconstruir el templo.",
+   "situation": "La obra estaba detenida desde hacía años por la oposición de los vecinos, la pobreza y el desánimo. Zorobabel tenía pocos recursos.",
+   "problem": "El desánimo ante una tarea demasiado grande para los recursos disponibles.",
+   "explanation": "Dios le recuerda a Zorobabel que la obra no depende de ejércitos, dinero ni fuerza humana, sino de su Espíritu. Lo que parecía un «gran monte» se convertiría en llanura.",
+   "application": "Si hoy estás enfrentando un proyecto, una familia o un ministerio que te supera, deja de medirlo solo por tus recursos. Haz tu parte con fidelidad y ora cada día pidiendo que el Espíritu de Dios haga lo que tú no puedes.",
+   "prayer": "Señor, mis fuerzas no alcanzan. Hoy renuncio al desánimo y a confiar solo en lo que tengo. No con ejército ni con fuerza, sino con tu Espíritu. Haz tu obra en mí y a través de mí. Amén.",
+   "categories": [
+    "fe"
+   ],
+   "topics": [
+    "Espíritu Santo",
+    "reconstrucción",
+    "recursos",
+    "dependencia de Dios"
+   ],
+   "problems": [
+    "desánimo",
+    "falta de recursos",
+    "agotamiento"
+   ]
+  },
+  {
+   "id": "mal-3-6",
+   "order": 48,
+   "era": "israel",
+   "reference": "Malaquías 3:6-7",
+   "book": "Malaquías",
+   "speaker": "Yavé",
+   "quote": "Porque yo Yavé, no me mudo; y así vosotros, hijos de Jacob, no habéis sido consumidos… Tornaos a mí, y yo me tornaré a vosotros, ha dicho Yavé de los ejércitos.",
+   "recipient": "El pueblo de Judá después del regreso",
+   "people": [
+    "Malaquías"
+   ],
+   "historicalContext": "Hacia el año 430 a. C. Es el último profeta del Antiguo Testamento. Después vendrían cuatrocientos años de silencio profético.",
+   "situation": "El templo ya estaba reconstruido, pero el pueblo había caído en la rutina, la indiferencia y el cinismo religioso.",
+   "problem": "La tibieza espiritual y el alejamiento gradual de Dios.",
+   "explanation": "La fidelidad inmutable de Dios es la razón por la que su pueblo sigue en pie. Aunque ellos cambiaron, Él no. Y la invitación es sencilla y recíproca: «volved a mí y yo volveré a vosotros».",
+   "application": "Si hoy estás enfrentando frialdad espiritual o sientes que te fuiste alejando poco a poco, no necesitas un gran discurso: solo volver. Da hoy un paso concreto de regreso: una oración sincera, una lectura, una conversación con alguien de fe.",
+   "prayer": "Yavé, tú no cambias. Aunque yo me he alejado, tú sigues siendo fiel. Hoy renuncio a la tibieza. Me vuelvo a ti, y creo que tú te vuelves a mí. Amén.",
+   "categories": [
+    "perdon",
+    "esperanza"
+   ],
+   "topics": [
+    "fidelidad de Dios",
+    "arrepentimiento",
+    "regreso",
+    "inmutabilidad"
+   ],
+   "problems": [
+    "tibieza",
+    "alejamiento de Dios",
+    "rutina"
+   ]
+  },
+  {
+   "id": "mat-3-17",
+   "order": 49,
+   "era": "evangelios",
+   "reference": "Mateo 3:17",
+   "book": "Mateo",
+   "speaker": "La voz del Padre",
+   "quote": "Este es mi Hijo amado, en el cual tengo contentamiento.",
+   "recipient": "Jesús y los presentes en su bautismo",
+   "people": [
+    "Jesús",
+    "Juan el Bautista"
+   ],
+   "historicalContext": "Hacia el año 27 d. C., en el río Jordán. Tras cuatrocientos años de silencio profético, Dios vuelve a hablar desde el cielo.",
+   "situation": "Jesús, antes de empezar su ministerio público, fue bautizado por Juan. Al salir del agua, el Espíritu descendió como paloma y se oyó la voz del Padre.",
+   "problem": "La necesidad de identidad y aprobación que no dependa de lo que uno logra.",
+   "explanation": "El Padre declara su amor y su agrado por Jesús antes de que Él haga un solo milagro. La identidad viene antes que la misión. En Cristo, los creyentes también son hijos amados.",
+   "application": "Si hoy estás enfrentando la presión de demostrar tu valor con logros o la necesidad de aprobación, escucha esta voz. En Cristo, Dios te llama hijo amado antes de que hagas nada. Empieza tu día desde esa identidad, no para conseguirla.",
+   "prayer": "Padre, gracias porque en Cristo me llamas hijo amado. Hoy renuncio a buscar mi valor en mis logros o en la aprobación de otros. Descanso en tu amor y vivo desde él. Amén.",
+   "categories": [
+    "amor",
+    "fe"
+   ],
+   "topics": [
+    "identidad",
+    "bautismo",
+    "Trinidad",
+    "aprobación"
+   ],
+   "problems": [
+    "necesidad de aprobación",
+    "inseguridad",
+    "perfeccionismo"
+   ]
+  },
+  {
+   "id": "mat-6-34",
+   "order": 50,
+   "era": "evangelios",
+   "reference": "Mateo 6:34",
+   "book": "Mateo",
+   "speaker": "Jesús",
+   "quote": "Así que, no os congojéis por el día de mañana; que el día de mañana traerá su fatiga: basta al día su afán.",
+   "recipient": "Los discípulos y la multitud en el Sermón del Monte",
+   "people": [
+    "Jesús",
+    "discípulos"
+   ],
+   "historicalContext": "Galilea, al inicio del ministerio de Jesús. En el Sermón del Monte enseña cómo vivir en el reino de Dios.",
+   "situation": "Jesús hablaba a gente sencilla preocupada por lo básico: qué comer, qué beber, con qué vestirse. Les señala las aves y los lirios.",
+   "problem": "La ansiedad por el futuro y por las necesidades materiales.",
+   "explanation": "Jesús no dice que el mañana no tendrá problemas, sino que no debemos cargarlos hoy. El versículo anterior da la clave: buscar primero el reino de Dios, y el Padre, que conoce nuestras necesidades, proveerá.",
+   "application": "Si hoy estás enfrentando ansiedad por el futuro —dinero, salud, trabajo—, pregúntate: ¿qué me toca hacer hoy? Haz solo eso y entrega el resto a Dios. Cuando tu mente salte a mañana, vuelve con suavidad al día de hoy.",
+   "prayer": "Señor, hoy renuncio a la ansiedad por el mañana. Tú conoces lo que necesito. Ayúdame a vivir este día contigo, a buscar primero tu reino y a confiar en que mañana también estarás. Amén.",
+   "categories": [
+    "ansiedad"
+   ],
+   "topics": [
+    "preocupación",
+    "provisión",
+    "futuro",
+    "reino de Dios"
+   ],
+   "problems": [
+    "ansiedad",
+    "preocupación",
+    "estrés",
+    "miedo al futuro"
+   ]
+  },
+  {
+   "id": "mat-11-28",
+   "order": 51,
+   "era": "evangelios",
+   "reference": "Mateo 11:28-29",
+   "book": "Mateo",
+   "speaker": "Jesús",
+   "quote": "Venid a mí todos los que estáis trabajados y cargados, que yo os haré descansar. Llevad mi yugo sobre vosotros, y aprended de mí, que soy manso y humilde de corazón; y hallaréis descanso para vuestras almas.",
+   "recipient": "Las multitudes cansadas",
+   "people": [
+    "Jesús"
+   ],
+   "historicalContext": "Galilea. Los líderes religiosos habían convertido la fe en una carga de reglas imposibles de cumplir.",
+   "situation": "Muchos rechazaban a Jesús. Él agradece al Padre por revelarse a los sencillos y hace esta invitación abierta a todos.",
+   "problem": "El agotamiento físico, emocional y espiritual; la religión como carga pesada.",
+   "explanation": "Jesús no ofrece más reglas, sino a sí mismo. El yugo era la pieza que unía a dos bueyes para compartir la carga. Jesús invita a caminar unido a Él, que es manso y humilde, y encontrar descanso para el alma.",
+   "application": "Si hoy estás enfrentando cansancio, estrés o una fe que se ha vuelto pesada, acepta esta invitación literalmente. Detente, dile a Jesús qué te está cansando y entrégale esa carga. Aprende de su mansedumbre: baja el ritmo.",
+   "prayer": "Jesús, vengo a ti cansado y cargado. Hoy renuncio al peso que llevo solo. Tomo tu yugo y aprendo de ti. Dame el descanso que mi alma necesita. Amén.",
+   "categories": [
+    "ansiedad",
+    "tristeza"
+   ],
+   "topics": [
+    "descanso",
+    "cansancio",
+    "gracia",
+    "mansedumbre"
+   ],
+   "problems": [
+    "agotamiento",
+    "estrés",
+    "ansiedad",
+    "legalismo"
+   ]
+  },
+  {
+   "id": "mat-14-27",
+   "order": 52,
+   "era": "evangelios",
+   "reference": "Mateo 14:27",
+   "book": "Mateo",
+   "speaker": "Jesús",
+   "quote": "Confiad, yo soy; no tengáis miedo.",
+   "recipient": "Los discípulos, en la barca",
+   "people": [
+    "Pedro",
+    "discípulos"
+   ],
+   "historicalContext": "Mar de Galilea, poco después de la multiplicación de los panes y los peces.",
+   "situation": "De madrugada, los discípulos remaban contra el viento en medio de las olas. Vieron a Jesús caminando sobre el agua y, aterrados, gritaron creyendo que era un fantasma.",
+   "problem": "El miedo en medio de la tormenta y ante lo que no se entiende.",
+   "explanation": "Jesús dice «yo soy», las mismas palabras con que Dios se presentó a Moisés. Su presencia cambia el significado de la tormenta. Después, Pedro caminó sobre el agua mientras miró a Jesús.",
+   "application": "Si hoy estás enfrentando una tormenta que te llena de miedo, escucha la voz de Jesús en medio de ella: «Yo soy». Cuando te hundas en la preocupación, haz como Pedro: clama «¡Señor, sálvame!» y vuelve a fijar la mirada en Él.",
+   "prayer": "Jesús, en medio de mis olas te escucho decir: «Yo soy». Hoy renuncio al miedo. Aunque el viento sea contrario, tú estás aquí. Tómame de la mano cuando me hunda. Amén.",
+   "categories": [
+    "miedo",
+    "fe"
+   ],
+   "topics": [
+    "tormentas",
+    "presencia de Jesús",
+    "milagros",
+    "fe"
+   ],
+   "problems": [
+    "miedo",
+    "pánico",
+    "crisis"
+   ]
+  },
+  {
+   "id": "mat-17-5",
+   "order": 53,
+   "era": "evangelios",
+   "reference": "Mateo 17:5",
+   "book": "Mateo",
+   "speaker": "La voz del Padre",
+   "quote": "Este es mi Hijo amado, en el cual tomo contentamiento: a él oíd.",
+   "recipient": "Pedro, Jacobo y Juan, en el monte de la transfiguración",
+   "people": [
+    "Pedro",
+    "Jacobo",
+    "Juan",
+    "Moisés",
+    "Elías"
+   ],
+   "historicalContext": "Poco antes de ir a Jerusalén a morir, Jesús sube a un monte alto con tres discípulos.",
+   "situation": "Jesús se transfiguró: su rostro brilló como el sol. Aparecieron Moisés y Elías hablando con Él. Pedro, sin saber qué decir, propuso hacer tres tiendas. Entonces una nube de luz los cubrió.",
+   "problem": "La confusión y las muchas voces que compiten por nuestra atención.",
+   "explanation": "El Padre interrumpe a Pedro y pone a Jesús por encima de Moisés (la ley) y Elías (los profetas). Todo lo que Dios había dicho apunta a Él. La instrucción es simple: escuchadle.",
+   "application": "Si hoy estás enfrentando confusión por tantas opiniones y voces, haz de esta frase tu criterio: «a Él oíd». Dedica tiempo a leer las palabras de Jesús en los Evangelios y deja que su voz tenga la última palabra.",
+   "prayer": "Padre, hay muchas voces a mi alrededor. Hoy renuncio a la confusión. Quiero escuchar a tu Hijo amado por encima de todo. Enséñame a oírle y a obedecerle. Amén.",
+   "categories": [
+    "obediencia",
+    "fe"
+   ],
+   "topics": [
+    "escuchar a Jesús",
+    "transfiguración",
+    "gloria"
+   ],
+   "problems": [
+    "confusión",
+    "distracción",
+    "miedo"
+   ]
+  },
+  {
+   "id": "mat-18-22",
+   "order": 54,
+   "era": "evangelios",
+   "reference": "Mateo 18:22",
+   "book": "Mateo",
+   "speaker": "Jesús",
+   "quote": "No te digo hasta siete, mas aun hasta setenta veces siete.",
+   "recipient": "El apóstol Pedro",
+   "people": [
+    "Pedro"
+   ],
+   "historicalContext": "Galilea. Jesús enseñaba a sus discípulos sobre la vida en comunidad y la restauración de los que fallan.",
+   "situation": "Pedro preguntó cuántas veces debía perdonar a su hermano, proponiendo siete, que ya parecía generoso. Los rabinos enseñaban perdonar tres veces.",
+   "problem": "El perdón limitado, que lleva la cuenta de las ofensas.",
+   "explanation": "Jesús responde que el perdón no se cuenta. Luego cuenta la parábola del siervo al que se le perdonó una deuda enorme pero no perdonó una pequeña. Quien ha sido perdonado por Dios aprende a perdonar sin llevar la cuenta.",
+   "application": "Si hoy estás enfrentando la dificultad de perdonar a alguien que te ha herido muchas veces, recuerda cuánto te ha perdonado Dios. Perdonar no significa permitir el abuso ni dejar de poner límites, sino soltar la deuda delante de Dios.",
+   "prayer": "Señor, estoy cansado de perdonar. Hoy renuncio a llevar la cuenta de las ofensas. Recuerdo cuánto me has perdonado tú. Dame un corazón que perdone como el tuyo. Amén.",
+   "categories": [
+    "perdon",
+    "amor"
+   ],
+   "topics": [
+    "perdón",
+    "relaciones",
+    "gracia",
+    "comunidad"
+   ],
+   "problems": [
+    "rencor",
+    "resentimiento",
+    "ofensas repetidas"
+   ]
+  },
+  {
+   "id": "jua-8-11",
+   "order": 55,
+   "era": "evangelios",
+   "reference": "Juan 8:11",
+   "book": "Juan",
+   "speaker": "Jesús",
+   "quote": "Ni yo te condeno: vete, y no peques más.",
+   "recipient": "Una mujer sorprendida en adulterio",
+   "people": [
+    "mujer adúltera",
+    "fariseos",
+    "escribas"
+   ],
+   "historicalContext": "En el templo de Jerusalén. Los escribas y fariseos buscaban una excusa para acusar a Jesús.",
+   "situation": "Trajeron a una mujer sorprendida en adulterio y la pusieron en medio, diciendo que la ley mandaba apedrearla. Jesús dijo: «El que de vosotros esté sin pecado, arroje contra ella la piedra el primero». Uno a uno se fueron.",
+   "problem": "La culpa pública, la vergüenza y la condenación.",
+   "explanation": "Jesús, el único sin pecado que podía tirar la piedra, no la condena. Pero tampoco ignora el pecado: la envía a una vida nueva. El perdón viene primero; el cambio es la respuesta al perdón.",
+   "application": "Si hoy estás enfrentando culpa o vergüenza por algo que otros saben o que solo tú conoces, escucha a Jesús decirte: «ni yo te condeno». Recibe ese perdón y da hoy un paso concreto para alejarte de aquello que te dañaba.",
+   "prayer": "Jesús, tú eras el único que podía condenarme y no lo hiciste. Hoy renuncio a la culpa y a la vergüenza. Recibo tu perdón y, con tu ayuda, me voy a vivir una vida nueva. Amén.",
+   "categories": [
+    "culpa",
+    "perdon"
+   ],
+   "topics": [
+    "perdón",
+    "gracia",
+    "condenación",
+    "nueva vida"
+   ],
+   "problems": [
+    "culpa",
+    "vergüenza",
+    "condenación"
+   ]
+  },
+  {
+   "id": "jua-11-25",
+   "order": 56,
+   "era": "evangelios",
+   "reference": "Juan 11:25-26",
+   "book": "Juan",
+   "speaker": "Jesús",
+   "quote": "Yo soy la resurrección y la vida: el que cree en mí, aunque esté muerto, vivirá. Y todo aquel que vive y cree en mí, no morirá eternamente.",
+   "recipient": "Marta, hermana de Lázaro",
+   "people": [
+    "Marta",
+    "María",
+    "Lázaro"
+   ],
+   "historicalContext": "Betania, cerca de Jerusalén, poco antes de la última Pascua de Jesús.",
+   "situation": "Lázaro, amigo de Jesús, llevaba cuatro días muerto. Marta salió a recibir a Jesús y le dijo: «Si hubieses estado aquí, mi hermano no fuera muerto».",
+   "problem": "El duelo, la tristeza por la muerte y la pregunta de por qué Dios no llegó a tiempo.",
+   "explanation": "Jesús no le da a Marta una explicación, sino una persona: Él mismo. La resurrección no es solo un evento futuro, es Jesús. Poco después lloró con ellas y resucitó a Lázaro.",
+   "application": "Si hoy estás enfrentando la muerte de alguien que amas o el miedo a la muerte, lleva tu dolor a Jesús, como Marta. Él llora contigo y tiene la última palabra sobre la muerte. Permítete llorar y a la vez aferrarte a su promesa.",
+   "prayer": "Jesús, tú eres la resurrección y la vida. Hoy traigo mi duelo ante ti. Renuncio a la desesperanza frente a la muerte. Llora conmigo y dame la esperanza de la vida eterna. Amén.",
+   "categories": [
+    "tristeza",
+    "esperanza",
+    "fe"
+   ],
+   "topics": [
+    "muerte",
+    "resurrección",
+    "duelo",
+    "vida eterna"
+   ],
+   "problems": [
+    "duelo",
+    "tristeza",
+    "miedo a la muerte",
+    "pérdida"
+   ]
+  },
+  {
+   "id": "jua-12-28",
+   "order": 57,
+   "era": "evangelios",
+   "reference": "Juan 12:28",
+   "book": "Juan",
+   "speaker": "La voz del Padre",
+   "quote": "Y lo he glorificado, y lo glorificaré otra vez.",
+   "recipient": "Jesús y la multitud en Jerusalén",
+   "people": [
+    "Jesús",
+    "Felipe",
+    "Andrés"
+   ],
+   "historicalContext": "Jerusalén, en los días previos a la crucifixión. Unos griegos habían pedido ver a Jesús.",
+   "situation": "Jesús anunció que su hora había llegado y que, como el grano de trigo, debía morir para dar fruto. Dijo: «Ahora está turbada mi alma… Padre, glorifica tu nombre». Entonces vino una voz del cielo.",
+   "problem": "La angustia ante el sufrimiento que se acerca.",
+   "explanation": "Jesús confiesa su angustia, pero elige el propósito del Padre. El Padre responde confirmando que su gloria se manifestará también en la cruz y la resurrección. El dolor entregado a Dios no es en vano.",
+   "application": "Si hoy estás enfrentando angustia ante algo difícil que no puedes evitar, ora como Jesús: sé honesto con tu turbación y luego pídele a Dios que se glorifique en ello. Tu dolor puede convertirse en semilla.",
+   "prayer": "Padre, mi alma está turbada. Hoy renuncio a huir de tu propósito. Glorifica tu nombre en mi vida, aun en lo que me duele. Haz de mi dolor una semilla que dé fruto. Amén.",
+   "categories": [
+    "fe",
+    "ansiedad"
+   ],
+   "topics": [
+    "gloria de Dios",
+    "sufrimiento",
+    "propósito",
+    "cruz"
+   ],
+   "problems": [
+    "angustia",
+    "miedo al sufrimiento"
+   ]
+  },
+  {
+   "id": "jua-13-34",
+   "order": 58,
+   "era": "evangelios",
+   "reference": "Juan 13:34",
+   "book": "Juan",
+   "speaker": "Jesús",
+   "quote": "Un mandamiento nuevo os doy: Que os améis unos a otros: como os he amado, que también os améis los unos a los otros.",
+   "recipient": "Los doce discípulos, en la última cena",
+   "people": [
+    "discípulos",
+    "Pedro",
+    "Juan",
+    "Judas"
+   ],
+   "historicalContext": "Jerusalén, la noche antes de la crucifixión, durante la cena de Pascua.",
+   "situation": "Jesús acababa de lavar los pies de sus discípulos, incluido Judas, que salió para traicionarlo. Sabiendo que se iba, les deja su mandamiento.",
+   "problem": "El egoísmo, la división y el amor condicionado.",
+   "explanation": "Lo nuevo del mandamiento es la medida: «como yo os he amado». Un amor que sirve, lava pies, perdona y da la vida. Jesús añadió que en este amor todos conocerían que son sus discípulos.",
+   "application": "Si hoy estás enfrentando relaciones difíciles o una comunidad dividida, piensa en cómo te ha amado Jesús. Elige hoy un acto concreto de servicio humilde hacia alguien, especialmente hacia quien te cuesta amar.",
+   "prayer": "Jesús, tú me amaste hasta el fin. Hoy renuncio al egoísmo y al amor que pone condiciones. Enséñame a amar como tú me amas, sirviendo con humildad. Amén.",
+   "categories": [
+    "amor",
+    "obediencia"
+   ],
+   "topics": [
+    "amor",
+    "mandamiento",
+    "servicio",
+    "comunidad"
+   ],
+   "problems": [
+    "egoísmo",
+    "división",
+    "falta de amor"
+   ]
+  },
+  {
+   "id": "jua-14-27",
+   "order": 59,
+   "era": "evangelios",
+   "reference": "Juan 14:27",
+   "book": "Juan",
+   "speaker": "Jesús",
+   "quote": "La paz os dejo, mi paz os doy: no como el mundo la da, yo os la doy. No se turbe vuestro corazón, ni tenga miedo.",
+   "recipient": "Los discípulos, en la última cena",
+   "people": [
+    "discípulos",
+    "Tomás",
+    "Felipe"
+   ],
+   "historicalContext": "La misma noche de la última cena. Jesús se despide de sus discípulos y les promete el Espíritu Santo.",
+   "situation": "Los discípulos estaban confundidos y temerosos: Jesús anunciaba que se iba, que uno lo traicionaría y que Pedro lo negaría.",
+   "problem": "La turbación del corazón y el miedo ante un futuro incierto.",
+   "explanation": "Jesús deja como herencia su propia paz. No es la paz del mundo, que depende de que todo vaya bien, sino una paz que permanece en medio de la tormenta, porque se basa en su presencia.",
+   "application": "Si hoy estás enfrentando turbación o miedo, recuerda que la paz de Jesús no depende de tus circunstancias. Cierra los ojos, respira y recíbela como un regalo: «mi paz te doy». Repítelo cuando el miedo vuelva.",
+   "prayer": "Jesús, recibo tu paz. Hoy renuncio a la turbación de mi corazón y al miedo. No busco la paz del mundo, sino la tuya, que permanece aunque todo cambie. Amén.",
+   "categories": [
+    "ansiedad",
+    "miedo"
+   ],
+   "topics": [
+    "paz",
+    "Espíritu Santo",
+    "despedida",
+    "promesa"
+   ],
+   "problems": [
+    "ansiedad",
+    "miedo",
+    "turbación"
+   ]
+  },
+  {
+   "id": "luc-23-43",
+   "order": 60,
+   "era": "evangelios",
+   "reference": "Lucas 23:43",
+   "book": "Lucas",
+   "speaker": "Jesús",
+   "quote": "De cierto te digo, que hoy estarás conmigo en el paraíso.",
+   "recipient": "Uno de los malhechores crucificados junto a Jesús",
+   "people": [
+    "ladrón en la cruz"
+   ],
+   "historicalContext": "Monte Calvario, en las afueras de Jerusalén. Jesús fue crucificado entre dos malhechores.",
+   "situation": "Uno de ellos se burlaba de Jesús. El otro lo reprendió, reconoció su culpa y dijo: «Acuérdate de mí cuando vinieres a tu reino».",
+   "problem": "La culpa de una vida entera y la creencia de que ya es demasiado tarde.",
+   "explanation": "Aquel hombre no tenía tiempo de enmendar nada, solo de confiar. Jesús, en su propia agonía, le da la promesa más grande: «hoy, conmigo». Nunca es demasiado tarde para volverse a Dios.",
+   "application": "Si hoy estás enfrentando la sensación de que tu vida está demasiado torcida o de que es tarde para ti o para alguien que amas, recuerda al ladrón en la cruz. Dile a Jesús con sencillez: «acuérdate de mí».",
+   "prayer": "Jesús, acuérdate de mí. Hoy renuncio a la mentira de que es demasiado tarde. No traigo méritos, solo mi confianza en ti. Gracias por tu promesa de estar contigo. Amén.",
+   "categories": [
+    "culpa",
+    "esperanza",
+    "perdon"
+   ],
+   "topics": [
+    "salvación",
+    "gracia",
+    "cruz",
+    "paraíso"
+   ],
+   "problems": [
+    "culpa",
+    "desesperanza",
+    "arrepentimiento tardío"
+   ]
+  },
+  {
+   "id": "jua-21-17",
+   "order": 61,
+   "era": "evangelios",
+   "reference": "Juan 21:17",
+   "book": "Juan",
+   "speaker": "Jesús resucitado",
+   "quote": "Simón, hijo de Jonás, ¿me amas?… Apacienta mis ovejas.",
+   "recipient": "El apóstol Pedro",
+   "people": [
+    "Pedro"
+   ],
+   "historicalContext": "Junto al mar de Tiberíades (Galilea), después de la resurrección. Jesús había preparado un desayuno para sus discípulos.",
+   "situation": "Pedro había negado a Jesús tres veces la noche de su arresto. Ahora Jesús le pregunta tres veces si lo ama. Pedro se entristece.",
+   "problem": "La culpa por haber fallado a quien más se ama y la sensación de estar descalificado.",
+   "explanation": "A cada negación corresponde una pregunta de amor y una nueva comisión. Jesús no le echa en cara su fracaso: lo restaura y le devuelve su misión. El fracaso no es el final para quien ama a Jesús.",
+   "application": "Si hoy estás enfrentando la culpa de haber fallado a Dios o a alguien importante, deja que Jesús te haga su pregunta: «¿me amas?». Respóndele con sinceridad y acepta que Él todavía tiene un propósito para ti.",
+   "prayer": "Jesús, te he fallado, pero tú sabes que te amo. Hoy renuncio a la culpa que me descalifica. Restáurame como a Pedro y dame de nuevo un propósito para servirte. Amén.",
+   "categories": [
+    "culpa",
+    "perdon",
+    "amor"
+   ],
+   "topics": [
+    "restauración",
+    "fracaso",
+    "amor",
+    "misión"
+   ],
+   "problems": [
+    "culpa",
+    "fracaso",
+    "vergüenza"
+   ]
+  },
+  {
+   "id": "mat-28-20",
+   "order": 62,
+   "era": "evangelios",
+   "reference": "Mateo 28:20",
+   "book": "Mateo",
+   "speaker": "Jesús resucitado",
+   "quote": "…enseñándoles que guarden todas las cosas que os he mandado: y he aquí, yo estoy con vosotros todos los días, hasta el fin del mundo.",
+   "recipient": "Los once discípulos, en un monte de Galilea",
+   "people": [
+    "discípulos"
+   ],
+   "historicalContext": "Después de la resurrección, Jesús se reúne con sus discípulos en Galilea antes de ascender al cielo.",
+   "situation": "Jesús les da la gran comisión: hacer discípulos de todas las naciones. Algunos todavía dudaban. La tarea era inmensa y Él se iba.",
+   "problem": "El miedo a quedarse solos ante una misión enorme.",
+   "explanation": "La misión termina con una promesa: «yo estoy con vosotros todos los días». No algunos días, no solo los buenos días: todos. Es la última frase del Evangelio de Mateo, que había empezado anunciando a «Emanuel, Dios con nosotros».",
+   "application": "Si hoy estás enfrentando soledad o sientes que tienes que cumplir tu propósito por tu cuenta, recuerda la última promesa de Jesús. Hoy también es uno de «todos los días». Háblale durante tus tareas como a alguien que está a tu lado.",
+   "prayer": "Jesús, gracias porque estás conmigo todos los días. Hoy renuncio a la soledad y al miedo de no poder. Voy a donde me envías sabiendo que tú vas conmigo hasta el fin. Amén.",
+   "categories": [
+    "soledad",
+    "obediencia"
+   ],
+   "topics": [
+    "gran comisión",
+    "presencia de Jesús",
+    "misión",
+    "discipulado"
+   ],
+   "problems": [
+    "soledad",
+    "miedo",
+    "duda"
+   ]
+  },
+  {
+   "id": "hch-9-4",
+   "order": 63,
+   "era": "iglesia",
+   "reference": "Hechos 9:4-6",
+   "book": "Hechos",
+   "speaker": "Jesús resucitado",
+   "quote": "Saulo, Saulo, ¿por qué me persigues?… Yo soy Jesús a quien tú persigues: dura cosa te es dar coces contra el aguijón… Levántate y entra en la ciudad, y se te dirá lo que te conviene hacer.",
+   "recipient": "Saulo de Tarso (el futuro apóstol Pablo)",
+   "people": [
+    "Pablo",
+    "Saulo",
+    "Ananías"
+   ],
+   "historicalContext": "Hacia el año 34 d. C. La iglesia crecía en Jerusalén y más allá. Saulo, un fariseo celoso, perseguía a los cristianos.",
+   "situation": "Saulo iba camino a Damasco con cartas para arrestar a los seguidores de Jesús. De repente, una luz del cielo lo rodeó y cayó a tierra.",
+   "problem": "El fanatismo, la violencia y el orgullo de quien cree tener toda la razón.",
+   "explanation": "Jesús se identifica tanto con su iglesia que perseguirla es perseguirlo a Él. Pero no destruye a Saulo: lo llama. El mayor perseguidor se convertiría en el mayor misionero. Nadie está fuera del alcance de la gracia.",
+   "application": "Si hoy estás enfrentando la convicción de que has estado yendo en la dirección equivocada, no te resistas: dar coces contra el aguijón solo duele más. Levántate, da el siguiente paso y deja que Dios te muestre lo que te conviene hacer.",
+   "prayer": "Jesús, reconozco que he luchado contra ti. Hoy renuncio al orgullo y dejo de resistirme. Cambia mi camino como cambiaste el de Pablo. Dime qué quieres que haga. Amén.",
+   "categories": [
+    "culpa",
+    "obediencia"
+   ],
+   "topics": [
+    "conversión",
+    "gracia",
+    "llamado",
+    "transformación"
+   ],
+   "problems": [
+    "orgullo",
+    "fanatismo",
+    "culpa",
+    "resistencia a Dios"
+   ]
+  },
+  {
+   "id": "hch-10-15",
+   "order": 64,
+   "era": "iglesia",
+   "reference": "Hechos 10:15",
+   "book": "Hechos",
+   "speaker": "La voz del Señor",
+   "quote": "Lo que Dios limpió, no lo llames tú común.",
+   "recipient": "El apóstol Pedro, en Jope",
+   "people": [
+    "Pedro",
+    "Cornelio"
+   ],
+   "historicalContext": "Hacia el año 40 d. C. La iglesia estaba formada casi solo por judíos, que no se relacionaban con gentiles (no judíos).",
+   "situation": "Pedro oraba en una azotea y tuvo una visión: un lienzo con animales impuros y una voz que le decía que comiera. Él se negó. Mientras tanto, un centurión romano llamado Cornelio lo buscaba.",
+   "problem": "El prejuicio, la exclusión y el menosprecio hacia otros.",
+   "explanation": "Dios le enseña a Pedro que no debe llamar impuro a nadie a quien Él haya aceptado. Poco después Pedro entró a casa de Cornelio y el Espíritu Santo descendió sobre los gentiles. El amor de Dios no tiene fronteras.",
+   "application": "Si hoy estás enfrentando prejuicios —hacia otros o de otros hacia ti—, escucha esta palabra. Nadie es «demasiado impuro» para Dios. Acércate hoy a alguien distinto a ti con respeto y amor.",
+   "prayer": "Señor, perdona mis prejuicios. Hoy renuncio a menospreciar a quien tú has amado. Ensancha mi corazón para ver a cada persona como tú la ves. Amén.",
+   "categories": [
+    "amor"
+   ],
+   "topics": [
+    "inclusión",
+    "prejuicio",
+    "gentiles",
+    "gracia"
+   ],
+   "problems": [
+    "prejuicio",
+    "rechazo",
+    "exclusión"
+   ]
+  },
+  {
+   "id": "hch-13-2",
+   "order": 65,
+   "era": "iglesia",
+   "reference": "Hechos 13:2",
+   "book": "Hechos",
+   "speaker": "El Espíritu Santo",
+   "quote": "Apartadme a Bernabé y a Saulo para la obra para la cual los he llamado.",
+   "recipient": "La iglesia de Antioquía",
+   "people": [
+    "Bernabé",
+    "Pablo",
+    "Saulo"
+   ],
+   "historicalContext": "Hacia el año 47 d. C. Antioquía de Siria se había convertido en un centro de la iglesia con judíos y gentiles.",
+   "situation": "Los profetas y maestros de la iglesia ministraban al Señor y ayunaban cuando el Espíritu Santo habló. Así empezó el primer viaje misionero.",
+   "problem": "La incertidumbre sobre el propósito y la vocación.",
+   "explanation": "El Espíritu Santo habla en un contexto de adoración y ayuno. Tiene un propósito específico para personas concretas. El llamado de Dios se descubre en comunidad, en oración y en disponibilidad.",
+   "application": "Si hoy estás enfrentando dudas sobre tu propósito o vocación, busca la dirección de Dios como la iglesia de Antioquía: en oración, en adoración y en comunidad. Pregúntale a personas de fe que te conocen qué ven en ti.",
+   "prayer": "Espíritu Santo, quiero escuchar tu voz. Hoy renuncio a la confusión sobre mi propósito. Apártame para la obra para la que me has llamado y dame un corazón disponible. Amén.",
+   "categories": [
+    "obediencia"
+   ],
+   "topics": [
+    "llamado",
+    "misión",
+    "Espíritu Santo",
+    "vocación"
+   ],
+   "problems": [
+    "falta de propósito",
+    "confusión",
+    "indecisión"
+   ]
+  },
+  {
+   "id": "hch-18-9",
+   "order": 66,
+   "era": "iglesia",
+   "reference": "Hechos 18:9-10",
+   "book": "Hechos",
+   "speaker": "El Señor",
+   "quote": "No temas, sino habla, y no calles: porque yo estoy contigo, y ninguno te podrá hacer mal; porque yo tengo mucho pueblo en esta ciudad.",
+   "recipient": "El apóstol Pablo, en Corinto",
+   "people": [
+    "Pablo",
+    "Silas",
+    "Timoteo"
+   ],
+   "historicalContext": "Hacia el año 51 d. C., en Corinto, una ciudad grande, rica y conocida por su inmoralidad.",
+   "situation": "Pablo había sido rechazado, golpeado y expulsado de varias ciudades. En Corinto la oposición volvía a crecer y él pensaba callar o marcharse.",
+   "problem": "El miedo a hablar de la fe y el desgaste de la oposición.",
+   "explanation": "Incluso el gran apóstol Pablo tuvo miedo. Dios lo anima en visión nocturna con tres razones: estoy contigo, nadie te dañará, y tengo mucha gente aquí. Pablo se quedó año y medio y nació una iglesia.",
+   "application": "Si hoy estás enfrentando miedo a hablar de tu fe, a decir la verdad o a mantenerte firme en un lugar difícil, recuerda que Dios está contigo y tiene propósito en ese lugar. Habla con amor y no calles lo que Dios puso en tu corazón.",
+   "prayer": "Señor, tengo miedo de hablar. Hoy renuncio al temor y al silencio. Tú estás conmigo y tienes gente en este lugar. Dame valor y palabras llenas de amor. Amén.",
+   "categories": [
+    "miedo",
+    "obediencia"
+   ],
+   "topics": [
+    "valentía",
+    "testimonio",
+    "presencia de Dios",
+    "misión"
+   ],
+   "problems": [
+    "miedo",
+    "miedo a hablar",
+    "oposición"
+   ]
+  },
+  {
+   "id": "2co-12-9",
+   "order": 67,
+   "era": "iglesia",
+   "reference": "2 Corintios 12:9",
+   "book": "2 Corintios",
+   "speaker": "El Señor",
+   "quote": "Bástate mi gracia; porque mi potencia en la flaqueza se perfecciona.",
+   "recipient": "El apóstol Pablo",
+   "people": [
+    "Pablo"
+   ],
+   "historicalContext": "Hacia el año 56 d. C. Pablo escribe a los corintios, que dudaban de su autoridad y preferían líderes elocuentes e impresionantes.",
+   "situation": "Pablo sufría un «aguijón en la carne», un padecimiento que no explica. Rogó tres veces a Dios que se lo quitara.",
+   "problem": "La debilidad, el sufrimiento que no se va y la sensación de ser insuficiente.",
+   "explanation": "Dios no le quitó el aguijón a Pablo, pero le dio algo mejor: su gracia suficiente. El poder de Dios se muestra con más claridad en nuestra debilidad. Pablo terminó diciendo: «cuando soy flaco, entonces soy poderoso».",
+   "application": "Si hoy estás enfrentando una debilidad, enfermedad o limitación que no desaparece aunque has orado, escucha esta respuesta. Tu debilidad no es un obstáculo para Dios. Pídele gracia para hoy, solo para hoy, y deja que su poder se muestre en ti.",
+   "prayer": "Señor, te he pedido que quites mi aguijón. Hoy renuncio a la frustración y a la vergüenza por mi debilidad. Tu gracia me basta. Perfecciona tu poder en mi flaqueza. Amén.",
+   "categories": [
+    "fe",
+    "tristeza"
+   ],
+   "topics": [
+    "gracia",
+    "debilidad",
+    "sufrimiento",
+    "poder de Dios"
+   ],
+   "problems": [
+    "debilidad",
+    "enfermedad",
+    "frustración",
+    "insuficiencia"
+   ]
+  },
+  {
+   "id": "apo-1-17",
+   "order": 68,
+   "era": "apocalipsis",
+   "reference": "Apocalipsis 1:17-18",
+   "book": "Apocalipsis",
+   "speaker": "Jesús glorificado",
+   "quote": "No temas: yo soy el primero y el último; y el que vivo, y he sido muerto; y he aquí que vivo por siglos de siglos, Amén. Y tengo las llaves del infierno y de la muerte.",
+   "recipient": "El apóstol Juan, desterrado en Patmos",
+   "people": [
+    "Juan"
+   ],
+   "historicalContext": "Hacia el año 95 d. C. Los cristianos sufrían persecución bajo el emperador Domiciano. Juan, ya anciano, estaba desterrado en la isla de Patmos.",
+   "situation": "Juan tuvo una visión de Cristo glorificado, con ojos como llama de fuego y rostro como el sol. Cayó como muerto a sus pies.",
+   "problem": "El miedo a la muerte, a la persecución y al futuro.",
+   "explanation": "Jesús pone su mano sobre Juan y le dice «no temas». Él venció a la muerte y tiene sus llaves. Para un pueblo perseguido, esta palabra significaba que ni el emperador ni la muerte tenían la última palabra.",
+   "application": "Si hoy estás enfrentando miedo a la muerte, a la enfermedad o a lo que viene, imagina la mano de Jesús sobre tu hombro. Él vive para siempre y tiene las llaves. Lo que te asusta no tiene la última palabra.",
+   "prayer": "Jesús, tú eres el primero y el último. Hoy renuncio al miedo a la muerte y al futuro. Tú vives y tienes las llaves. Pon tu mano sobre mí y dame paz. Amén.",
+   "categories": [
+    "miedo",
+    "esperanza"
+   ],
+   "topics": [
+    "resurrección",
+    "muerte",
+    "victoria",
+    "persecución"
+   ],
+   "problems": [
+    "miedo a la muerte",
+    "persecución",
+    "miedo al futuro"
+   ]
+  },
+  {
+   "id": "apo-3-20",
+   "order": 69,
+   "era": "apocalipsis",
+   "reference": "Apocalipsis 3:20",
+   "book": "Apocalipsis",
+   "speaker": "Jesús glorificado",
+   "quote": "He aquí, yo estoy a la puerta y llamo: si alguno oyere mi voz y abriere la puerta, entraré a él, y cenaré con él, y él conmigo.",
+   "recipient": "La iglesia de Laodicea",
+   "people": [
+    "Juan",
+    "iglesia de Laodicea"
+   ],
+   "historicalContext": "Laodicea era una ciudad rica, famosa por sus bancos, su industria textil y un colirio medicinal. Es la última de las siete cartas a las iglesias.",
+   "situation": "La iglesia se creía rica y sin necesidad de nada, pero Jesús la llama tibia, pobre, ciega y desnuda.",
+   "problem": "La autosuficiencia, la tibieza espiritual y la soledad de una vida sin comunión con Dios.",
+   "explanation": "Después de una corrección fuerte, Jesús se presenta como alguien que toca a la puerta con paciencia. No la derriba: espera ser invitado. Cenar juntos era signo de amistad íntima.",
+   "application": "Si hoy estás enfrentando un vacío interior aunque «lo tengas todo», o una fe tibia, escucha el llamado a tu puerta. Abre tu vida a Jesús en lo cotidiano: invítalo a tu mesa, a tus conversaciones, a tus decisiones.",
+   "prayer": "Jesús, te escucho llamar a mi puerta. Hoy renuncio a la autosuficiencia y a la tibieza. Te abro. Entra, cena conmigo y quédate en mi vida. Amén.",
+   "categories": [
+    "soledad",
+    "amor"
+   ],
+   "topics": [
+    "comunión",
+    "intimidad",
+    "tibieza",
+    "invitación"
+   ],
+   "problems": [
+    "tibieza",
+    "autosuficiencia",
+    "vacío",
+    "soledad"
+   ]
+  },
+  {
+   "id": "apo-21-5",
+   "order": 70,
+   "era": "apocalipsis",
+   "reference": "Apocalipsis 21:5-6",
+   "book": "Apocalipsis",
+   "speaker": "Dios, sentado en el trono",
+   "quote": "He aquí, yo hago nuevas todas las cosas… Yo soy el Alfa y la Omega, el principio y el fin. Al que tuviere sed, yo le daré de la fuente del agua de vida gratuitamente.",
+   "recipient": "El apóstol Juan, para toda la iglesia",
+   "people": [
+    "Juan"
+   ],
+   "historicalContext": "Visión final del libro. Juan ve un cielo nuevo y una tierra nueva, y la nueva Jerusalén descendiendo del cielo.",
+   "situation": "Una gran voz anuncia que Dios morará con los hombres y que limpiará toda lágrima de sus ojos: ya no habrá muerte, ni llanto, ni clamor, ni dolor. Entonces habla el que está sentado en el trono.",
+   "problem": "La tristeza, el dolor y la muerte que hoy afectan al mundo.",
+   "explanation": "El Dios que dijo «sea la luz» en Génesis cierra la historia diciendo «hago nuevas todas las cosas». No solo cosas nuevas, sino todas las cosas nuevas. El que empezó la historia es también quien la termina, y la termina bien.",
+   "application": "Si hoy estás enfrentando tristeza, dolor o lágrimas que parecen interminables, recuerda el final de la historia. Dios limpiará toda lágrima. Mientras tanto, acude a Él con tu sed: te da agua de vida gratuitamente.",
+   "prayer": "Dios eterno, principio y fin, hoy renuncio a la tristeza que me dice que el dolor es para siempre. Tú haces nuevas todas las cosas. Limpia mis lágrimas y dame de beber del agua de vida. Amén.",
+   "categories": [
+    "esperanza",
+    "tristeza"
+   ],
+   "topics": [
+    "cielo nuevo",
+    "nueva creación",
+    "eternidad",
+    "consuelo"
+   ],
+   "problems": [
+    "tristeza",
+    "dolor",
+    "duelo",
+    "desesperanza"
+   ]
+  },
+  {
+   "id": "apo-22-20",
+   "order": 71,
+   "era": "apocalipsis",
+   "reference": "Apocalipsis 22:20",
+   "book": "Apocalipsis",
+   "speaker": "Jesús glorificado",
+   "quote": "Ciertamente, vengo en breve.",
+   "recipient": "Toda la iglesia, a través de Juan",
+   "people": [
+    "Juan"
+   ],
+   "historicalContext": "Son las últimas palabras de Jesús en la Biblia. Cierran la revelación dada a Juan en Patmos.",
+   "situation": "La iglesia vivía perseguida y esperando. Juan responde: «Amén, sea así. Ven, Señor Jesús».",
+   "problem": "La espera larga, el cansancio de esperar y la tentación de perder la esperanza.",
+   "explanation": "Las últimas palabras que Dios pronuncia en la Biblia son una promesa de regreso. Toda la historia avanza hacia un reencuentro. El final no es un vacío, sino una persona que viene.",
+   "application": "Si hoy estás enfrentando el cansancio de esperar —justicia, sanidad, respuestas—, deja que esta promesa renueve tu esperanza. Vive hoy como alguien que espera a quien ama: con fidelidad, con alegría y con los ojos en el horizonte.",
+   "prayer": "Señor Jesús, creo en tu promesa. Hoy renuncio a la desesperanza de la espera. Ven, Señor Jesús. Mientras tanto, ayúdame a vivir fiel y con los ojos puestos en ti. Amén.",
+   "categories": [
+    "esperanza"
+   ],
+   "topics": [
+    "segunda venida",
+    "espera",
+    "promesa",
+    "fin de los tiempos"
+   ],
+   "problems": [
+    "desesperanza",
+    "cansancio",
+    "espera"
+   ]
+  }
+ ]
+}

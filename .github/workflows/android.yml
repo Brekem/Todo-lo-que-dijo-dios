@@ -1,0 +1,80 @@
+name: Android
+
+on:
+  push:
+    branches: [main, 'claude/**']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Dependencias
+        run: flutter pub get
+
+      - name: Formato
+        run: dart format --output=none --set-exit-if-changed lib test
+
+      - name: Análisis estático
+        run: flutter analyze
+
+      - name: Tests
+        run: flutter test
+
+      # Firma de release opcional: define los secretos ANDROID_KEYSTORE_BASE64,
+      # ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS y ANDROID_KEY_PASSWORD.
+      - name: Preparar firma
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        if: env.KEYSTORE_BASE64 != ''
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
+          cat > android/key.properties <<PROPS
+          storePassword=$KEYSTORE_PASSWORD
+          keyPassword=$KEY_PASSWORD
+          keyAlias=$KEY_ALIAS
+          storeFile=upload-keystore.jks
+          PROPS
+
+      # Configuración de Firebase opcional (secreto FIREBASE_OPTIONS_DART con el
+      # contenido de lib/firebase_options.dart generado por flutterfire).
+      - name: Configurar Firebase
+        env:
+          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
+        if: env.FIREBASE_OPTIONS_DART != ''
+        run: echo "$FIREBASE_OPTIONS_DART" > lib/firebase_options.dart
+
+      - name: APK
+        run: flutter build apk --release --obfuscate --split-debug-info=build/symbols
+
+      - name: App Bundle (Google Play)
+        run: flutter build appbundle --release --obfuscate --split-debug-info=build/symbols
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: todo-lo-que-dios-dijo-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: todo-lo-que-dios-dijo-aab
+          path: |
+            build/app/outputs/bundle/release/app-release.aab
+            build/symbols

@@ -1,0 +1,15 @@
+rules_version = '2';
+
+// El contenido es de solo lectura para la app. Solo se publica desde el
+// panel de administración o con tool/firestore/seed.mjs (credenciales de servicio).
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /content/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
