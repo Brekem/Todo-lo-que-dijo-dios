@@ -44,6 +44,8 @@ class ListeningState {
     this.godSpeaking = false,
     this.cue = true,
     this.divineVoice,
+    this.wordsOnly = false,
+    this.speakingText,
   });
 
   final ListeningStatus status;
@@ -82,6 +84,12 @@ class ListeningState {
   /// Voz elegida para Dios; `null` = la del narrador, más grave y pausada.
   final TtsVoice? divineVoice;
 
+  /// Solo se escuchan los versículos (sin contexto, explicación ni oración).
+  final bool wordsOnly;
+
+  /// Lo que se está leyendo de los versículos en este momento.
+  final String? speakingText;
+
   bool get isPlaying => status == ListeningStatus.playing;
   bool get isActive =>
       status == ListeningStatus.playing || status == ListeningStatus.paused;
@@ -108,6 +116,8 @@ class ListeningState {
     bool? godSpeaking,
     bool? cue,
     TtsVoice? Function()? divineVoice,
+    bool? wordsOnly,
+    String? Function()? speakingText,
   }) => ListeningState(
     status: status ?? this.status,
     passageIndex: passageIndex ?? this.passageIndex,
@@ -122,6 +132,8 @@ class ListeningState {
     godSpeaking: godSpeaking ?? this.godSpeaking,
     cue: cue ?? this.cue,
     divineVoice: divineVoice != null ? divineVoice() : this.divineVoice,
+    wordsOnly: wordsOnly ?? this.wordsOnly,
+    speakingText: speakingText != null ? speakingText() : this.speakingText,
   );
 }
 
@@ -180,7 +192,23 @@ class ListeningController extends Notifier<ListeningState> {
         (final name, final locale) => TtsVoice(name: name, locale: locale),
         null => null,
       },
+      wordsOnly: prefs.listeningWordsOnly,
     );
+  }
+
+  bool _defaultVoiceTried = false;
+
+  /// Si el usuario nunca eligió la voz de Dios, se usa la segunda voz en
+  /// español del teléfono («Voz 2»), distinta de la del narrador.
+  Future<void> _ensureDefaultVoice() async {
+    if (_defaultVoiceTried) return;
+    _defaultVoiceTried = true;
+    final prefs = ref.read(preferencesRepositoryProvider);
+    if (prefs.listeningDivineVoiceChosen || state.divineVoice != null) return;
+    final voices = await _engine.voices();
+    if (voices.length > 1 && !prefs.listeningDivineVoiceChosen) {
+      state = state.copyWith(divineVoice: () => voices[1]);
+    }
   }
 
   TtsEngine get _engine => ref.read(ttsEngineProvider);
@@ -215,7 +243,11 @@ class ListeningController extends Notifier<ListeningState> {
   Future<void> pause() async {
     if (!state.isPlaying) return;
     _run++;
-    state = state.copyWith(status: ListeningStatus.paused, godSpeaking: false);
+    state = state.copyWith(
+      status: ListeningStatus.paused,
+      godSpeaking: false,
+      speakingText: () => null,
+    );
     await _engine.stop();
   }
 
@@ -316,12 +348,22 @@ class ListeningController extends Notifier<ListeningState> {
   }
 
   /// Voces en español del teléfono, para elegir la de Dios.
-  Future<List<TtsVoice>> availableVoices() => _engine.voices();
+  Future<List<TtsVoice>> availableVoices() async {
+    await _ensureDefaultVoice();
+    return _engine.voices();
+  }
+
+  /// Escuchar solo los versículos, o la palabra completa con su explicación.
+  void setWordsOnly(bool on) {
+    state = state.copyWith(wordsOnly: on);
+    ref.read(preferencesRepositoryProvider).setListeningWordsOnly(on);
+  }
 
   /// Hace oír cómo suena Dios con la voz elegida (pausa lo que se escuchaba).
   Future<void> previewDivine() async {
     await _interrupt();
     final run = _run;
+    await _ensureDefaultVoice();
     await _engine.setRate(state.rate);
     await _engine.setDivineVoice(state.divineVoice);
     if (state.cue) await _engine.playCue();
@@ -342,7 +384,7 @@ class ListeningController extends Notifier<ListeningState> {
   Future<void> stop() async {
     _run++;
     if (state.isActive) state = state.copyWith(status: ListeningStatus.paused);
-    state = state.copyWith(godSpeaking: false);
+    state = state.copyWith(godSpeaking: false, speakingText: () => null);
     await _engine.stop();
   }
 
@@ -359,7 +401,7 @@ class ListeningController extends Notifier<ListeningState> {
   Future<void> _interrupt() async {
     _run++;
     if (state.isPlaying) state = state.copyWith(status: ListeningStatus.paused);
-    state = state.copyWith(godSpeaking: false);
+    state = state.copyWith(godSpeaking: false, speakingText: () => null);
     await _engine.stop();
   }
 
@@ -405,6 +447,8 @@ class ListeningController extends Notifier<ListeningState> {
   Future<void> _loop(ContentBundle content) async {
     final run = ++_run;
     final total = content.passages.length;
+    await _ensureDefaultVoice();
+    if (run != _run) return;
     await _engine.setRate(state.rate);
     await _engine.setDivineVoice(state.divineVoice);
     while (run == _run) {
@@ -445,6 +489,7 @@ class ListeningController extends Notifier<ListeningState> {
           state = state.copyWith(
             status: ListeningStatus.error,
             godSpeaking: false,
+            speakingText: () => null,
           );
         }
         return;
@@ -473,34 +518,42 @@ class ListeningController extends Notifier<ListeningState> {
     }
   }
 
-  /// El narrador anuncia quién habla, suena la campana y Dios habla con su
-  /// propia voz; después, un silencio antes de que vuelva el narrador.
+  /// Los versículos completos: el narrador lee la narración y, cada vez que
+  /// Dios habla, suena la campana y Dios habla con su propia voz. Los
+  /// versículos siguen sin cortes; al final, un silencio antes de seguir.
   Future<void> _speakQuote(Passage passage, int run) async {
-    final q = Narration.quoteParts(passage);
-    if (!q.divine) {
-      await _engine.speak('${q.announcement} ${q.words}');
-      return;
-    }
+    final lead = Narration.lead(passage);
     // Al repetir, basta la campana: no se vuelve a anunciar.
-    if (state.repetitions == 0) {
-      await _engine.speak(q.announcement);
+    if (lead != null &&
+        (state.repetitions == 0 || passage.id.startsWith('v-'))) {
+      await _engine.speak(lead);
       if (run != _run) return;
     }
-    if (state.cue) {
-      await _engine.playCue();
+    var godSpoke = false;
+    for (final part in Narration.readingParts(passage)) {
+      if (part.god && state.cue) {
+        await _engine.playCue();
+        if (run != _run) return;
+      }
+      state = state.copyWith(
+        godSpeaking: part.god,
+        speakingText: () => part.text,
+      );
+      await _engine.speak(
+        part.text,
+        style: part.god ? VoiceStyle.divine : VoiceStyle.narrator,
+      );
       if (run != _run) return;
+      godSpoke |= part.god;
     }
-    state = state.copyWith(godSpeaking: true);
-    await _engine.speak(q.words, style: VoiceStyle.divine);
-    if (run != _run) return;
-    state = state.copyWith(godSpeaking: false);
-    await Future<void>.delayed(ref.read(pauseAfterGodProvider));
+    state = state.copyWith(godSpeaking: false, speakingText: () => null);
+    if (godSpoke) await Future<void>.delayed(ref.read(pauseAfterGodProvider));
   }
 
   /// Sección que sigue dentro de la misma palabra, o `null` si ya terminó.
   NarrationSection? _nextSection(NarrationSection section) {
-    if (state.repeat == ListenRepeat.quote) {
-      // Solo la cita y su referencia.
+    if (state.repeat == ListenRepeat.quote || state.wordsOnly) {
+      // Solo los versículos y su referencia.
       return switch (section) {
         NarrationSection.intro => NarrationSection.quote,
         NarrationSection.quote => NarrationSection.reference,

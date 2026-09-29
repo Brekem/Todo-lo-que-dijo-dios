@@ -209,7 +209,7 @@ add("exo-4-11", "moises", "Éxodo 4:11-12", "Éxodo", "Yavé",
  ["miedo", "fe"], ["llamado", "capacitación", "debilidad", "propósito"], ["inseguridad", "complejo de inferioridad", "miedo a hablar"])
 
 add("exo-14-15", "moises", "Éxodo 14:15", "Éxodo", "Yavé",
- "¿Por qué me das voces? Di a los hijos de Israel que marchen.",
+ "¿Por qué clamas a mí? Di a los hijos de Israel que marchen.",
  "Moisés, frente al mar Rojo", ["Moisés"],
  "Tras diez plagas, el faraón dejó salir a Israel. Pero luego cambió de opinión y persiguió al pueblo con su ejército.",
  "Israel quedó atrapado entre el mar y los carros egipcios. El pueblo gritaba aterrado y Moisés clamaba a Dios.",

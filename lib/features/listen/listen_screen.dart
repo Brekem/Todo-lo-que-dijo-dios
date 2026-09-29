@@ -83,7 +83,8 @@ class _ListenBody extends ConsumerWidget {
     final query = state.searchQuery;
     final passage = content.passages[index];
     final era = content.eraById(passage.era)?.title ?? '';
-    final quote = Narration.quoteParts(passage);
+    final lead = Narration.lead(passage);
+    final parts = Narration.readingParts(passage);
     final sectionText =
         Narration.segments(
           passage,
@@ -110,15 +111,18 @@ class _ListenBody extends ConsumerWidget {
         Text('Escuchar la\nVoz de Dios', style: theme.textTheme.displaySmall),
         const SizedBox(height: 10),
         Text(
-          state.fromSearch
-              ? 'Las $length ${length == 1 ? 'palabra' : 'palabras'} de tu '
-                    'búsqueda «$query», una tras otra, con su explicación, '
-                    'aplicación y oración. Se guarda dónde te quedas.'
-              : state.shuffle
-              ? 'Las $total palabras en orden aleatorio, cada una con su '
-                    'explicación, aplicación y oración. Se guarda dónde te quedas.'
-              : 'Las $total palabras, de Génesis a Apocalipsis, con su '
-                    'explicación, aplicación y oración. Se guarda dónde te quedas.',
+          [
+            state.fromSearch
+                ? 'Las $length ${length == 1 ? 'palabra' : 'palabras'} de tu '
+                      'búsqueda «$query», una tras otra,'
+                : state.shuffle
+                ? 'Las $total palabras en orden aleatorio,'
+                : 'Las $total palabras, de Génesis a Apocalipsis,',
+            state.wordsOnly
+                ? 'solo los versículos, sin explicación.'
+                : 'con su explicación, aplicación y oración.',
+            'Se guarda dónde te quedas.',
+          ].join(' '),
           style: theme.textTheme.bodyMedium?.copyWith(color: palette.warmGray),
         ),
         if (state.fromSearch)
@@ -168,6 +172,28 @@ class _ListenBody extends ConsumerWidget {
             primaryLabel: 'Reintentar',
             onPrimary: controller.play,
           ),
+        const SizedBox(height: 16),
+        SegmentedButton<bool>(
+          key: const Key('words-only'),
+          showSelectedIcon: false,
+          style: SegmentedButton.styleFrom(
+            selectedBackgroundColor: palette.goldSoft,
+          ),
+          segments: const [
+            ButtonSegment(
+              value: false,
+              icon: Icon(Icons.menu_book_outlined),
+              label: Text('Con explicación'),
+            ),
+            ButtonSegment(
+              value: true,
+              icon: Icon(Icons.record_voice_over_outlined),
+              label: Text('Solo la Palabra'),
+            ),
+          ],
+          selected: {state.wordsOnly},
+          onSelectionChanged: (s) => controller.setWordsOnly(s.first),
+        ),
         const SizedBox(height: 16),
         // Palabra actual
         Card(
@@ -234,12 +260,16 @@ class _ListenBody extends ConsumerWidget {
         // Sección que se está leyendo (para seguir con la vista).
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 600),
-          child: state.section == NarrationSection.quote && quote.divine
-              ? _GodSpeaks(
-                  key: ValueKey('$index-god-${state.godSpeaking}'),
-                  speaking: state.godSpeaking,
-                  announcement: quote.announcement,
-                  words: quote.words,
+          child: state.section == NarrationSection.quote && parts.isNotEmpty
+              ? _NowReading(
+                  key: ValueKey('$index-${state.speakingText}'),
+                  god: state.godSpeaking,
+                  label: state.godSpeaking
+                      ? 'DIOS ESTÁ HABLANDO'
+                      : state.speakingText != null
+                      ? 'NARRADOR · ${passage.fullReference.toUpperCase()}'
+                      : (lead ?? passage.fullReference).toUpperCase(),
+                  text: state.speakingText ?? parts.first.text,
                 )
               : Container(
                   key: ValueKey('$index-${state.section.index}'),
@@ -425,40 +455,48 @@ class _ListenBody extends ConsumerWidget {
   }
 }
 
-/// Mientras Dios habla: tarjeta dorada y luminosa, con sus palabras en grande,
-/// para que se note que ya no habla el narrador.
-class _GodSpeaks extends StatelessWidget {
-  const _GodSpeaks({
+/// El trozo de los versículos que se está leyendo. Cuando habla Dios, la
+/// tarjeta se vuelve dorada y luminosa, con sus palabras en grande, para que se
+/// note que ya no habla el narrador.
+class _NowReading extends StatelessWidget {
+  const _NowReading({
     super.key,
-    required this.speaking,
-    required this.announcement,
-    required this.words,
+    required this.god,
+    required this.label,
+    required this.text,
   });
 
-  final bool speaking;
-  final String announcement;
-  final String words;
+  final bool god;
+  final String label;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
     final palette = AppPalette.of(context);
     final theme = Theme.of(context);
+    final big = god && text.length < 400;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(24, 20, 24, 26),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            palette.goldSoft,
-            palette.gold.withValues(alpha: speaking ? 0.32 : 0.14),
-          ],
-        ),
+        gradient: god
+            ? LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  palette.goldSoft,
+                  palette.gold.withValues(alpha: 0.32),
+                ],
+              )
+            : null,
+        color: god ? null : palette.parchment.withValues(alpha: 0.85),
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: palette.gold, width: speaking ? 1.6 : 1),
+        border: Border.all(
+          color: god ? palette.gold : palette.gold.withValues(alpha: 0.3),
+          width: god ? 1.6 : 1,
+        ),
         boxShadow: [
-          if (speaking)
+          if (god)
             BoxShadow(
               color: palette.gold.withValues(alpha: 0.45),
               blurRadius: 28,
@@ -472,16 +510,16 @@ class _GodSpeaks extends StatelessWidget {
           Row(
             children: [
               Icon(
-                speaking ? Icons.graphic_eq_rounded : Icons.hearing_rounded,
-                color: palette.gold,
+                god ? Icons.graphic_eq_rounded : Icons.menu_book_outlined,
+                color: god ? palette.gold : palette.warmGray,
                 size: 20,
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  speaking ? 'DIOS ESTÁ HABLANDO' : announcement.toUpperCase(),
+                  label,
                   style: theme.textTheme.labelLarge?.copyWith(
-                    color: palette.gold,
+                    color: god ? palette.gold : palette.warmGray,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.4,
                   ),
@@ -491,12 +529,16 @@ class _GodSpeaks extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            '«$words»',
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w600,
-              height: 1.35,
-            ),
+            god ? '«$text»' : text,
+            style:
+                (big
+                        ? theme.textTheme.headlineSmall
+                        : theme.textTheme.titleMedium)
+                    ?.copyWith(
+                      fontStyle: god ? FontStyle.italic : FontStyle.normal,
+                      fontWeight: god ? FontWeight.w600 : FontWeight.w400,
+                      height: 1.4,
+                    ),
           ),
         ],
       ),

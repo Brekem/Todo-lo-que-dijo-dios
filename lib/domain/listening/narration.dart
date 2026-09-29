@@ -17,32 +17,52 @@ enum NarrationSection {
   final String title;
 }
 
-/// La cita, separada en el anuncio del narrador y lo que Dios dijo.
-typedef QuoteParts = ({String announcement, String words, bool divine});
+/// Un trozo de la lectura: lo lee el narrador o lo dice Dios con su voz.
+typedef ReadingPart = ({String text, bool god});
 
 /// Convierte cada palabra de Dios en frases listas para el lector de voz.
 abstract final class Narration {
-  /// Anuncio antes de la cita («Escucha. Habla Yavé.») y las palabras mismas.
+  /// Quién habla, para anunciarlo («Habla el Padre»).
+  static String speakerName(Passage p) => switch (p.speaker) {
+    'La voz del Padre' => 'el Padre',
+    'El Señor' || 'La voz del Señor' => 'el Señor',
+    'El Espíritu Santo' => 'el Espíritu Santo',
+    'Jesús resucitado' || 'Jesús glorificado' => 'Jesús',
+    final s => s,
+  };
+
+  /// Los versículos completos en el orden en que se leen. Los trozos
+  /// seguidos del mismo que habla se unen aunque cambie el versículo, para
+  /// que la lectura no se corte.
   ///
-  /// [divine] es `false` cuando la cita no son palabras de Dios sino un
-  /// pasaje sobre «la voz de Yavé»; entonces la lee el narrador.
-  static QuoteParts quoteParts(Passage p) {
-    final words = _clean(p.quote);
-    if (p.id.startsWith('v-')) {
-      return (
-        announcement: 'Sobre la voz de Yavé.',
-        words: words,
-        divine: false,
-      );
+  /// En los pasajes sobre «la voz de Yavé» todo lo lee el narrador.
+  static List<ReadingPart> readingParts(Passage p) {
+    final narratorOnly = p.id.startsWith('v-');
+    final out = <ReadingPart>[];
+    for (final verse in p.verses) {
+      for (final part in verse.parts) {
+        final god = part.god && !narratorOnly;
+        final text = _clean(part.text);
+        if (text.isEmpty) continue;
+        if (out.isNotEmpty && out.last.god == god) {
+          out.last = (text: '${out.last.text} $text', god: god);
+        } else {
+          out.add((text: text, god: god));
+        }
+      }
     }
-    final who = switch (p.speaker) {
-      'La voz del Padre' => 'el Padre',
-      'El Señor' || 'La voz del Señor' => 'el Señor',
-      'El Espíritu Santo' => 'el Espíritu Santo',
-      'Jesús resucitado' || 'Jesús glorificado' => 'Jesús',
-      final s => s,
-    };
-    return (announcement: 'Escucha. Habla $who.', words: words, divine: true);
+    return out;
+  }
+
+  /// Lo que dice el narrador antes de los versículos, o `null` si los
+  /// versículos ya empiezan contándolo («Y dijo Dios:»).
+  static String? lead(Passage p) {
+    if (p.id.startsWith('v-')) return 'Sobre la voz de Yavé.';
+    final parts = readingParts(p);
+    if (parts.isNotEmpty && parts.first.god) {
+      return 'Escucha. Habla ${speakerName(p)}.';
+    }
+    return null;
   }
 
   static List<String> segments(
@@ -55,10 +75,10 @@ abstract final class Narration {
       for (final section in NarrationSection.values)
         _clean(switch (section) {
           NarrationSection.intro => 'Palabra $position de $total. $eraTitle.',
-          NarrationSection.quote => () {
-            final q = quoteParts(p);
-            return '${q.announcement} ${q.words}';
-          }(),
+          NarrationSection.quote => [
+            ?lead(p),
+            for (final part in readingParts(p)) part.text,
+          ].join(' '),
           NarrationSection.reference => '${spokenReference(p.reference)}.',
           NarrationSection.recipient =>
             '¿A quién habló Dios? A ${p.recipient}.',

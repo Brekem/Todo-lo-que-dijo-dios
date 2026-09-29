@@ -75,6 +75,13 @@ void main() {
 
     await tester.tap(find.byType(PassageTile).first);
     await settle(tester, 3);
+    // Los versículos completos, con lo que dice Dios en dorado.
+    expect(find.byKey(const Key('full-verses')), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('¿A quién habló Dios?'),
+      200,
+      scrollable: find.byType(Scrollable).last,
+    );
     expect(find.text('¿A quién habló Dios?'), findsOneWidget);
     expect(find.text('Contexto histórico'), findsOneWidget);
 

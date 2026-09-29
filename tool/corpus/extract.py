@@ -129,6 +129,14 @@ def uncap(text: str) -> str:
     return CAPS.sub(fix, text, count=1)
 
 
+def fix_caps(text: str, verse: str) -> str:
+    """Mayúsculas de inicio de capítulo; en los demás versículos solo se
+    normaliza «JEHOVÁ» (el resto, como «YO SOY EL QUE SOY», se respeta)."""
+    if verse == '1':
+        return uncap(text)
+    return re.sub(r'\bJEHOV([AÁ])\b', lambda m: 'Jehov' + m.group(1).lower(), text)
+
+
 def load():
     with SOURCE.open(encoding='utf-8') as f:
         rows = [r for r in csv.DictReader(f) if r['Book'] in BOOKS]
@@ -136,7 +144,8 @@ def load():
     for r in rows:
         key = (r['Book'], int(r['Chapter']))
         chapters.setdefault(key, []).append(
-            {'v': int(r['Verse']), 'text': uncap(r['Text'])})
+            {'v': int(r['Verse']),
+             'text': fix_caps(r['Text'], r['Verse'])})
     return chapters
 
 

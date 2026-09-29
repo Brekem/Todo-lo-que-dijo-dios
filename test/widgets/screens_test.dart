@@ -115,6 +115,8 @@ void main() {
         200,
         scrollable: scrollOf('personalize-list'),
       );
+      await tester.ensureVisible(find.text('Recibir esta palabra'));
+      await settle(tester, 1);
       await tester.tap(find.text('Recibir esta palabra'));
       await settle(tester, 3);
       await tester.scrollUntilVisible(

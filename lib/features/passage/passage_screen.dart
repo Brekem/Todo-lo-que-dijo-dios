@@ -13,6 +13,7 @@ import '../../data/models/passage.dart';
 import '../../domain/listening/listening_controller.dart';
 import '../../domain/random_word.dart';
 import '../../domain/search/search_engine.dart';
+import '../../shared/widgets/verses_text.dart';
 import '../../shared/widgets/async_content.dart';
 import '../../shared/widgets/fade_slide_in.dart';
 import '../../shared/widgets/golden_shimmer.dart';
@@ -356,7 +357,13 @@ class _PassageView extends ConsumerWidget {
               ],
             ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 24),
+          // Los versículos completos: toda la conversación, sin cortes.
+          FadeSlideIn(
+            delay: d(850),
+            child: FullVersesCard(passage: passage),
+          ),
+          const SizedBox(height: 32),
           // 3. ¿A quién habló Dios?
           FadeSlideIn(
             delay: d(1000),

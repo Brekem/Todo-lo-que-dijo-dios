@@ -115,11 +115,38 @@ class FlutterTtsEngine implements TtsEngine {
   }) async {
     await (_ready ??= _init());
     await _apply(style);
-    await _tts.speak(text);
+    final run = _stops;
+    // Android no lee textos de más de 4000 caracteres de una vez.
+    for (final chunk in chunks(text)) {
+      if (run != _stops) return;
+      await _tts.speak(chunk);
+    }
   }
+
+  /// Parte un texto largo en trozos que el lector acepte, cortando al final
+  /// de una frase (nunca a mitad de palabra).
+  static List<String> chunks(String text, {int max = 3000}) {
+    final out = <String>[];
+    var rest = text.trim();
+    while (rest.length > max) {
+      var cut = -1;
+      for (final mark in ['. ', '; ', ': ', ', ', ' ']) {
+        cut = rest.lastIndexOf(mark, max);
+        if (cut > max ~/ 2) break;
+      }
+      if (cut <= 0) cut = max;
+      out.add(rest.substring(0, cut + 1).trim());
+      rest = rest.substring(cut + 1).trim();
+    }
+    if (rest.isNotEmpty) out.add(rest);
+    return out;
+  }
+
+  int _stops = 0;
 
   @override
   Future<void> stop() async {
+    _stops++;
     await _player?.stop();
     await _tts.stop();
   }

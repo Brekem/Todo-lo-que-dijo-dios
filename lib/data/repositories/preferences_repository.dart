@@ -25,6 +25,7 @@ class PreferencesRepository {
   static const _listenSearchKey = 'listen_search';
   static const _listenCueKey = 'listen_cue';
   static const _listenDivineVoiceKey = 'listen_divine_voice';
+  static const _listenWordsOnlyKey = 'listen_words_only';
 
   List<SavedWord> get savedWords {
     final raw = _prefs.getString(_savedKey);
@@ -128,6 +129,10 @@ class PreferencesRepository {
   bool get listeningCue => _prefs.getBool(_listenCueKey) ?? true;
   Future<void> setListeningCue(bool on) => _prefs.setBool(_listenCueKey, on);
 
+  /// El usuario ya eligió la voz de Dios (aunque sea la automática).
+  bool get listeningDivineVoiceChosen =>
+      _prefs.containsKey(_listenDivineVoiceKey);
+
   /// Voz elegida para Dios: (nombre, idioma), o `null` = automática.
   (String, String)? get listeningDivineVoice {
     final raw = _prefs.getString(_listenDivineVoiceKey);
@@ -136,7 +141,14 @@ class PreferencesRepository {
     return (parts[0], parts[1]);
   }
 
-  Future<void> setListeningDivineVoice((String, String)? voice) => voice == null
-      ? _prefs.remove(_listenDivineVoiceKey)
-      : _prefs.setString(_listenDivineVoiceKey, '${voice.$1}\t${voice.$2}');
+  Future<void> setListeningDivineVoice((String, String)? voice) =>
+      _prefs.setString(
+        _listenDivineVoiceKey,
+        voice == null ? 'auto' : '${voice.$1}\t${voice.$2}',
+      );
+
+  /// Escuchar solo lo que Dios dijo, sin contexto, explicación ni oración.
+  bool get listeningWordsOnly => _prefs.getBool(_listenWordsOnlyKey) ?? false;
+  Future<void> setListeningWordsOnly(bool on) =>
+      _prefs.setBool(_listenWordsOnlyKey, on);
 }

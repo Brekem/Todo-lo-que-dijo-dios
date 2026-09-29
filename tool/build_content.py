@@ -27,9 +27,12 @@ from chapters_3 import CH as CH3  # noqa: E402
 from chapters_4 import CH as CH4  # noqa: E402
 from chapters_5 import CH as CH5  # noqa: E402
 from voz import VOZ_CH  # noqa: E402
+from extract import BOOKS as OT_BOOKS, SOURCE, fix_caps, modernize  # noqa: E402
+from segment import (NARRATOR_ONLY, QUOTE_OK, START_SPEAKING,  # noqa: E402
+                     apply_fixes, god_text, segment)
 
 # Increméntala cada vez que publiques contenido nuevo en Firestore.
-CONTENT_VERSION = 3
+CONTENT_VERSION = 4
 
 CH = {**CH1, **CH2, **CH3, **CH4, **CH5}
 OUT = ROOT / 'assets' / 'data' / 'content.json'
@@ -460,6 +463,132 @@ def load_curated():
 
 
 # ---------------------------------------------------------------------------
+# Versículos completos: narración y palabras de Dios
+# ---------------------------------------------------------------------------
+
+NT_BOOKS = {
+    'Matthew': ('mat', 'Mateo'), 'Mark': ('mar', 'Marcos'), 'Luke': ('luc', 'Lucas'),
+    'John': ('jua', 'Juan'), 'Acts': ('hch', 'Hechos'), 'II Corinthians': ('2co', '2 Corintios'),
+    'Revelation of John': ('apo', 'Apocalipsis'),
+}
+
+
+def load_bible():
+    """(libro en español, capítulo) → {versículo: texto actualizado}."""
+    import csv
+    names = {**OT_BOOKS, **NT_BOOKS}
+    bible = {}
+    with SOURCE.open(encoding='utf-8') as f:
+        for r in csv.DictReader(f):
+            if r['Book'] not in names:
+                continue
+            key = (names[r['Book']][1], int(r['Chapter']))
+            text = fix_caps(r['Text'], r['Verse'])
+            bible.setdefault(key, {})[int(r['Verse'])] = modernize(text)
+    return bible
+
+
+def verse_numbers(ref: str) -> tuple[str, int, list[int]]:
+    """«Génesis 6:14, 18» → ('Génesis', 6, [14, 18]); «Juan 11:25-26» → [25, 26]."""
+    m = re.match(r'^(.+?) (\d+):(.+)$', ref)
+    nums = []
+    for part in m.group(3).split(','):
+        a, _, b = part.strip().partition('-')
+        nums.extend(range(int(a), int(b or a) + 1))
+    return m.group(1), int(m.group(2)), nums
+
+
+# Palabras explicadas a mano: la conversación completa en la que están (el
+# pasaje por sí solo corta el diálogo). Libro y capítulo son los de la cita.
+CONVERSATION = {
+    'mat-3-17': (16, 17), 'mat-6-34': (33, 34), 'jua-8-11': (10, 11),
+    'jua-11-25': (23, 27), 'mat-11-28': (28, 30), 'jua-12-28': (27, 30),
+    'jua-13-34': (33, 35), 'mat-14-27': (26, 29), 'jua-14-27': (27, 27),
+    'mat-17-5': (5, 7), 'mat-18-22': (21, 22), 'jua-21-17': (15, 17),
+    'luc-23-43': (42, 43), 'mat-28-20': (18, 20), 'hch-9-4': (3, 6),
+    'hch-10-15': (13, 16), '2co-12-9': (8, 9), 'hch-13-2': (2, 2),
+    'hch-18-9': (9, 10), 'apo-1-17': (17, 18), 'apo-3-20': (20, 20),
+    'apo-21-5': (5, 6), 'apo-22-20': (20, 20),
+}
+
+# Dentro de estos libros habla Jesús o se oye la voz del Padre.
+NT_INTRO = re.compile(
+    r'(?:Jesús|el Señor|[Ll]a voz|una voz[^:]{0,30})[^:.;]{0,60}\b(?:dijo|díjole|díjoles|respondió|'
+    r'decía|diciendo|dice)\b[^:.;?]{0,60}:|(?:díjole|díjoles|dijo|respondió) (?:Jesús|el Señor)[^:.;]{0,40}:'
+    r'|oí una voz[^:]{0,40}:|dijo el Espíritu Santo:|el Señor en visión:')
+
+
+def segment_free(verses, book_id):
+    """Versículos fuera de los discursos del corpus (Nuevo Testamento, Salmos…)."""
+    seg, _ = segment(verses, speaking=False, book=book_id)
+    if not god_text(seg):
+        seg, _ = segment(verses, speaking=True, book=book_id)
+    return seg
+
+
+def segment_nt(verses):
+    """Jesús habla tras «Jesús le dijo:»; lo demás es narración."""
+    out = []
+    speaking = False
+    for verse in verses:
+        text = verse['text']
+        parts = []
+        pos = 0
+        for m in NT_INTRO.finditer(text):
+            if m.start() < pos:
+                continue
+            chunk = text[pos:m.start()].strip()
+            if chunk:
+                parts.append([chunk, speaking])
+            parts.append([m.group(0).strip(), False])
+            pos = m.end()
+            speaking = True
+        rest = text[pos:].strip()
+        # «Y él dijo: Señor…»: vuelve a hablar otro.
+        reply = re.search(r'\s(?=(?:Y|Entonces|Mas) (?:él|ella|ellos|Pedro|Pablo|Simón|Marta|Saulo)'
+                          r'[^:]{0,40}(?:dijo|respondió|dijeron)[^:]*:)', rest)
+        if speaking and reply:
+            parts.append([rest[:reply.start()].strip(), True])
+            parts.append([rest[reply.start():].strip(), False])
+            speaking = False
+        elif rest:
+            parts.append([rest, speaking])
+        merged = []
+        for t, g in parts:
+            if not t:
+                continue
+            if merged and merged[-1][1] == g:
+                merged[-1][0] += ' ' + t
+            else:
+                merged.append([t, g])
+        out.append([verse['v'], merged])
+    return out
+
+
+def _plain_words(s: str) -> str:
+    return re.sub(r'\s+', ' ', re.sub(r'[^\w\s]', ' ', s.lower())).strip()
+
+
+FAILED = []
+
+
+def check_verses(p: dict):
+    """Lo que la cita corta dice de Dios tiene que sonar con la voz de Dios."""
+    if p['id'] in QUOTE_OK or p['id'] in NARRATOR_ONLY or p['id'].startswith('v-'):
+        return
+    god = _plain_words(' '.join(t for _, parts in p['verses'] for t, g in parts if g))
+    for piece in p['quote'].split('…'):
+        piece = _plain_words(piece)
+        if p['curated'] and not p['id'].startswith('y-'):
+            # Las citas escritas a mano no siempre copian la RV1909 letra por letra.
+            words = piece.split()
+            if sum(w in god.split() for w in words) >= 0.8 * len(words):
+                continue
+        if piece not in god:
+            FAILED.append(f"{p['id']}: la cita no queda en la voz de Dios: «{piece}»")
+
+
+# ---------------------------------------------------------------------------
 # Ensamblado
 # ---------------------------------------------------------------------------
 
@@ -579,7 +708,48 @@ def main():
     stale = set(written) - used
     assert not stale, f'textos escritos para palabras que ya no existen: {sorted(stale)}'
     items = [kv for kv in items if not kv[1].pop('_skip', False)]
+
+    # Versículos completos, separados en narración y palabras de Dios.
+    bible = load_bible()
+    book_id = {name: i for i, name in {**OT_BOOKS, **NT_BOOKS}.values()}
+    seg = {}
+    for u in corpus['units']:
+        uid0 = f"y-{u['book']}-{u['chapter']}-{u['from']}"
+        parts, _ = segment(u['verses'], book=u['book'],
+                           speaking=uid0 in START_SPEAKING or u['kind'] not in ('intro', 'asi-dice'))
+        for v, vp in apply_fixes(uid0, parts, u['verses']):
+            seg[(u['bookName'], u['chapter'], v)] = vp
+    in_pieces = {(p['book'], *verse_numbers(p['reference'])[1:2], v)
+                 for _, p in items if p['id'].startswith('y-')
+                 for v in verse_numbers(p['reference'])[2]}
+    for _, p in items:
+        book, ch, nums = verse_numbers(p['reference'])
+        if p['id'] in CONVERSATION:
+            a, b = CONVERSATION[p['id']]
+            nums = list(range(a, b + 1))
+        else:
+            nums = list(range(min(nums), max(nums) + 1))
+        texts = bible[(book, ch)]
+        if p['id'].startswith('v-'):
+            verses = [[v, [[texts[v], False]]] for v in nums]
+        else:
+            if not p['id'].startswith('y-'):
+                # «Y habló Dios todas estas palabras, diciendo:» quedó sin palabra propia.
+                while (book, ch, nums[0] - 1) in seg and (book, ch, nums[0] - 1) not in in_pieces \
+                        and texts[nums[0] - 1].rstrip().endswith(':'):
+                    nums.insert(0, nums[0] - 1)
+            if all((book, ch, v) in seg for v in nums):
+                verses = [[v, seg[(book, ch, v)]] for v in nums]
+            elif book_id[book] in {i for i, _ in NT_BOOKS.values()}:
+                verses = segment_nt([{'v': v, 'text': texts[v]} for v in nums])
+            else:
+                verses = segment_free([{'v': v, 'text': texts[v]} for v in nums], book_id[book])
+        verses = apply_fixes(p['id'], verses, [{'v': v, 'text': texts[v]} for v in nums])
+        p['verses'] = [[v, [[t, 1 if g else 0] for t, g in vp]] for v, vp in verses]
+        p['fullReference'] = reference(book, ch, nums[0], nums[-1])
+        check_verses(p)
     items.sort(key=lambda kv: kv[0])
+    assert not FAILED, '\n'.join(FAILED)
     passages = []
     seen = set()
     for i, (_, p) in enumerate(items, 1):

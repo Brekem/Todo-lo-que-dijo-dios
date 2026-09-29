@@ -90,6 +90,8 @@ void main() {
         200,
         scrollable: find.byType(Scrollable).last,
       );
+      await tester.drag(find.byType(Scrollable).last, const Offset(0, -200));
+      await tester.pump();
       await tester.tap(find.byIcon(Icons.pause_rounded));
       await settle(tester);
       expect(find.byIcon(Icons.play_arrow_rounded), findsOneWidget);
@@ -142,6 +144,26 @@ void main() {
       await tester.tap(find.text('Campana antes de que Dios hable'));
       await settle(tester);
       expect(prefs.getBool('listen_cue'), isFalse);
+
+      // Cerrar la hoja de voces.
+      await tester.tapAt(const Offset(180, 40));
+      await settle(tester);
+
+      // Solo la Palabra: sin explicación.
+      await tester.scrollUntilVisible(
+        find.text('Solo la Palabra'),
+        -200,
+        scrollable: find.byType(Scrollable).last,
+      );
+      await tester.tap(find.text('Solo la Palabra'));
+      await settle(tester);
+      expect(prefs.getBool('listen_words_only'), isTrue);
+      await tester.scrollUntilVisible(
+        find.textContaining('sin explicación'),
+        -200,
+        scrollable: find.byType(Scrollable).last,
+      );
+      expect(find.textContaining('sin explicación'), findsOneWidget);
     },
   );
 

@@ -1,9 +1,48 @@
 import 'package:flutter/foundation.dart';
 
+/// Un trozo de versículo: lo que cuenta el narrador o lo que dice Dios.
+@immutable
+class VersePart {
+  const VersePart(this.text, {required this.god});
+
+  final String text;
+
+  /// `true` si son palabras de Dios.
+  final bool god;
+}
+
+/// Un versículo completo, separado en narración y palabras de Dios.
+@immutable
+class VerseText {
+  const VerseText(this.number, this.parts);
+
+  factory VerseText.fromJson(List<dynamic> json) =>
+      VerseText((json[0] as num).toInt(), [
+        for (final part in json[1] as List<dynamic>)
+          VersePart(
+            (part as List<dynamic>)[0] as String,
+            god: (part[1] as num) != 0,
+          ),
+      ]);
+
+  /// Número de versículo (0 si no se conoce).
+  final int number;
+  final List<VersePart> parts;
+
+  String get text => parts.map((p) => p.text).join(' ');
+
+  List<dynamic> toJson() => [
+    number,
+    [
+      for (final p in parts) [p.text, p.god ? 1 : 0],
+    ],
+  ];
+}
+
 /// Un pasaje donde Yavé (Dios) habla directamente.
 @immutable
 class Passage {
-  const Passage({
+  Passage({
     required this.id,
     required this.order,
     required this.era,
@@ -23,7 +62,15 @@ class Passage {
     required this.topics,
     required this.problems,
     this.curated = true,
-  });
+    String? fullReference,
+    List<VerseText>? verses,
+  }) : fullReference = fullReference ?? reference,
+       verses =
+           verses ??
+           // Contenido antiguo sin versículos: la cita corta entera.
+           [
+             VerseText(0, [VersePart(quote, god: !id.startsWith('v-'))]),
+           ];
 
   factory Passage.fromJson(Map<String, dynamic> json) => Passage(
     id: json['id'] as String,
@@ -45,6 +92,10 @@ class Passage {
     topics: _strings(json['topics']),
     problems: _strings(json['problems']),
     curated: json['curated'] as bool? ?? true,
+    fullReference: json['fullReference'] as String?,
+    verses: (json['verses'] as List<dynamic>?)
+        ?.map((v) => VerseText.fromJson(v as List<dynamic>))
+        .toList(),
   );
 
   final String id;
@@ -92,6 +143,16 @@ class Passage {
   final List<String> topics;
   final List<String> problems;
 
+  /// Referencia de los versículos completos (la conversación entera), que
+  /// puede ser más amplia que [reference].
+  final String fullReference;
+
+  /// Los versículos completos: la narración y todo lo que Dios dice.
+  final List<VerseText> verses;
+
+  /// Hay palabras de Dios en los versículos (no solo narración).
+  bool get hasGodWords => verses.any((v) => v.parts.any((p) => p.god));
+
   /// `true` si la explicación, aplicación y oración fueron escritas a mano;
   /// `false` si se generaron a partir del tema del pasaje.
   final bool curated;
@@ -116,6 +177,8 @@ class Passage {
     'topics': topics,
     'problems': problems,
     'curated': curated,
+    'fullReference': fullReference,
+    'verses': [for (final v in verses) v.toJson()],
   };
 
   /// Texto listo para compartir.
