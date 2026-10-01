@@ -7,6 +7,7 @@ import '../../data/models/content_bundle.dart';
 import '../../domain/listening/listening_controller.dart';
 import '../../domain/listening/narration.dart';
 import '../../domain/listening/tts_engine.dart';
+import '../../domain/listening/voice_sampler.dart';
 import '../../shared/widgets/async_content.dart';
 import '../../shared/widgets/sacred_background.dart';
 import '../../shared/widgets/section_label.dart';
@@ -417,22 +418,42 @@ class _ListenBody extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 10),
-        Center(
-          child: OutlinedButton.icon(
-            key: const Key('divine-voice-button'),
-            style: OutlinedButton.styleFrom(
-              foregroundColor: palette.gold,
-              side: BorderSide(color: palette.gold.withValues(alpha: 0.6)),
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 10,
+          runSpacing: 8,
+          children: [
+            OutlinedButton.icon(
+              key: const Key('divine-voice-button'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: palette.gold,
+                side: BorderSide(color: palette.gold.withValues(alpha: 0.6)),
+              ),
+              onPressed: () => showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                showDragHandle: true,
+                builder: (_) => const _DivineVoiceSheet(),
+              ),
+              icon: const Icon(Icons.record_voice_over_outlined),
+              label: const Text('La voz de Dios'),
             ),
-            onPressed: () => showModalBottomSheet<void>(
-              context: context,
-              isScrollControlled: true,
-              showDragHandle: true,
-              builder: (_) => const _DivineVoiceSheet(),
+            OutlinedButton.icon(
+              key: const Key('my-voice-button'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: palette.gold,
+                side: BorderSide(color: palette.gold.withValues(alpha: 0.6)),
+              ),
+              onPressed: () => showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                showDragHandle: true,
+                builder: (_) => const _MyVoiceSheet(),
+              ),
+              icon: const Icon(Icons.mic_none_rounded),
+              label: const Text('Tu voz'),
             ),
-            icon: const Icon(Icons.record_voice_over_outlined),
-            label: const Text('La voz de Dios'),
-          ),
+          ],
         ),
         const SizedBox(height: 18),
         Center(
@@ -637,6 +658,254 @@ class _DivineVoiceSheetState extends ConsumerState<_DivineVoiceSheet> {
                     ),
                   );
                 }
+                return Column(
+                  children: [
+                    for (final (i, v) in voices.indexed)
+                      option(
+                        v,
+                        'Voz ${i + 1} · ${v.locale}',
+                        v.offline
+                            ? 'Funciona sin conexión'
+                            : 'Necesita internet',
+                      ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// «Tu voz»: que todas las voces de la app se parezcan a la del usuario (o,
+/// de fábrica, a la voz de referencia), con su tono y su velocidad.
+class _MyVoiceSheet extends ConsumerStatefulWidget {
+  const _MyVoiceSheet();
+
+  @override
+  ConsumerState<_MyVoiceSheet> createState() => _MyVoiceSheetState();
+}
+
+class _MyVoiceSheetState extends ConsumerState<_MyVoiceSheet> {
+  late final Future<List<TtsVoice>> _voices = ref
+      .read(listeningProvider.notifier)
+      .availableVoices();
+  double? _recording;
+  bool _working = false;
+  String? _message;
+
+  Future<void> _match() async {
+    final controller = ref.read(listeningProvider.notifier);
+    setState(() {
+      _recording = 0;
+      _message = null;
+    });
+    final error = await controller.matchMyVoice(
+      progress: (p) {
+        if (mounted) setState(() => _recording = p);
+      },
+    );
+    if (!mounted) return;
+    final hz = ref.read(listeningProvider).voiceHz;
+    setState(() {
+      _recording = null;
+      _message = switch (error) {
+        null =>
+          'Listo: tu tono es de ${hz?.round()} Hz. Todas las voces se '
+              'ajustaron a tu voz.',
+        SampleError.permission =>
+          'Hace falta permiso para usar el micrófono. Actívalo en los ajustes '
+              'del teléfono y vuelve a intentarlo.',
+        SampleError.silence =>
+          'No se oyó bien tu voz. Acércate al teléfono y lee en voz alta '
+              'durante los 10 segundos.',
+        SampleError.failed =>
+          'No se pudo ajustar la voz en este teléfono. Prueba con los '
+              'controles de tono.',
+      };
+    });
+  }
+
+  Future<void> _reset() async {
+    setState(() => _working = true);
+    await ref.read(listeningProvider.notifier).resetVoice();
+    if (mounted) {
+      setState(() {
+        _working = false;
+        _message = 'Volviste a la voz de fábrica.';
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(listeningProvider);
+    final controller = ref.read(listeningProvider.notifier);
+    final palette = AppPalette.of(context);
+    final theme = Theme.of(context);
+    final busy = _recording != null || _working;
+
+    Widget slider({
+      required String label,
+      required double value,
+      required double min,
+      required double max,
+      required ValueChanged<double> onChanged,
+      Key? key,
+    }) => Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '$label · ${(value * 100).round()} %',
+          style: theme.textTheme.titleSmall,
+        ),
+        Slider(
+          key: key,
+          value: value.clamp(min, max),
+          min: min,
+          max: max,
+          divisions: ((max - min) * 20).round(),
+          activeColor: palette.gold,
+          onChanged: busy ? null : onChanged,
+        ),
+      ],
+    );
+
+    Widget option(TtsVoice? voice, String title, String? subtitle) {
+      final selected = voice == state.narratorVoice;
+      return ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: Icon(
+          selected ? Icons.radio_button_checked : Icons.radio_button_off,
+          color: selected ? palette.gold : palette.warmGray,
+        ),
+        title: Text(title),
+        subtitle: subtitle == null ? null : Text(subtitle),
+        trailing: IconButton(
+          tooltip: 'Probar',
+          icon: Icon(Icons.play_circle_outline, color: palette.gold),
+          onPressed: busy
+              ? null
+              : () async {
+                  await controller.setNarratorVoice(voice);
+                  await controller.previewNarrator();
+                },
+        ),
+        onTap: busy ? null : () => controller.setNarratorVoice(voice),
+      );
+    }
+
+    return SafeArea(
+      child: DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.8,
+        maxChildSize: 0.95,
+        builder: (context, scroll) => ListView(
+          controller: scroll,
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+          children: [
+            Text('Tu voz', style: theme.textTheme.headlineSmall),
+            const SizedBox(height: 8),
+            Text(
+              state.voiceHz == null
+                  ? 'De fábrica, el narrador y Dios hablan con el tono de la '
+                        'voz de referencia de la app. Graba tu voz y se '
+                        'parecerán a la tuya.'
+                  : 'El narrador y Dios hablan con el tono de tu voz '
+                        '(${state.voiceHz!.round()} Hz). Dios, un poco más '
+                        'grave.',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: palette.warmGray,
+              ),
+            ),
+            const SizedBox(height: 16),
+            if (_recording != null) ...[
+              Text(
+                'Lee en voz alta, con calma:',
+                style: theme.textTheme.titleSmall,
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Yavé es mi pastor; nada me faltará. En lugares de delicados '
+                'pastos me hará yacer; junto a aguas de reposo me pastoreará. '
+                'Confortará mi alma.',
+                style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
+              ),
+              const SizedBox(height: 10),
+              LinearProgressIndicator(value: _recording, color: palette.gold),
+            ] else
+              Center(
+                child: FilledButton.icon(
+                  key: const Key('match-my-voice'),
+                  onPressed: busy ? null : _match,
+                  icon: const Icon(Icons.mic_rounded),
+                  label: const Text('Parecida a mi voz'),
+                ),
+              ),
+            if (_message != null) ...[
+              const SizedBox(height: 10),
+              Text(_message!, style: theme.textTheme.bodyMedium),
+            ],
+            const SizedBox(height: 16),
+            slider(
+              key: const Key('narrator-pitch'),
+              label: 'Tono del narrador',
+              value: state.narratorPitch,
+              min: 0.5,
+              max: 2,
+              onChanged: (v) => controller.setPitch(narrator: v),
+            ),
+            slider(
+              key: const Key('divine-pitch'),
+              label: 'Tono de Dios',
+              value: state.divinePitch,
+              min: 0.5,
+              max: 2,
+              onChanged: (v) => controller.setPitch(divine: v),
+            ),
+            slider(
+              key: const Key('voice-rate'),
+              label: 'Velocidad',
+              value: state.rate,
+              min: 0.6,
+              max: 1.5,
+              onChanged: controller.setRate,
+            ),
+            Wrap(
+              spacing: 8,
+              children: [
+                TextButton.icon(
+                  onPressed: busy ? null : controller.previewNarrator,
+                  icon: const Icon(Icons.play_arrow_rounded),
+                  label: const Text('Probar el narrador'),
+                ),
+                TextButton.icon(
+                  onPressed: busy ? null : controller.previewDivine,
+                  icon: const Icon(Icons.play_arrow_rounded),
+                  label: const Text('Probar a Dios'),
+                ),
+              ],
+            ),
+            TextButton.icon(
+              onPressed: busy ? null : _reset,
+              icon: const Icon(Icons.restart_alt_rounded),
+              label: const Text('Volver a la voz de fábrica'),
+            ),
+            const Divider(),
+            Text('Voz del narrador', style: theme.textTheme.titleMedium),
+            option(null, 'La voz del teléfono', null),
+            FutureBuilder<List<TtsVoice>>(
+              future: _voices,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                final voices = snapshot.data ?? const <TtsVoice>[];
                 return Column(
                   children: [
                     for (final (i, v) in voices.indexed)

@@ -7,7 +7,9 @@ import 'package:todo_lo_que_dios_dijo/app/providers.dart';
 import 'package:todo_lo_que_dios_dijo/data/models/content_bundle.dart';
 import 'package:todo_lo_que_dios_dijo/domain/listening/listening_controller.dart';
 import 'package:todo_lo_que_dios_dijo/domain/listening/narration.dart';
+import 'package:todo_lo_que_dios_dijo/domain/listening/pitch.dart';
 import 'package:todo_lo_que_dios_dijo/domain/listening/tts_engine.dart';
+import 'package:todo_lo_que_dios_dijo/domain/listening/voice_sampler.dart';
 
 import '../helpers.dart';
 
@@ -60,6 +62,45 @@ class FakeTts implements TtsEngine {
 
   @override
   Future<void> setRate(double rate) async {}
+
+  TtsVoice? narratorVoice;
+  ({double narrator, double divine})? pitch;
+
+  /// Tono natural de cada voz: la del teléfono es grave (de hombre) y la
+  /// «Voz 1» aguda (de mujer); la de internet no se puede medir.
+  final naturalHzByName = <String?, double>{
+    null: 120,
+    'es-us-x-esd-local': 200,
+  };
+
+  @override
+  Future<void> setNarratorVoice(TtsVoice? voice) async => narratorVoice = voice;
+
+  @override
+  Future<void> setPitch({
+    required double narrator,
+    required double divine,
+  }) async => pitch = (narrator: narrator, divine: divine);
+
+  @override
+  Future<double?> naturalHz(TtsVoice? voice) async =>
+      naturalHzByName[voice?.name];
+}
+
+/// Micrófono falso: «oye» siempre la misma voz.
+class FakeSampler implements VoiceSampler {
+  FakeSampler(this.hz, [this.error]);
+  final double? hz;
+  final SampleError? error;
+
+  @override
+  Future<({double? hz, SampleError? error})> sample(
+    Duration length, {
+    void Function(double progress)? progress,
+  }) async {
+    progress?.call(1);
+    return (hz: hz, error: error);
+  }
 }
 
 class _FakeContent extends ContentNotifier {
@@ -83,6 +124,7 @@ Future<(ProviderContainer, FakeTts, SharedPreferences)> setUpContainer([
       ttsEngineProvider.overrideWithValue(tts),
       repeatPauseProvider.overrideWithValue(Duration.zero),
       pauseAfterGodProvider.overrideWithValue(Duration.zero),
+      voiceSamplerProvider.overrideWithValue(FakeSampler(110)),
     ],
   );
   await container.read(contentProvider.future);
@@ -90,7 +132,7 @@ Future<(ProviderContainer, FakeTts, SharedPreferences)> setUpContainer([
 }
 
 Future<void> settle() async {
-  for (var i = 0; i < 5; i++) {
+  for (var i = 0; i < 20; i++) {
     await Future<void>.delayed(Duration.zero);
   }
 }
@@ -208,6 +250,92 @@ void voiceTests() {
       await settle();
       expect(tts2.divineVoice, isNull);
       await c2.read(listeningProvider.notifier).pause();
+    });
+
+    test('de fábrica, las voces se parecen a la voz de referencia', () async {
+      final (c, tts, prefs) = await setUpContainer();
+      await c.read(listeningProvider.notifier).playFrom(0);
+      await settle();
+      final s = c.read(listeningProvider);
+      // 165 Hz está más cerca de la «Voz 1» (200 Hz) que de la del teléfono
+      // (120 Hz): el narrador usa la Voz 1, un poco más grave.
+      expect(s.narratorVoice?.name, 'es-us-x-esd-local');
+      expect(tts.narratorVoice?.name, 'es-us-x-esd-local');
+      expect(s.narratorPitch, closeTo(Pitch.referenceHz / 200, 0.001));
+      expect(tts.pitch?.narrator, closeTo(Pitch.referenceHz / 200, 0.001));
+      // La «Voz 2» de Dios necesita internet y no se pudo medir: tono de
+      // siempre.
+      expect(s.divinePitch, 0.72);
+      expect(prefs.getStringList('listen_pitch'), isNotNull);
+      expect(tts.spoken.first, startsWith('Palabra 1 de'));
+      await c.read(listeningProvider.notifier).pause();
+      c.dispose();
+      // Ya ajustada, no se vuelve a medir.
+      final (c2, tts2, _) = await setUpContainer({
+        'listen_pitch': ['0.9', '0.7'],
+      });
+      tts2.naturalHzByName.clear();
+      await c2.read(listeningProvider.notifier).playFrom(0);
+      await settle();
+      expect(tts2.pitch, (narrator: 0.9, divine: 0.7));
+      expect(c2.read(listeningProvider).narratorVoice, isNull);
+      await c2.read(listeningProvider.notifier).pause();
+    });
+
+    test('«Parecida a mi voz»: graba, mide y ajusta todas las voces', () async {
+      final (c, tts, prefs) = await setUpContainer({
+        'listen_divine_voice': 'auto',
+      });
+      final ctrl = c.read(listeningProvider.notifier);
+      expect(await ctrl.matchMyVoice(), isNull);
+      final s = c.read(listeningProvider);
+      // 110 Hz: la voz del teléfono (120 Hz) es la más parecida.
+      expect(s.voiceHz, 110);
+      expect(s.narratorVoice, isNull);
+      expect(s.narratorPitch, closeTo(110 / 120, 0.001));
+      // Dios: la misma voz, más grave.
+      expect(s.divinePitch, closeTo(110 * Pitch.divineRatio / 120, 0.001));
+      expect(tts.pitch?.divine, closeTo(110 * Pitch.divineRatio / 120, 0.001));
+      expect(prefs.getDouble('listen_voice_hz'), 110);
+      // Elegir otra voz para el narrador mantiene el tono del usuario.
+      await ctrl.setNarratorVoice(
+        const TtsVoice(name: 'es-us-x-esd-local', locale: 'es-US'),
+      );
+      expect(
+        c.read(listeningProvider).narratorPitch,
+        closeTo(110 / 200, 0.001),
+      );
+      expect(prefs.getString('listen_narrator_voice'), contains('esd-local'));
+      // El tono también se puede afinar a mano.
+      await ctrl.setPitch(narrator: 1.1);
+      expect(c.read(listeningProvider).narratorPitch, 1.1);
+      expect(tts.pitch?.narrator, 1.1);
+      // Y volver a la voz de fábrica.
+      await ctrl.resetVoice();
+      expect(c.read(listeningProvider).voiceHz, isNull);
+      expect(prefs.getDouble('listen_voice_hz'), isNull);
+      expect(
+        c.read(listeningProvider).narratorPitch,
+        closeTo(Pitch.referenceHz / 200, 0.001),
+      );
+    });
+
+    test('si no se oye la voz, avisa y no cambia nada', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final c = ProviderContainer(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(prefs),
+          ttsEngineProvider.overrideWithValue(FakeTts()),
+          voiceSamplerProvider.overrideWithValue(
+            FakeSampler(null, SampleError.silence),
+          ),
+        ],
+      );
+      final ctrl = c.read(listeningProvider.notifier);
+      expect(await ctrl.matchMyVoice(), SampleError.silence);
+      expect(c.read(listeningProvider).voiceHz, isNull);
+      expect(c.read(listeningProvider).narratorPitch, 1.02);
     });
 
     test('se puede quitar la campana y se recuerda', () async {

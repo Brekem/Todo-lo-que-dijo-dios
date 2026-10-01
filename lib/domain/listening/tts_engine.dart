@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:path_provider/path_provider.dart';
+
+import 'pitch.dart';
 
 /// Quién habla: el narrador de la app, o Dios.
 enum VoiceStyle {
@@ -53,6 +57,16 @@ abstract interface class TtsEngine {
 
   /// Voz para las palabras de Dios; `null` = la misma del narrador, más grave.
   Future<void> setDivineVoice(TtsVoice? voice);
+
+  /// Voz del narrador; `null` = la voz en español del teléfono.
+  Future<void> setNarratorVoice(TtsVoice? voice);
+
+  /// Tono de cada voz (1 = su tono natural; de 0.5 a 2).
+  Future<void> setPitch({required double narrator, required double divine});
+
+  /// Tono natural de una voz del teléfono, en hercios (`null` = la voz en
+  /// español del teléfono). Devuelve `null` si no se pudo medir.
+  Future<double?> naturalHz(TtsVoice? voice);
 }
 
 /// Voz del sistema Android (funciona sin conexión si hay voz en español).
@@ -65,13 +79,18 @@ class FlutterTtsEngine implements TtsEngine {
   TtsVoice? _divineVoice;
   VoiceStyle? _current;
 
+  TtsVoice? _narratorVoice;
+  TtsVoice? _applied;
+  bool _voiceApplied = false;
+
   /// Dios habla más grave y un poco más despacio que el narrador.
-  static const _divinePitch = 0.72;
+  double _divinePitch = 0.72;
+  double _narratorPitch = 1.02;
   static const _divineSlowdown = 0.82;
-  static const _narratorPitch = 1.02;
 
   Future<void> _init() async {
     await _tts.awaitSpeakCompletion(true);
+    await _tts.awaitSynthCompletion(true);
     for (final lang in const ['es-US', 'es-MX', 'es-ES', 'es']) {
       try {
         if (await _tts.isLanguageAvailable(lang) == true) {
@@ -87,19 +106,21 @@ class FlutterTtsEngine implements TtsEngine {
     await _apply(VoiceStyle.narrator);
   }
 
+  /// Pone la voz indicada (`null` = la del idioma), solo si cambió.
+  Future<void> _useVoice(TtsVoice? voice) async {
+    if (_voiceApplied && voice == _applied) return;
+    if (voice != null) {
+      await _tts.setVoice({'name': voice.name, 'locale': voice.locale});
+    } else if (_language != null) {
+      await _tts.setLanguage(_language!); // vuelve a la voz del idioma
+    }
+    _applied = voice;
+    _voiceApplied = true;
+  }
+
   Future<void> _apply(VoiceStyle style) async {
     final divine = style == VoiceStyle.divine;
-    // Cambiar de voz solo cuando hace falta.
-    if (_divineVoice != null && _current != style) {
-      if (divine) {
-        await _tts.setVoice({
-          'name': _divineVoice!.name,
-          'locale': _divineVoice!.locale,
-        });
-      } else if (_language != null) {
-        await _tts.setLanguage(_language!); // vuelve a la voz del idioma
-      }
-    }
+    await _useVoice(divine ? (_divineVoice ?? _narratorVoice) : _narratorVoice);
     await _tts.setPitch(divine ? _divinePitch : _narratorPitch);
     // En Android 0.5 es la velocidad natural.
     await _tts.setSpeechRate(
@@ -198,12 +219,53 @@ class FlutterTtsEngine implements TtsEngine {
 
   @override
   Future<void> setDivineVoice(TtsVoice? voice) async {
-    final hadVoice = _divineVoice != null;
     _divineVoice = voice;
-    // Si se quitó la voz propia de Dios, volver a la del idioma.
-    if (hadVoice && voice == null && _language != null && _ready != null) {
-      await _tts.setLanguage(_language!);
-    }
     _current = null;
+  }
+
+  @override
+  Future<void> setNarratorVoice(TtsVoice? voice) async {
+    _narratorVoice = voice;
+    _current = null;
+  }
+
+  @override
+  Future<void> setPitch({
+    required double narrator,
+    required double divine,
+  }) async {
+    _narratorPitch = narrator;
+    _divinePitch = divine;
+    _current = null;
+  }
+
+  @override
+  Future<double?> naturalHz(TtsVoice? voice) async {
+    await (_ready ??= _init());
+    try {
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/tono_de_voz.wav');
+      if (file.existsSync()) file.deleteSync();
+      await _useVoice(voice);
+      await _tts.setPitch(1);
+      await _tts.setSpeechRate(0.5);
+      _current = null;
+      await _tts
+          .synthesizeToFile(
+            'En el principio creó Dios los cielos y la tierra. Y dijo Dios: '
+            'Sea la luz, y fue la luz. Yo soy tu Dios.',
+            file.path,
+            true,
+          )
+          .timeout(const Duration(seconds: 15));
+      if (!file.existsSync()) return null;
+      final wav = Pitch.readWav(await file.readAsBytes());
+      file.deleteSync();
+      if (wav == null) return null;
+      return Pitch.medianHz(wav.samples, wav.sampleRate);
+    } catch (e) {
+      debugPrint('No se pudo medir el tono de la voz: $e');
+      return null;
+    }
   }
 }

@@ -8,7 +8,7 @@ import 'package:todo_lo_que_dios_dijo/data/models/content_bundle.dart';
 import 'package:todo_lo_que_dios_dijo/domain/listening/listening_controller.dart';
 import 'package:todo_lo_que_dios_dijo/shared/widgets/rotating_search_bar.dart';
 
-import '../domain/listening_test.dart' show FakeTts;
+import '../domain/listening_test.dart' show FakeSampler, FakeTts;
 import '../helpers.dart';
 
 class _FakeContent extends ContentNotifier {
@@ -231,5 +231,67 @@ void main() {
     );
     await tester.tap(find.byIcon(Icons.pause_rounded));
     await settle(tester);
+  });
+
+  testWidgets('tu voz: parecida a mi voz, tono y voz del narrador', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1080, 2220);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final tts = FakeTts();
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(prefs),
+          contentProvider.overrideWith(() => _FakeContent(loadContent())),
+          ttsEngineProvider.overrideWithValue(tts),
+          voiceSamplerProvider.overrideWithValue(FakeSampler(110)),
+        ],
+        child: const TodoLoQueDiosDijoApp(),
+      ),
+    );
+    await settle(tester, 3);
+    await tester.ensureVisible(find.text('Comenzar recorrido'));
+    await tester.tap(find.text('Comenzar recorrido'));
+    await settle(tester);
+    await tester.tap(find.text('Escuchar las $total palabras'));
+    await settle(tester);
+
+    final button = find.byKey(const Key('my-voice-button'));
+    await tester.scrollUntilVisible(
+      button,
+      200,
+      scrollable: find.byType(Scrollable).last,
+    );
+    await tester.drag(find.byType(Scrollable).last, const Offset(0, -150));
+    await settle(tester);
+    await tester.tap(button);
+    await settle(tester);
+    expect(find.textContaining('voz de referencia'), findsOneWidget);
+
+    await tester.tap(find.text('Parecida a mi voz'));
+    await settle(tester);
+    expect(find.textContaining('tu tono es de 110 Hz'), findsOneWidget);
+    expect(prefs.getDouble('listen_voice_hz'), 110);
+    expect(tts.pitch?.narrator, closeTo(110 / 120, 0.001));
+
+    // Voz del narrador.
+    await tester.drag(find.text('Tu voz').last, const Offset(0, -600));
+    await settle(tester);
+    await tester.scrollUntilVisible(
+      find.text('Voz 1 · es-US'),
+      200,
+      scrollable: find.byType(Scrollable).last,
+    );
+    await tester.drag(find.byType(Scrollable).last, const Offset(0, -100));
+    await settle(tester);
+    await tester.tap(find.text('Voz 1 · es-US'));
+    await settle(tester);
+    expect(tts.narratorVoice?.name, 'es-us-x-esd-local');
+    expect(prefs.getString('listen_narrator_voice'), contains('esd-local'));
   });
 }

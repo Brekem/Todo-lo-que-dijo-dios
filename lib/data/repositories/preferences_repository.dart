@@ -26,6 +26,9 @@ class PreferencesRepository {
   static const _listenCueKey = 'listen_cue';
   static const _listenDivineVoiceKey = 'listen_divine_voice';
   static const _listenWordsOnlyKey = 'listen_words_only';
+  static const _listenNarratorVoiceKey = 'listen_narrator_voice';
+  static const _listenPitchKey = 'listen_pitch';
+  static const _listenVoiceHzKey = 'listen_voice_hz';
 
   List<SavedWord> get savedWords {
     final raw = _prefs.getString(_savedKey);
@@ -151,4 +154,38 @@ class PreferencesRepository {
   bool get listeningWordsOnly => _prefs.getBool(_listenWordsOnlyKey) ?? false;
   Future<void> setListeningWordsOnly(bool on) =>
       _prefs.setBool(_listenWordsOnlyKey, on);
+
+  /// Voz elegida para el narrador: (nombre, idioma), o `null` = la del
+  /// teléfono.
+  (String, String)? get listeningNarratorVoice {
+    final parts = _prefs.getString(_listenNarratorVoiceKey)?.split('\t');
+    if (parts == null || parts.length != 2) return null;
+    return (parts[0], parts[1]);
+  }
+
+  Future<void> setListeningNarratorVoice((String, String)? voice) =>
+      voice == null
+      ? _prefs.remove(_listenNarratorVoiceKey)
+      : _prefs.setString(_listenNarratorVoiceKey, '${voice.$1}\t${voice.$2}');
+
+  /// Tono del narrador y de Dios, o `null` si aún no se ajustó.
+  (double, double)? get listeningPitch {
+    final raw = _prefs.getStringList(_listenPitchKey);
+    if (raw == null || raw.length != 2) return null;
+    final narrator = double.tryParse(raw[0]);
+    final divine = double.tryParse(raw[1]);
+    if (narrator == null || divine == null) return null;
+    return (narrator, divine);
+  }
+
+  Future<void> setListeningPitch((double, double)? pitch) => pitch == null
+      ? _prefs.remove(_listenPitchKey)
+      : _prefs.setStringList(_listenPitchKey, ['${pitch.$1}', '${pitch.$2}']);
+
+  /// Tono (Hz) al que se ajustan las voces: el de la voz del usuario si la
+  /// grabó, o `null` = el de la voz de referencia de la app.
+  double? get listeningVoiceHz => _prefs.getDouble(_listenVoiceHzKey);
+  Future<void> setListeningVoiceHz(double? hz) => hz == null
+      ? _prefs.remove(_listenVoiceHzKey)
+      : _prefs.setDouble(_listenVoiceHzKey, hz);
 }

@@ -7,7 +7,9 @@ import '../../app/providers.dart';
 import '../../data/models/content_bundle.dart';
 import '../../data/models/passage.dart';
 import 'narration.dart';
+import 'pitch.dart';
 import 'tts_engine.dart';
+import 'voice_sampler.dart';
 
 enum ListeningStatus { idle, playing, paused, finished, error }
 
@@ -46,6 +48,10 @@ class ListeningState {
     this.divineVoice,
     this.wordsOnly = false,
     this.speakingText,
+    this.narratorVoice,
+    this.narratorPitch = 1.02,
+    this.divinePitch = 0.72,
+    this.voiceHz,
   });
 
   final ListeningStatus status;
@@ -90,6 +96,17 @@ class ListeningState {
   /// Lo que se está leyendo de los versículos en este momento.
   final String? speakingText;
 
+  /// Voz del narrador; `null` = la voz en español del teléfono.
+  final TtsVoice? narratorVoice;
+
+  /// Tono del narrador y de Dios (1 = el natural de cada voz).
+  final double narratorPitch;
+  final double divinePitch;
+
+  /// Tono (Hz) al que se parecen las voces: el de la voz del usuario si la
+  /// grabó, o `null` = el de la voz de referencia de la app.
+  final double? voiceHz;
+
   bool get isPlaying => status == ListeningStatus.playing;
   bool get isActive =>
       status == ListeningStatus.playing || status == ListeningStatus.paused;
@@ -118,6 +135,10 @@ class ListeningState {
     TtsVoice? Function()? divineVoice,
     bool? wordsOnly,
     String? Function()? speakingText,
+    TtsVoice? Function()? narratorVoice,
+    double? narratorPitch,
+    double? divinePitch,
+    double? Function()? voiceHz,
   }) => ListeningState(
     status: status ?? this.status,
     passageIndex: passageIndex ?? this.passageIndex,
@@ -134,10 +155,17 @@ class ListeningState {
     divineVoice: divineVoice != null ? divineVoice() : this.divineVoice,
     wordsOnly: wordsOnly ?? this.wordsOnly,
     speakingText: speakingText != null ? speakingText() : this.speakingText,
+    narratorVoice: narratorVoice != null ? narratorVoice() : this.narratorVoice,
+    narratorPitch: narratorPitch ?? this.narratorPitch,
+    divinePitch: divinePitch ?? this.divinePitch,
+    voiceHz: voiceHz != null ? voiceHz() : this.voiceHz,
   );
 }
 
 final ttsEngineProvider = Provider<TtsEngine>((ref) => FlutterTtsEngine());
+
+/// Micrófono, para que la voz de la app se parezca a la del usuario.
+final voiceSamplerProvider = Provider<VoiceSampler>((ref) => MicVoiceSampler());
 
 /// Silencio entre una repetición y la siguiente.
 final repeatPauseProvider = Provider<Duration>(
@@ -193,22 +221,157 @@ class ListeningController extends Notifier<ListeningState> {
         null => null,
       },
       wordsOnly: prefs.listeningWordsOnly,
+      narratorVoice: switch (prefs.listeningNarratorVoice) {
+        (final name, final locale) => TtsVoice(name: name, locale: locale),
+        null => null,
+      },
+      narratorPitch: prefs.listeningPitch?.$1 ?? 1.02,
+      divinePitch: prefs.listeningPitch?.$2 ?? 0.72,
+      voiceHz: prefs.listeningVoiceHz,
     );
   }
 
   bool _defaultVoiceTried = false;
 
-  /// Si el usuario nunca eligió la voz de Dios, se usa la segunda voz en
-  /// español del teléfono («Voz 2»), distinta de la del narrador.
+  /// La primera vez: la voz de Dios es la segunda voz en español del
+  /// teléfono («Voz 2»), distinta de la del narrador, si el usuario nunca
+  /// eligió otra; y todas las voces se ajustan al tono de la voz de
+  /// referencia de la app (o al del usuario, si lo grabó).
   Future<void> _ensureDefaultVoice() async {
     if (_defaultVoiceTried) return;
     _defaultVoiceTried = true;
     final prefs = ref.read(preferencesRepositoryProvider);
-    if (prefs.listeningDivineVoiceChosen || state.divineVoice != null) return;
-    final voices = await _engine.voices();
-    if (voices.length > 1 && !prefs.listeningDivineVoiceChosen) {
-      state = state.copyWith(divineVoice: () => voices[1]);
+    if (!prefs.listeningDivineVoiceChosen && state.divineVoice == null) {
+      final voices = await _engine.voices();
+      if (!ref.mounted) return;
+      if (voices.length > 1 && !prefs.listeningDivineVoiceChosen) {
+        state = state.copyWith(divineVoice: () => voices[1]);
+      }
     }
+    if (prefs.listeningPitch == null) {
+      await _matchVoice(state.voiceHz ?? Pitch.referenceHz);
+    }
+  }
+
+  final _naturalHz = <TtsVoice?, double?>{};
+
+  Future<double?> _measure(TtsVoice? voice) async {
+    if (_naturalHz.containsKey(voice)) return _naturalHz[voice];
+    return _naturalHz[voice] = await _engine.naturalHz(voice);
+  }
+
+  /// Elige la voz del teléfono más parecida a [targetHz] para el narrador y
+  /// ajusta el tono del narrador y de Dios. Devuelve `false` si no se pudo
+  /// medir ninguna voz.
+  Future<bool> _matchVoice(double targetHz) async {
+    final candidates = <TtsVoice?>[
+      null,
+      ...(await _engine.voices()).where((v) => v.offline).take(6),
+    ];
+    TtsVoice? best;
+    double? bestHz;
+    for (final voice in candidates) {
+      final hz = await _measure(voice);
+      if (!ref.mounted) return false;
+      if (hz == null) continue;
+      if (bestHz == null ||
+          (log(targetHz / hz)).abs() < (log(targetHz / bestHz)).abs()) {
+        best = voice;
+        bestHz = hz;
+      }
+    }
+    if (bestHz == null) return false;
+    final godHz = await _measure(state.divineVoice ?? best);
+    if (!ref.mounted) return false;
+    state = state.copyWith(narratorVoice: () => best);
+    ref
+        .read(preferencesRepositoryProvider)
+        .setListeningNarratorVoice(
+          best == null ? null : (best.name, best.locale),
+        );
+    await setPitch(
+      narrator: Pitch.factor(targetHz, bestHz),
+      divine: godHz == null
+          ? state.divinePitch
+          : Pitch.factor(targetHz * Pitch.divineRatio, godHz),
+    );
+    return true;
+  }
+
+  /// Tono de las voces (1 = el natural de cada voz).
+  Future<void> setPitch({double? narrator, double? divine}) async {
+    state = state.copyWith(narratorPitch: narrator, divinePitch: divine);
+    ref.read(preferencesRepositoryProvider).setListeningPitch((
+      state.narratorPitch,
+      state.divinePitch,
+    ));
+    await _engine.setPitch(
+      narrator: state.narratorPitch,
+      divine: state.divinePitch,
+    );
+  }
+
+  /// «Parecida a mi voz»: graba unos segundos, mide el tono del usuario y
+  /// ajusta todas las voces a ese tono.
+  Future<SampleError?> matchMyVoice({
+    Duration length = const Duration(seconds: 10),
+    void Function(double progress)? progress,
+  }) async {
+    await _interrupt();
+    final result = await ref
+        .read(voiceSamplerProvider)
+        .sample(length, progress: progress);
+    final hz = result.hz;
+    if (!ref.mounted) return SampleError.failed;
+    if (hz == null) return result.error ?? SampleError.failed;
+    state = state.copyWith(voiceHz: () => hz);
+    ref.read(preferencesRepositoryProvider).setListeningVoiceHz(hz);
+    return await _matchVoice(hz) ? null : SampleError.failed;
+  }
+
+  /// Vuelve a la voz de fábrica: parecida a la voz de referencia de la app.
+  Future<void> resetVoice() async {
+    await _interrupt();
+    state = state.copyWith(voiceHz: () => null);
+    ref.read(preferencesRepositoryProvider).setListeningVoiceHz(null);
+    await _matchVoice(Pitch.referenceHz);
+  }
+
+  /// Voz del narrador (`null` = la del teléfono), con el tono ajustado para
+  /// que siga pareciéndose a la voz elegida.
+  Future<void> setNarratorVoice(TtsVoice? voice) async {
+    state = state.copyWith(narratorVoice: () => voice);
+    ref
+        .read(preferencesRepositoryProvider)
+        .setListeningNarratorVoice(
+          voice == null ? null : (voice.name, voice.locale),
+        );
+    await _engine.setNarratorVoice(voice);
+    final hz = await _measure(voice);
+    if (hz != null && ref.mounted) {
+      await setPitch(
+        narrator: Pitch.factor(state.voiceHz ?? Pitch.referenceHz, hz),
+      );
+    }
+  }
+
+  /// Hace oír cómo suena el narrador (pausa lo que se escuchaba).
+  Future<void> previewNarrator() async {
+    await _interrupt();
+    final run = _run;
+    await _applyVoices();
+    if (run != _run) return;
+    await _engine.speak('En el principio creó Dios los cielos y la tierra.');
+  }
+
+  Future<void> _applyVoices() async {
+    await _engine.setRate(state.rate);
+    await _engine.setNarratorVoice(state.narratorVoice);
+    await _engine.setDivineVoice(state.divineVoice);
+    await _engine.setPitch(
+      narrator: state.narratorPitch,
+      divine: state.divinePitch,
+    );
   }
 
   TtsEngine get _engine => ref.read(ttsEngineProvider);
@@ -345,6 +508,15 @@ class ListeningController extends Notifier<ListeningState> {
           voice == null ? null : (voice.name, voice.locale),
         );
     await _engine.setDivineVoice(voice);
+    final hz = await _measure(voice ?? state.narratorVoice);
+    if (hz != null && ref.mounted) {
+      await setPitch(
+        divine: Pitch.factor(
+          (state.voiceHz ?? Pitch.referenceHz) * Pitch.divineRatio,
+          hz,
+        ),
+      );
+    }
   }
 
   /// Voces en español del teléfono, para elegir la de Dios.
@@ -364,8 +536,7 @@ class ListeningController extends Notifier<ListeningState> {
     await _interrupt();
     final run = _run;
     await _ensureDefaultVoice();
-    await _engine.setRate(state.rate);
-    await _engine.setDivineVoice(state.divineVoice);
+    await _applyVoices();
     if (state.cue) await _engine.playCue();
     if (run != _run) return;
     await _engine.speak('Yo soy Yavé tu Dios.', style: VoiceStyle.divine);
@@ -449,8 +620,7 @@ class ListeningController extends Notifier<ListeningState> {
     final total = content.passages.length;
     await _ensureDefaultVoice();
     if (run != _run) return;
-    await _engine.setRate(state.rate);
-    await _engine.setDivineVoice(state.divineVoice);
+    await _applyVoices();
     while (run == _run) {
       final length = state.length(total);
       if (state.step >= length) {

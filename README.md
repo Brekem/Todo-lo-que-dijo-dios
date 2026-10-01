@@ -54,6 +54,7 @@ una nueva versión.
 | Escuchar los resultados de una búsqueda, uno tras otro | `features/search`, `domain/listening` |
 | Voz de Dios inconfundible: anuncio «Escucha. Habla Yavé», campana, voz más grave y pausada, tarjeta dorada y elección de voz | `features/listen`, `domain/listening`, `assets/audio` |
 | Versículos completos (toda la conversación, nunca a medias): el narrador cuenta, la campana suena cada vez que Dios habla y habla con su voz («Voz 2» por defecto); modo «Solo la Palabra» sin explicación | `tool/corpus/segment.py`, `shared/widgets/verses_text.dart`, `domain/listening` |
+| Tu voz: de fábrica las voces tienen el tono de la voz de referencia; «Parecida a mi voz» graba 10 s y ajusta narrador y Dios a tu tono; controles de tono, velocidad y voz del narrador | `domain/listening/pitch.dart`, `domain/listening/voice_sampler.dart`, `features/listen` |
 | Búsqueda inteligente: palabra, problema, tema, personaje | `domain/search`, `features/search` |
 | Las palabras que guardé (versículo + aplicación + oración) | `features/favorites` |
 | Mi camino: leídas, días seguidos, temas, oraciones | `features/stats` |
