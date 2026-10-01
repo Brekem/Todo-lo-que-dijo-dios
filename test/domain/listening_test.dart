@@ -283,12 +283,16 @@ void voiceTests() {
     });
 
     test('«Parecida a mi voz»: graba, mide y ajusta todas las voces', () async {
-      final (c, tts, prefs) = await setUpContainer({
-        'listen_divine_voice': 'auto',
-      });
+      final (c, tts, prefs) = await setUpContainer();
       final ctrl = c.read(listeningProvider.notifier);
+      await ctrl.availableVoices(); // de fábrica: Dios con la «Voz 2»
+      expect(c.read(listeningProvider).divineVoice, isNotNull);
       expect(await ctrl.matchMyVoice(), isNull);
       final s = c.read(listeningProvider);
+      // Dios habla con la voz del usuario (la misma del narrador), más grave.
+      expect(s.divineVoice, isNull);
+      expect(tts.divineVoice, isNull);
+      expect(prefs.getString('listen_divine_voice'), 'auto');
       // 110 Hz: la voz del teléfono (120 Hz) es la más parecida.
       expect(s.voiceHz, 110);
       expect(s.narratorVoice, isNull);
@@ -310,9 +314,10 @@ void voiceTests() {
       await ctrl.setPitch(narrator: 1.1);
       expect(c.read(listeningProvider).narratorPitch, 1.1);
       expect(tts.pitch?.narrator, 1.1);
-      // Y volver a la voz de fábrica.
+      // Y volver a la voz de fábrica (Dios, otra vez con la «Voz 2»).
       await ctrl.resetVoice();
       expect(c.read(listeningProvider).voiceHz, isNull);
+      expect(c.read(listeningProvider).divineVoice, (await tts.voices())[1]);
       expect(prefs.getDouble('listen_voice_hz'), isNull);
       expect(
         c.read(listeningProvider).narratorPitch,

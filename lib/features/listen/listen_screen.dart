@@ -713,8 +713,8 @@ class _MyVoiceSheetState extends ConsumerState<_MyVoiceSheet> {
       _recording = null;
       _message = switch (error) {
         null =>
-          'Listo: tu tono es de ${hz?.round()} Hz. Todas las voces se '
-              'ajustaron a tu voz.',
+          'Listo: tu tono es de ${hz?.round()} Hz. El narrador habla con '
+              'tu tono, y Dios con tu voz, más grave.',
         SampleError.permission =>
           'Hace falta permiso para usar el micrófono. Actívalo en los ajustes '
               'del teléfono y vuelve a intentarlo.',
@@ -813,9 +813,9 @@ class _MyVoiceSheetState extends ConsumerState<_MyVoiceSheet> {
                   ? 'De fábrica, el narrador y Dios hablan con el tono de la '
                         'voz de referencia de la app. Graba tu voz y se '
                         'parecerán a la tuya.'
-                  : 'El narrador y Dios hablan con el tono de tu voz '
-                        '(${state.voiceHz!.round()} Hz). Dios, un poco más '
-                        'grave.',
+                  : 'El narrador habla con el tono de tu voz '
+                        '(${state.voiceHz!.round()} Hz) y Dios con tu misma '
+                        'voz, más grave.',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: palette.warmGray,
               ),

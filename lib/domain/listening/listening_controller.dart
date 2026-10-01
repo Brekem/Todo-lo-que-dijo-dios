@@ -324,8 +324,12 @@ class ListeningController extends Notifier<ListeningState> {
     final hz = result.hz;
     if (!ref.mounted) return SampleError.failed;
     if (hz == null) return result.error ?? SampleError.failed;
-    state = state.copyWith(voiceHz: () => hz);
-    ref.read(preferencesRepositoryProvider).setListeningVoiceHz(hz);
+    // Dios habla con la misma voz del usuario, más grave.
+    state = state.copyWith(voiceHz: () => hz, divineVoice: () => null);
+    final prefs = ref.read(preferencesRepositoryProvider);
+    prefs.setListeningVoiceHz(hz);
+    prefs.setListeningDivineVoice(null);
+    await _engine.setDivineVoice(null);
     return await _matchVoice(hz) ? null : SampleError.failed;
   }
 
@@ -334,6 +338,17 @@ class ListeningController extends Notifier<ListeningState> {
     await _interrupt();
     state = state.copyWith(voiceHz: () => null);
     ref.read(preferencesRepositoryProvider).setListeningVoiceHz(null);
+    // De fábrica, Dios vuelve a la «Voz 2» del teléfono.
+    final voices = await _engine.voices();
+    if (!ref.mounted) return;
+    if (voices.length > 1) {
+      state = state.copyWith(divineVoice: () => voices[1]);
+      ref.read(preferencesRepositoryProvider).setListeningDivineVoice((
+        voices[1].name,
+        voices[1].locale,
+      ));
+      await _engine.setDivineVoice(voices[1]);
+    }
     await _matchVoice(Pitch.referenceHz);
   }
 
