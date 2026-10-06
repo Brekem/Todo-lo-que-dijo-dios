@@ -1,3 +1,4 @@
+import '../../core/config/edition.dart';
 import '../../data/models/passage.dart';
 
 /// Secciones que se leen en voz alta, en el mismo orden que la pantalla de lectura.
@@ -57,7 +58,9 @@ abstract final class Narration {
   /// Lo que dice el narrador antes de los versículos, o `null` si los
   /// versículos ya empiezan contándolo («Y dijo Dios:»).
   static String? lead(Passage p) {
-    if (p.id.startsWith('v-')) return 'Sobre la voz de Yavé.';
+    if (p.id.startsWith('v-')) {
+      return 'Sobre la voz de ${Edition.current.divineName}.';
+    }
     final parts = readingParts(p);
     if (parts.isNotEmpty && parts.first.god) {
       return 'Escucha. Habla ${speakerName(p)}.';

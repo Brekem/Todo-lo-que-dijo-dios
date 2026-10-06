@@ -55,6 +55,7 @@ una nueva versión.
 | Voz de Dios inconfundible: anuncio «Escucha. Habla Yavé», campana, voz más grave y pausada, tarjeta dorada y elección de voz | `features/listen`, `domain/listening`, `assets/audio` |
 | Versículos completos (toda la conversación, nunca a medias): el narrador cuenta, la campana suena cada vez que Dios habla y habla con su voz («Voz 2» por defecto); modo «Solo la Palabra» sin explicación | `tool/corpus/segment.py`, `shared/widgets/verses_text.dart`, `domain/listening` |
 | Tu voz: de fábrica las voces tienen el tono de la voz de referencia; «Parecida a mi voz» graba 10 s: el narrador habla con tu tono y Dios con tu misma voz, más grave; controles de tono, velocidad y voz del narrador | `domain/listening/pitch.dart`, `domain/listening/voice_sampler.dart`, `features/listen` |
+| Edición «Jehová» (otra app): solo el Antiguo Testamento (937 palabras), con el nombre «Jehová», en azul y blanco | `lib/core/config/edition.dart`, `assets/data/content_jehova.json`, sabor `jehova` |
 | Búsqueda inteligente: palabra, problema, tema, personaje | `domain/search`, `features/search` |
 | Las palabras que guardé (versículo + aplicación + oración) | `features/favorites` |
 | Mi camino: leídas, días seguidos, temas, oraciones | `features/stats` |
@@ -88,7 +89,8 @@ lib/
 
 ```bash
 flutter pub get
-flutter run                 # emulador o dispositivo Android
+flutter run                 # emulador o dispositivo Android (edición completa)
+flutter run --flavor jehova # edición «Jehová»: solo Antiguo Testamento, azul y blanco
 flutter analyze && flutter test
 ```
 

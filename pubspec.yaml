@@ -3,7 +3,7 @@ description: "Todo lo que Dios Dijo: todas las palabras que Yavé pronunció en 
 publish_to: 'none'
 
 # versionName+versionCode para Google Play. Incrementa el número tras "+" en cada subida.
-version: 3.6.1+11
+version: 3.7.0+12
 
 environment:
   sdk: ^3.13.4
@@ -37,9 +37,14 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  # Edición que se compila si no se indica --flavor (ver lib/core/config/edition.dart).
+  default-flavor: yave
 
   assets:
-    - assets/data/
+    - assets/data/content.json
+    - path: assets/data/content_jehova.json
+      flavors:
+        - jehova
     - assets/audio/
 
   fonts:

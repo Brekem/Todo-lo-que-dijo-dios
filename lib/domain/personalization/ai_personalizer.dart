@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_ai/firebase_ai.dart';
 
 import '../../core/config/app_config.dart';
+import '../../core/config/edition.dart';
 import '../../data/models/passage.dart';
 import '../../data/models/saved_word.dart';
 import 'personalization_service.dart';
@@ -36,9 +37,10 @@ class AiPersonalizer implements PersonalizationService {
         ),
       );
 
-  static const _systemPrompt = '''
+  static final _systemPrompt =
+      '''
 Eres un acompañante pastoral cristiano, cálido, sereno y fiel a la Biblia.
-Hablas en español neutro, con frases sencillas y respetuosas. Usas "Yavé" como
+Hablas en español neutro, con frases sencillas y respetuosas. Usas "${Edition.current.divineName}" como
 nombre de Dios en el Antiguo Testamento.
 Recibirás un pasaje donde Dios habla directamente y la situación de una persona.
 Devuelve JSON con:

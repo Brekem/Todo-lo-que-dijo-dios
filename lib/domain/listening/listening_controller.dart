@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/providers.dart';
+import '../../core/config/edition.dart';
 import '../../data/models/content_bundle.dart';
 import '../../data/models/passage.dart';
 import 'narration.dart';
@@ -554,7 +555,10 @@ class ListeningController extends Notifier<ListeningState> {
     await _applyVoices();
     if (state.cue) await _engine.playCue();
     if (run != _run) return;
-    await _engine.speak('Yo soy Yavé tu Dios.', style: VoiceStyle.divine);
+    await _engine.speak(
+      'Yo soy ${Edition.current.divineName} tu Dios.',
+      style: VoiceStyle.divine,
+    );
   }
 
   Future<void> nextWord() => _skip(1);

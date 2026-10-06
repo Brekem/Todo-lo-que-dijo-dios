@@ -36,6 +36,11 @@ CONTENT_VERSION = 4
 
 CH = {**CH1, **CH2, **CH3, **CH4, **CH5}
 OUT = ROOT / 'assets' / 'data' / 'content.json'
+OUT_JEHOVA = ROOT / 'assets' / 'data' / 'content_jehova.json'
+
+# Edición «Jehová»: solo el Antiguo Testamento, con el nombre divino de la
+# Reina-Valera 1909 original.
+NT_ERAS = {'evangelios', 'iglesia', 'apocalipsis'}
 
 ERAS = [
     ('adan', 'Adán', 'La creación y el principio', 'El principio'),
@@ -768,11 +773,43 @@ def main():
         'passages': passages,
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+    jehova_edition(out)
     print(f'{len(passages)} palabras ({sum(p["curated"] for p in passages)} explicadas a mano, '
           f'{skipped} discursos cubiertos por ellas, {len(groups)} de «la voz de Yavé»); '
           f'{OUT.stat().st_size // 1024} KB')
     print(Counter(c for p in passages for c in p['categories']).most_common())
     print(Counter(p['era'] for p in passages))
+
+
+def with_name(value, name):
+    """Cambia «Yavé» por [name] en todos los textos."""
+    if isinstance(value, str):
+        return value.replace('Yavé', name).replace('YAVÉ', name.upper())
+    if isinstance(value, list):
+        return [with_name(v, name) for v in value]
+    if isinstance(value, dict):
+        return {k: with_name(v, name) for k, v in value.items()}
+    return value
+
+
+def jehova_edition(out):
+    """La edición «Jehová»: las palabras del Antiguo Testamento, con «Jehová»."""
+    passages = [p for p in out['passages'] if p['era'] not in NT_ERAS]
+    passages = [dict(p, order=i) for i, p in enumerate(passages, 1)]
+    used = {c for p in passages for c in p['categories']}
+    edition = with_name(dict(
+        out,
+        translation='Reina-Valera 1909 (dominio público), heredera de la Biblia del Oso de '
+                    'Casiodoro de Reina (1569), con ortografía actualizada y su nombre divino '
+                    'original «Jehová». Solo el Antiguo Testamento.',
+        eras=[e for e in out['eras'] if e['id'] not in NT_ERAS],
+        categories=[c for c in out['categories'] if c['id'] in used],
+        passages=passages,
+    ), 'Jehová')
+    OUT_JEHOVA.write_text(json.dumps(edition, ensure_ascii=False, separators=(',', ':')),
+                          encoding='utf-8')
+    print(f'Edición Jehová: {len(passages)} palabras del Antiguo Testamento; '
+          f'{OUT_JEHOVA.stat().st_size // 1024} KB')
 
 
 if __name__ == '__main__':

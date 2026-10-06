@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../core/config/edition.dart';
 import '../data/models/content_bundle.dart';
 import '../data/models/passage.dart';
 import '../data/models/reading_progress.dart';
@@ -37,7 +38,9 @@ final contentRepositoryProvider = Provider<ContentRepository>((ref) {
   final firebase = ref.watch(firebaseReadyProvider);
   return ContentRepository(
     local: LocalContentSource(),
-    remote: firebase ? RemoteContentSource(FirebaseFirestore.instance) : null,
+    remote: firebase && Edition.current.syncsContent
+        ? RemoteContentSource(FirebaseFirestore.instance)
+        : null,
   );
 });
 

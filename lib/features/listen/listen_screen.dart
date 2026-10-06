@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/providers.dart';
+import '../../core/config/edition.dart';
 import '../../core/theme/app_palette.dart';
 import '../../data/models/content_bundle.dart';
 import '../../domain/listening/listening_controller.dart';
@@ -118,7 +119,7 @@ class _ListenBody extends ConsumerWidget {
                       'búsqueda «$query», una tras otra,'
                 : state.shuffle
                 ? 'Las $total palabras en orden aleatorio,'
-                : 'Las $total palabras, de Génesis a Apocalipsis,',
+                : 'Las $total palabras, ${Edition.current.span},',
             state.wordsOnly
                 ? 'solo los versículos, sin explicación.'
                 : 'con su explicación, aplicación y oración.',
@@ -316,7 +317,7 @@ class _ListenBody extends ConsumerWidget {
                     SnackBar(
                       content: Text(
                         state.shuffle
-                            ? 'Orden cronológico: de Génesis a Apocalipsis'
+                            ? 'Orden cronológico: ${Edition.current.span}'
                             : state.fromSearch
                             ? 'Orden aleatorio: dejas la búsqueda y se mezclan '
                                   'las $total palabras'
@@ -344,7 +345,7 @@ class _ListenBody extends ConsumerWidget {
                   shape: const CircleBorder(),
                   padding: EdgeInsets.zero,
                   backgroundColor: palette.gold,
-                  foregroundColor: const Color(0xFF1B1609),
+                  foregroundColor: palette.onGold,
                 ),
                 onPressed: controller.toggle,
                 child: Icon(
@@ -384,7 +385,7 @@ class _ListenBody extends ConsumerWidget {
                 ? 'Resultados de «$query», en orden'
                 : state.shuffle
                 ? 'Orden aleatorio'
-                : 'Orden cronológico · de Génesis a Apocalipsis',
+                : 'Orden cronológico · ${Edition.current.span}',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: theme.textTheme.labelMedium?.copyWith(
@@ -828,7 +829,7 @@ class _MyVoiceSheetState extends ConsumerState<_MyVoiceSheet> {
               ),
               const SizedBox(height: 6),
               Text(
-                'Yavé es mi pastor; nada me faltará. En lugares de delicados '
+                '${Edition.current.divineName} es mi pastor; nada me faltará. En lugares de delicados '
                 'pastos me hará yacer; junto a aguas de reposo me pastoreará. '
                 'Confortará mi alma.',
                 style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),

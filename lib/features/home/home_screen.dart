@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/providers.dart';
 import '../../app/router.dart';
+import '../../core/config/edition.dart';
 import '../../core/theme/app_palette.dart';
 import '../../data/models/content_bundle.dart';
 import '../../data/models/passage.dart';
@@ -327,7 +328,7 @@ class _ListenCard extends ConsumerWidget {
                   state.isPlaying
                       ? Icons.graphic_eq_rounded
                       : Icons.headphones_rounded,
-                  color: const Color(0xFF1B1609),
+                  color: palette.onGold,
                 ),
               ),
               const SizedBox(width: 16),
@@ -349,7 +350,7 @@ class _ListenCard extends ConsumerWidget {
                           ? 'Las palabras de tu búsqueda «${state.searchQuery}»'
                           : state.shuffle
                           ? 'En orden aleatorio, con oración y todo'
-                          : 'De Génesis a Apocalipsis, con oración y todo',
+                          : '${Edition.current.span[0].toUpperCase()}${Edition.current.span.substring(1)}, con oración y todo',
                       style: theme.textTheme.bodySmall,
                     ),
                   ],

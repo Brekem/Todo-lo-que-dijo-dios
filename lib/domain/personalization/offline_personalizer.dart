@@ -1,3 +1,4 @@
+import '../../core/config/edition.dart';
 import '../../core/utils/text_normalizer.dart';
 import '../../data/models/passage.dart';
 import '../../data/models/saved_word.dart';
@@ -32,7 +33,7 @@ class OfflinePersonalizer implements PersonalizationService {
     final shortQuote = _shorten(passage.quote);
 
     final explanation =
-        'Yavé le habló a ${passage.recipient} en un momento muy concreto: '
+        '${Edition.current.divineName} le habló a ${passage.recipient} en un momento muy concreto: '
         '${_lowerFirst(passage.situation)} Hoy tú le traes esto: «$situation». '
         '${passage.explanation} Lo que Dios le dijo entonces también revela cómo te mira a ti ahora.';
 

@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 
+import '../config/edition.dart';
 import 'app_palette.dart';
 
 abstract final class AppTheme {
   static const serif = 'Cormorant';
   static const sans = 'Inter';
 
-  static ThemeData light() => _build(Brightness.light, AppPalette.light);
-  static ThemeData dark() => _build(Brightness.dark, AppPalette.dark);
+  static ThemeData light() => _build(Brightness.light, Edition.current.light);
+  static ThemeData dark() => _build(Brightness.dark, Edition.current.dark);
 
   static ThemeData _build(Brightness brightness, AppPalette p) {
     final isDark = brightness == Brightness.dark;
     final scheme = ColorScheme(
       brightness: brightness,
       primary: isDark ? p.gold : p.blue,
-      onPrimary: isDark ? const Color(0xFF1B1609) : const Color(0xFFFFFBF2),
+      onPrimary: isDark ? p.onGold : const Color(0xFFFFFBF2),
       primaryContainer: isDark ? p.goldSoft : p.blueSoft,
       onPrimaryContainer: isDark ? p.ink : p.blue,
       secondary: p.gold,
-      onSecondary: const Color(0xFF1B1609),
+      onSecondary: p.onGold,
       secondaryContainer: p.goldSoft,
-      onSecondaryContainer: isDark ? p.ink : const Color(0xFF4A3A14),
+      onSecondaryContainer: isDark ? p.ink : p.onGoldSoft,
       tertiary: p.blue,
       onTertiary: isDark ? const Color(0xFF0B1224) : Colors.white,
       tertiaryContainer: p.blueSoft,

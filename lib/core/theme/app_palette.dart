@@ -15,6 +15,8 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.ink,
     required this.crimson,
     required this.glow,
+    this.onGold = const Color(0xFF1B1609),
+    this.onGoldSoft = const Color(0xFF4A3A14),
   });
 
   static const light = AppPalette(
@@ -43,6 +45,38 @@ class AppPalette extends ThemeExtension<AppPalette> {
     glow: Color(0x22C7A968),
   );
 
+  /// Edición «Jehová»: azul y blanco. El azul brillante ocupa el lugar del
+  /// dorado.
+  static const jehovaLight = AppPalette(
+    background: Color(0xFFFFFFFF), // blanco
+    parchment: Color(0xFFF2F6FC), // blanco azulado
+    gold: Color(0xFF2B5CB0), // azul real
+    goldSoft: Color(0xFFDDE8F8),
+    blue: Color(0xFF12264A), // azul marino
+    blueSoft: Color(0xFFE6EDF8),
+    warmGray: Color(0xFF66718A), // gris azulado
+    ink: Color(0xFF111C33),
+    crimson: Color(0xFF94343C),
+    glow: Color(0x332B5CB0),
+    onGold: Color(0xFFFFFFFF),
+    onGoldSoft: Color(0xFF173469),
+  );
+
+  static const jehovaDark = AppPalette(
+    background: Color(0xFF060A14), // azul noche
+    parchment: Color(0xFF0E1628),
+    gold: Color(0xFF8DB3F2), // azul cielo
+    goldSoft: Color(0xFF15233F),
+    blue: Color(0xFFB9CCF2),
+    blueSoft: Color(0xFF111C33),
+    warmGray: Color(0xFF9AA5BA),
+    ink: Color(0xFFF2F6FD), // blanco
+    crimson: Color(0xFFC96A70),
+    glow: Color(0x228DB3F2),
+    onGold: Color(0xFF07142B),
+    onGoldSoft: Color(0xFFDCE7FA),
+  );
+
   final Color background;
   final Color parchment;
   final Color gold;
@@ -53,6 +87,10 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final Color ink;
   final Color crimson;
   final Color glow;
+
+  /// Texto sobre [gold] y sobre [goldSoft].
+  final Color onGold;
+  final Color onGoldSoft;
 
   static AppPalette of(BuildContext context) =>
       Theme.of(context).extension<AppPalette>()!;
@@ -69,6 +107,8 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? ink,
     Color? crimson,
     Color? glow,
+    Color? onGold,
+    Color? onGoldSoft,
   }) => AppPalette(
     background: background ?? this.background,
     parchment: parchment ?? this.parchment,
@@ -80,6 +120,8 @@ class AppPalette extends ThemeExtension<AppPalette> {
     ink: ink ?? this.ink,
     crimson: crimson ?? this.crimson,
     glow: glow ?? this.glow,
+    onGold: onGold ?? this.onGold,
+    onGoldSoft: onGoldSoft ?? this.onGoldSoft,
   );
 
   @override
@@ -96,6 +138,8 @@ class AppPalette extends ThemeExtension<AppPalette> {
       ink: Color.lerp(ink, other.ink, t)!,
       crimson: Color.lerp(crimson, other.crimson, t)!,
       glow: Color.lerp(glow, other.glow, t)!,
+      onGold: Color.lerp(onGold, other.onGold, t)!,
+      onGoldSoft: Color.lerp(onGoldSoft, other.onGoldSoft, t)!,
     );
   }
 }

@@ -1,10 +1,13 @@
+import 'edition.dart';
+
 /// Constantes globales de la aplicación.
 abstract final class AppConfig {
-  static const appName = 'Todo lo que Dios Dijo';
-  static const tagline = 'Las palabras de Yavé, de Génesis a Apocalipsis';
+  static String get appName => Edition.current.appName;
+  static String get tagline =>
+      'Las palabras de ${Edition.current.divineName}, ${Edition.current.span}';
 
   /// Contenido empaquetado: garantiza lectura offline desde la primera apertura.
-  static const bundledContentAsset = 'assets/data/content.json';
+  static String get bundledContentAsset => Edition.current.contentAsset;
 
   /// Firestore: `content/current` guarda { version, translation, categories, passages }.
   static const firestoreContentCollection = 'content';

@@ -41,6 +41,22 @@ android {
         versionName = flutter.versionName
     }
 
+    // Ediciones: cada una es una app aparte que se puede instalar junto a la
+    // otra. Ver lib/core/config/edition.dart.
+    flavorDimensions += "edicion"
+    productFlavors {
+        create("yave") {
+            dimension = "edicion"
+            isDefault = true
+            resValue("string", "app_name", "Todo lo que Dios Dijo")
+        }
+        create("jehova") {
+            dimension = "edicion"
+            applicationIdSuffix = ".jehova"
+            resValue("string", "app_name", "Todo lo que Jehová Dijo")
+        }
+    }
+
     signingConfigs {
         if (hasReleaseKeystore) {
             create("release") {

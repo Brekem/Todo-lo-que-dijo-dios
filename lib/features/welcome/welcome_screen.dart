@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/router.dart';
+import '../../core/config/edition.dart';
 import '../../core/theme/app_palette.dart';
 import '../../shared/widgets/fade_slide_in.dart';
 import '../../shared/widgets/sacred_background.dart';
@@ -76,7 +77,7 @@ class WelcomeScreen extends StatelessWidget {
                           delay: const Duration(milliseconds: 2200),
                           child: Center(
                             child: Text(
-                              'Génesis · Profetas · Evangelios · Apocalipsis',
+                              Edition.current.milestones,
                               style: theme.textTheme.labelSmall,
                             ),
                           ),
