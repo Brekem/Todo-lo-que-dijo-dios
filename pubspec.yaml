@@ -30,8 +30,6 @@ dependencies:
   record: ^7.1.1
   audio_service: ^0.18.19
   audio_session: ^0.2.4
-  permission_handler: ^13.0.2
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

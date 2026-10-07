@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/services.dart';
 
 /// Órdenes que llegan de fuera de la app: la notificación, la pantalla de
 /// bloqueo, los auriculares o una llamada.
@@ -101,9 +101,9 @@ class AndroidBackgroundAudio implements BackgroundAudio {
     if (_askedForNotifications) return;
     _askedForNotifications = true;
     try {
-      if (await Permission.notification.isDenied) {
-        await Permission.notification.request();
-      }
+      // Lo pide MainActivity.kt (solo si falta).
+      await const MethodChannel('todo_lo_que_dios_dijo/notificaciones')
+          .invokeMethod<void>('pedirPermiso');
     } catch (e) {
       debugPrint('No se pudo pedir el permiso de notificaciones: $e');
     }
