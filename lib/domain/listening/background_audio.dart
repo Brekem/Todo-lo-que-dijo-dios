@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 /// Órdenes que llegan de fuera de la app: la notificación, la pantalla de
 /// bloqueo, los auriculares o una llamada.
@@ -33,10 +34,11 @@ abstract interface class BackgroundAudio {
 /// Servicio de reproducción de Android (como una app de música o de
 /// pódcast) y foco de audio: pausa en las llamadas y sigue al colgar.
 class AndroidBackgroundAudio implements BackgroundAudio {
-  AndroidBackgroundAudio._(this._handler, this._session);
+  AndroidBackgroundAudio._(this._handler, this._session, this._appName);
 
   final _ListeningHandler _handler;
   final AudioSession _session;
+  final String _appName;
   BackgroundCommands? _commands;
   bool _playing = false;
 
@@ -44,6 +46,7 @@ class AndroidBackgroundAudio implements BackgroundAudio {
   bool _resumeAfterInterruption = false;
 
   static Future<AndroidBackgroundAudio?> init({
+    required String appName,
     required String channelId,
   }) async {
     try {
@@ -61,7 +64,7 @@ class AndroidBackgroundAudio implements BackgroundAudio {
       );
       final session = await AudioSession.instance;
       await session.configure(const AudioSessionConfiguration.speech());
-      final audio = AndroidBackgroundAudio._(handler, session);
+      final audio = AndroidBackgroundAudio._(handler, session, appName);
       handler.audio = audio;
       session.interruptionEventStream.listen(audio._onInterruption);
       session.becomingNoisyEventStream.listen((_) {
@@ -90,6 +93,22 @@ class AndroidBackgroundAudio implements BackgroundAudio {
     }
   }
 
+  bool _askedForNotifications = false;
+
+  /// Android 13+: sin permiso de notificaciones algunos teléfonos esconden
+  /// el reproductor de la barra de notificaciones. Se pide una vez.
+  Future<void> _askForNotifications() async {
+    if (_askedForNotifications) return;
+    _askedForNotifications = true;
+    try {
+      if (await Permission.notification.isDenied) {
+        await Permission.notification.request();
+      }
+    } catch (e) {
+      debugPrint('No se pudo pedir el permiso de notificaciones: $e');
+    }
+  }
+
   @override
   void attach(BackgroundCommands commands) => _commands = commands;
 
@@ -102,10 +121,11 @@ class AndroidBackgroundAudio implements BackgroundAudio {
     if (playing && !_playing) {
       _resumeAfterInterruption = false;
       await _session.setActive(true);
+      unawaited(_askForNotifications());
     }
     _playing = playing;
     _handler.mediaItem.add(
-      MediaItem(id: title, title: title, artist: subtitle),
+      MediaItem(id: title, title: title, artist: subtitle, album: _appName),
     );
     _handler.playbackState.add(
       PlaybackState(

@@ -25,6 +25,7 @@ Future<void> bootstrap() async {
   final firebaseReady = await _initFirebase();
   final prefs = await SharedPreferences.getInstance();
   final background = await AndroidBackgroundAudio.init(
+    appName: Edition.current.appName,
     channelId: 'com.brekem.todoloquediosdijo.${Edition.current.name}.audio',
   );
 
