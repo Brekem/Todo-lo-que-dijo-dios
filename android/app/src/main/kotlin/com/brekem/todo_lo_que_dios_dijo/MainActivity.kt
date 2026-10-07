@@ -1,5 +1,7 @@
 package com.brekem.todo_lo_que_dios_dijo
 
-import io.flutter.embedding.android.FlutterActivity
+import com.ryanheise.audioservice.AudioServiceActivity
 
-class MainActivity : FlutterActivity()
+// La actividad comparte el motor de Flutter con el servicio de reproducción,
+// para que la lectura siga con la pantalla apagada o en otra app.
+class MainActivity : AudioServiceActivity()

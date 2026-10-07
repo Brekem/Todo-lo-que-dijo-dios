@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_lo_que_dios_dijo/app/providers.dart';
@@ -112,6 +113,7 @@ class _FakeContent extends ContentNotifier {
 
 Future<(ProviderContainer, FakeTts, SharedPreferences)> setUpContainer([
   Map<String, Object> prefsValues = const {},
+  List<Override> extraOverrides = const [],
 ]) async {
   SharedPreferences.setMockInitialValues(prefsValues);
   final prefs = await SharedPreferences.getInstance();
@@ -125,6 +127,7 @@ Future<(ProviderContainer, FakeTts, SharedPreferences)> setUpContainer([
       repeatPauseProvider.overrideWithValue(Duration.zero),
       pauseAfterGodProvider.overrideWithValue(Duration.zero),
       voiceSamplerProvider.overrideWithValue(FakeSampler(110)),
+      ...extraOverrides,
     ],
   );
   await container.read(contentProvider.future);

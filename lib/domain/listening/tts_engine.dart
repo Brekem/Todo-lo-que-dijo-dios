@@ -180,7 +180,13 @@ class FlutterTtsEngine implements TtsEngine {
 
   @override
   Future<void> playCue() async {
-    final player = _player ??= AudioPlayer();
+    final player = _player ??= AudioPlayer()
+      // La campana suena junto a la lectura sin quitarle el foco de audio
+      // (si no, la app se pausaría a sí misma como en una llamada).
+      ..setAudioContext(
+        AudioContextConfig(focus: AudioContextConfigFocus.mixWithOthers)
+            .build(),
+      );
     try {
       final done = player.onPlayerComplete.first;
       await player.play(AssetSource('audio/voz_de_dios.wav'), volume: 0.9);
