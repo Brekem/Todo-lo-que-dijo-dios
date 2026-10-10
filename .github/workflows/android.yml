@@ -72,7 +72,7 @@ jobs:
       - name: APK edición Jehová
         run: flutter build apk --flavor jehova --release --obfuscate --split-debug-info=build/symbols-jehova
 
-      # Edición «Jesús»: todas las palabras de Jesús, en rojo y blanco.
+      # Edición «Jesús»: todas las palabras de Jesús, en dorado y verde.
       # Es otra app (com.brekem.todoloquediosdijo.jesus).
       - name: APK edición Jesús
         run: flutter build apk --flavor jesus --release --obfuscate --split-debug-info=build/symbols-jesus
@@ -114,7 +114,7 @@ jobs:
             instalar junto a la otra.
 
             **Todo-lo-que-Jesus-Dijo.apk** es la edición «Jesús»: todas las
-            palabras de Jesús, de Mateo a Apocalipsis, en rojo y blanco.
+            palabras de Jesús, de Mateo a Apocalipsis, en dorado y verde.
             También es otra app.
           files: |
             Todo-lo-que-Dios-Dijo.apk

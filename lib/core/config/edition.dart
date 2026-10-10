@@ -28,7 +28,7 @@ enum Edition {
     dark: AppPalette.jehovaDark,
   ),
 
-  /// Todas las palabras de Jesús, de Mateo a Apocalipsis, en rojo y blanco.
+  /// Todas las palabras de Jesús, de Mateo a Apocalipsis, en dorado y verde.
   jesus(
     appName: 'Todo lo que Jesús Dijo',
     divineName: 'Jesús',

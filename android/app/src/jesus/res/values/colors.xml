@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Edición «Jesús»: rojo y blanco, como las letras rojas. -->
-    <color name="ic_launcher_background">#B3232F</color>
-    <color name="launch_background">#FFFFFF</color>
+    <!-- Edición «Jesús»: dorado y verde. -->
+    <color name="ic_launcher_background">#1E4D2B</color>
+    <color name="launch_background">#FBFAF3</color>
 </resources>

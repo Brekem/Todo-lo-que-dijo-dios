@@ -65,7 +65,7 @@ void main() {
       (p) =>
           p.book == 'Juan' &&
           p.verses.any((v) => v.number == 6) &&
-          p.fullReference!.startsWith('Juan 14:'),
+          p.fullReference.startsWith('Juan 14:'),
     );
     final verse = p.verses.firstWhere((v) => v.number == 6);
     expect(verse.parts.first.god, isFalse);
@@ -75,7 +75,7 @@ void main() {
 
     // Las bienaventuranzas: todo el versículo lo dice Jesús.
     final sermon = jesus.passages.firstWhere(
-      (p) => p.fullReference!.startsWith('Mateo 5:'),
+      (p) => p.fullReference.startsWith('Mateo 5:'),
     );
     final blessed = sermon.verses.firstWhere((v) => v.number == 3);
     expect(blessed.parts.single.god, isTrue);
@@ -104,12 +104,15 @@ void main() {
     );
   });
 
-  test('la edición Jesús es roja y blanca', () {
+  test('la edición Jesús es dorada y verde', () {
     for (final p in [AppPalette.jesusLight, AppPalette.jesusDark]) {
-      expect(p.gold.r, greaterThan(p.gold.g));
+      // Dorado: más rojo y verde que azul.
       expect(p.gold.r, greaterThan(p.gold.b));
+      expect(p.gold.g, greaterThan(p.gold.b));
+      // Verde: domina el canal verde.
+      expect(p.blue.g, greaterThan(p.blue.r));
+      expect(p.blue.g, greaterThan(p.blue.b));
     }
-    expect(AppPalette.jesusLight.background.toARGB32(), 0xFFFFFFFF);
     expect(Edition.jesus.light, AppPalette.jesusLight);
     expect(Edition.jesus.speaker, 'Jesús');
     expect(Edition.jesus.syncsContent, isFalse);
