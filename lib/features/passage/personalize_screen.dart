@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../core/config/edition.dart';
 import '../../app/providers.dart';
 import '../../core/analytics.dart';
 import '../../core/theme/app_palette.dart';
@@ -269,7 +270,7 @@ class _ResultView extends ConsumerWidget {
               text:
                   '«${passage.quote}»\n— ${passage.reference}\n\n'
                   '${result.application}\n\nOración:\n${result.prayer}\n\n'
-                  'Compartido desde «Todo lo que Dios Dijo».',
+                  'Compartido desde «${Edition.current.appName}».',
             ),
           ),
           icon: const Icon(Icons.ios_share_outlined),

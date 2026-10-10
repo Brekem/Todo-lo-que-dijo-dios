@@ -56,7 +56,7 @@ class _HomeBody extends ConsumerWidget {
               children: [
                 Expanded(
                   child: Text(
-                    'Todo lo que Dios dijo',
+                    'Todo lo que ${Edition.current.speaker} dijo',
                     style: theme.textTheme.headlineSmall,
                   ),
                 ),
@@ -110,7 +110,7 @@ class _HomeBody extends ConsumerWidget {
                 ),
               ],
               const SizedBox(height: 44),
-              const SectionLabel('Dios habla sobre…'),
+              SectionLabel('${Edition.current.speaker} habla sobre…'),
               const SizedBox(height: 18),
               for (final (i, category) in content.categories.indexed) ...[
                 FadeSlideIn(
@@ -127,7 +127,9 @@ class _HomeBody extends ConsumerWidget {
               OutlinedButton.icon(
                 onPressed: () => context.go(Routes.journey),
                 icon: Icon(Icons.timeline, color: palette.gold),
-                label: const Text('Recorrer la Voz de Dios desde Génesis'),
+                label: Text(
+                  'Recorrer la Voz de ${Edition.current.speaker} desde ${Edition.current.start}',
+                ),
               ),
             ],
           ),
@@ -284,7 +286,7 @@ class _RandomWordCard extends ConsumerWidget {
         leading: Icon(Icons.shuffle_rounded, color: palette.gold, size: 28),
         title: const Text('Palabra al azar'),
         subtitle: Text(
-          'Abre cualquiera de las ${passages.length} palabras de Dios',
+          'Abre cualquiera de las ${passages.length} palabras de ${Edition.current.speaker}',
           style: theme.textTheme.bodySmall,
         ),
         trailing: Icon(

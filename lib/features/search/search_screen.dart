@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/config/edition.dart';
 import '../../app/providers.dart';
 import '../../app/router.dart';
 import '../../core/analytics.dart';
@@ -45,8 +46,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     SearchMode.person: 'Personaje',
   };
 
-  static const _modeHints = {
-    SearchMode.all: 'Buscar una palabra de Dios…',
+  static final _modeHints = {
+    SearchMode.all: 'Buscar una palabra de ${Edition.current.speaker}…',
     SearchMode.problem: '¿Qué estás enfrentando? Miedo, culpa…',
     SearchMode.topic: 'Buscar sobre fe, amor, esperanza…',
     SearchMode.person: 'Moisés, Elías, Pedro, María…',

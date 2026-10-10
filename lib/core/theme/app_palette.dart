@@ -77,6 +77,38 @@ class AppPalette extends ThemeExtension<AppPalette> {
     onGoldSoft: Color(0xFFDCE7FA),
   );
 
+  /// Edición «Jesús»: rojo y blanco, como las letras rojas de las Biblias
+  /// que marcan sus palabras. El rojo ocupa el lugar del dorado.
+  static const jesusLight = AppPalette(
+    background: Color(0xFFFFFFFF), // blanco
+    parchment: Color(0xFFFCF4F3), // blanco rosado
+    gold: Color(0xFFB3232F), // rojo de las letras rojas
+    goldSoft: Color(0xFFF8DFE0),
+    blue: Color(0xFF4A1016), // vino
+    blueSoft: Color(0xFFF6E9E9),
+    warmGray: Color(0xFF7E6A6B),
+    ink: Color(0xFF2A1416),
+    crimson: Color(0xFF8E1F2A),
+    glow: Color(0x33B3232F),
+    onGold: Color(0xFFFFFFFF),
+    onGoldSoft: Color(0xFF6E141C),
+  );
+
+  static const jesusDark = AppPalette(
+    background: Color(0xFF110708), // noche
+    parchment: Color(0xFF1C0D0F),
+    gold: Color(0xFFF07A82), // rojo claro
+    goldSoft: Color(0xFF3A1519),
+    blue: Color(0xFFF2C2C5),
+    blueSoft: Color(0xFF2A1114),
+    warmGray: Color(0xFFB09B9C),
+    ink: Color(0xFFFBF1F1), // blanco
+    crimson: Color(0xFFF07A82),
+    glow: Color(0x22F07A82),
+    onGold: Color(0xFF2B0609),
+    onGoldSoft: Color(0xFFFBDDE0),
+  );
+
   final Color background;
   final Color parchment;
   final Color gold;

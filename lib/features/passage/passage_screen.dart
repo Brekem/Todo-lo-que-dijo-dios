@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../core/config/edition.dart';
 import '../../app/providers.dart';
 import '../../app/router.dart';
 import '../../core/analytics.dart';
@@ -497,7 +498,7 @@ class _RecipientCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '¿A quién habló Dios?',
+                      '¿A quién habló ${Edition.current.speaker}?',
                       style: theme.textTheme.labelMedium,
                     ),
                     const SizedBox(height: 4),

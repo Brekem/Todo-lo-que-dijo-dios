@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 
+import '../../core/config/edition.dart';
+
 /// Un trozo de versículo: lo que cuenta el narrador o lo que dice Dios.
 @immutable
 class VersePart {
@@ -186,7 +188,7 @@ class Passage {
       '«$quote»\n— $reference\n\n'
       'Dirigido a: $recipient\n\n'
       '$application\n\n'
-      'Compartido desde «Todo lo que Dios Dijo».';
+      'Compartido desde «${Edition.current.appName}».';
 
   static List<String> _strings(Object? value) =>
       (value as List<dynamic>? ?? const []).cast<String>();

@@ -72,6 +72,11 @@ jobs:
       - name: APK edición Jehová
         run: flutter build apk --flavor jehova --release --obfuscate --split-debug-info=build/symbols-jehova
 
+      # Edición «Jesús»: todas las palabras de Jesús, en rojo y blanco.
+      # Es otra app (com.brekem.todoloquediosdijo.jesus).
+      - name: APK edición Jesús
+        run: flutter build apk --flavor jesus --release --obfuscate --split-debug-info=build/symbols-jesus
+
       - name: App Bundle (Google Play)
         run: flutter build appbundle --flavor yave --release --obfuscate --split-debug-info=build/symbols
 
@@ -80,6 +85,7 @@ jobs:
         run: |
           cp build/app/outputs/flutter-apk/app-yave-release.apk Todo-lo-que-Dios-Dijo.apk
           cp build/app/outputs/flutter-apk/app-jehova-release.apk Todo-lo-que-Jehova-Dijo.apk
+          cp build/app/outputs/flutter-apk/app-jesus-release.apk Todo-lo-que-Jesus-Dijo.apk
           # "2.0.0+2" → "2.0.0"; "3.0.0-dev.1+3" → "3.0.0-dev.1"
           VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: *//; s/+.*//')
           echo "name=$VERSION" >> "$GITHUB_OUTPUT"
@@ -106,9 +112,14 @@ jobs:
             **Todo-lo-que-Jehova-Dijo.apk** es la edición «Jehová»: solo el
             Antiguo Testamento, en azul y blanco. Es otra app: se puede
             instalar junto a la otra.
+
+            **Todo-lo-que-Jesus-Dijo.apk** es la edición «Jesús»: todas las
+            palabras de Jesús, de Mateo a Apocalipsis, en rojo y blanco.
+            También es otra app.
           files: |
             Todo-lo-que-Dios-Dijo.apk
             Todo-lo-que-Jehova-Dijo.apk
+            Todo-lo-que-Jesus-Dijo.apk
 
       - uses: actions/upload-artifact@v4
         with:
@@ -116,6 +127,7 @@ jobs:
           path: |
             build/app/outputs/flutter-apk/app-yave-release.apk
             build/app/outputs/flutter-apk/app-jehova-release.apk
+            build/app/outputs/flutter-apk/app-jesus-release.apk
 
       - uses: actions/upload-artifact@v4
         with:

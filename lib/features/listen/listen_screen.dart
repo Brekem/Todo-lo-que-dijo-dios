@@ -110,7 +110,10 @@ class _ListenBody extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
       children: [
-        Text('Escuchar la\nVoz de Dios', style: theme.textTheme.displaySmall),
+        Text(
+          'Escuchar la\nVoz de ${Edition.current.speaker}',
+          style: theme.textTheme.displaySmall,
+        ),
         const SizedBox(height: 10),
         Text(
           [
@@ -144,7 +147,7 @@ class _ListenBody extends ConsumerWidget {
             title: 'Completaste el recorrido',
             subtitle: state.fromSearch
                 ? 'Escuchaste las $length palabras de tu búsqueda «$query».'
-                : 'Escuchaste las $total palabras de Dios.',
+                : 'Escuchaste las $total palabras de ${Edition.current.speaker}.',
             primaryLabel: 'Comenzar de nuevo',
             onPrimary: controller.restart,
           )
@@ -411,7 +414,7 @@ class _ListenBody extends ConsumerWidget {
                       ListenRepeat.word =>
                         'Se repetirá esta palabra una y otra vez',
                       ListenRepeat.quote =>
-                        'Se repetirá solo lo que Dios dijo, una y otra vez',
+                        'Se repetirá solo lo que ${Edition.current.speaker} dijo, una y otra vez',
                     }),
                   ),
                 );
@@ -437,7 +440,7 @@ class _ListenBody extends ConsumerWidget {
                 builder: (_) => const _DivineVoiceSheet(),
               ),
               icon: const Icon(Icons.record_voice_over_outlined),
-              label: const Text('La voz de Dios'),
+              label: Text('La voz de ${Edition.current.speaker}'),
             ),
             OutlinedButton.icon(
               key: const Key('my-voice-button'),
@@ -619,11 +622,14 @@ class _DivineVoiceSheetState extends ConsumerState<_DivineVoiceSheet> {
           controller: scroll,
           padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
           children: [
-            Text('La voz de Dios', style: theme.textTheme.headlineSmall),
+            Text(
+              'La voz de ${Edition.current.speaker}',
+              style: theme.textTheme.headlineSmall,
+            ),
             const SizedBox(height: 8),
             Text(
-              'Cuando Dios habla, el narrador lo anuncia, suena una campana y '
-              'Dios habla con una voz más grave y pausada. Elige la voz que '
+              'Cuando ${Edition.current.speaker} habla, el narrador lo anuncia, suena una campana y '
+              '${Edition.current.speaker} habla con una voz más grave y pausada. Elige la voz que '
               'más te ayude a reconocerlo.',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: palette.warmGray,
@@ -632,7 +638,9 @@ class _DivineVoiceSheetState extends ConsumerState<_DivineVoiceSheet> {
             const SizedBox(height: 12),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Campana antes de que Dios hable'),
+              title: Text(
+                'Campana antes de que ${Edition.current.speaker} hable',
+              ),
               value: state.cue,
               activeThumbColor: palette.gold,
               onChanged: controller.setCue,
@@ -715,7 +723,7 @@ class _MyVoiceSheetState extends ConsumerState<_MyVoiceSheet> {
       _message = switch (error) {
         null =>
           'Listo: tu tono es de ${hz?.round()} Hz. El narrador habla con '
-              'tu tono, y Dios con tu voz, más grave.',
+              'tu tono, y ${Edition.current.speaker} con tu voz, más grave.',
         SampleError.permission =>
           'Hace falta permiso para usar el micrófono. Actívalo en los ajustes '
               'del teléfono y vuelve a intentarlo.',
@@ -811,11 +819,11 @@ class _MyVoiceSheetState extends ConsumerState<_MyVoiceSheet> {
             const SizedBox(height: 8),
             Text(
               state.voiceHz == null
-                  ? 'De fábrica, el narrador y Dios hablan con el tono de la '
+                  ? 'De fábrica, el narrador y ${Edition.current.speaker} hablan con el tono de la '
                         'voz de referencia de la app. Graba tu voz y se '
                         'parecerán a la tuya.'
                   : 'El narrador habla con el tono de tu voz '
-                        '(${state.voiceHz!.round()} Hz) y Dios con tu misma '
+                        '(${state.voiceHz!.round()} Hz) y ${Edition.current.speaker} con tu misma '
                         'voz, más grave.',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: palette.warmGray,
@@ -829,9 +837,7 @@ class _MyVoiceSheetState extends ConsumerState<_MyVoiceSheet> {
               ),
               const SizedBox(height: 6),
               Text(
-                '${Edition.current.divineName} es mi pastor; nada me faltará. En lugares de delicados '
-                'pastos me hará yacer; junto a aguas de reposo me pastoreará. '
-                'Confortará mi alma.',
+                Edition.current.readAloudText,
                 style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
               ),
               const SizedBox(height: 10),
@@ -860,7 +866,7 @@ class _MyVoiceSheetState extends ConsumerState<_MyVoiceSheet> {
             ),
             slider(
               key: const Key('divine-pitch'),
-              label: 'Tono de Dios',
+              label: 'Tono de ${Edition.current.speaker}',
               value: state.divinePitch,
               min: 0.5,
               max: 2,
@@ -885,7 +891,7 @@ class _MyVoiceSheetState extends ConsumerState<_MyVoiceSheet> {
                 TextButton.icon(
                   onPressed: busy ? null : controller.previewDivine,
                   icon: const Icon(Icons.play_arrow_rounded),
-                  label: const Text('Probar a Dios'),
+                  label: Text('Probar a ${Edition.current.speaker}'),
                 ),
               ],
             ),

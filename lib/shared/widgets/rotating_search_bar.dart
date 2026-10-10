@@ -2,14 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../core/config/edition.dart';
 import '../../core/theme/app_palette.dart';
 
-const kSearchHints = [
-  'Buscar una palabra de Dios…',
+final kSearchHints = [
+  'Buscar una palabra de ${Edition.current.speaker}…',
   'Buscar sobre ansiedad…',
   'Buscar sobre fe…',
   'Buscar sobre el perdón…',
-  'Buscar por personaje: Moisés, Elías…',
+  Edition.current == Edition.jesus
+      ? 'Buscar por personaje: Pedro, Marta…'
+      : 'Buscar por personaje: Moisés, Elías…',
   'Buscar sobre el miedo…',
 ];
 
@@ -47,7 +50,7 @@ class _RotatingSearchBarState extends State<RotatingSearchBar> {
     final palette = AppPalette.of(context);
     return Semantics(
       button: true,
-      label: 'Buscar una palabra de Dios',
+      label: 'Buscar una palabra de ${Edition.current.speaker}',
       child: Material(
         color: palette.parchment,
         shape: StadiumBorder(

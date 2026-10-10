@@ -14,8 +14,10 @@ enum NarrationSection {
   application('Aplicación para hoy'),
   prayer('Oración de liberación');
 
-  const NarrationSection(this.title);
-  final String title;
+  const NarrationSection(this._title);
+  final String _title;
+
+  String get title => _title.replaceAll('Dios', Edition.current.speaker);
 }
 
 /// Un trozo de la lectura: lo lee el narrador o lo dice Dios con su voz.
@@ -84,12 +86,12 @@ abstract final class Narration {
           ].join(' '),
           NarrationSection.reference => '${spokenReference(p.reference)}.',
           NarrationSection.recipient =>
-            '¿A quién habló Dios? A ${p.recipient}.',
+            '¿A quién habló ${Edition.current.speaker}? A ${p.recipient}.',
           NarrationSection.context =>
             'Contexto histórico. ${p.historicalContext}',
           NarrationSection.situation => '¿Qué estaba pasando? ${p.situation}',
           NarrationSection.problem =>
-            'Problema que Dios estaba tratando. Dios estaba corrigiendo: '
+            'Problema que ${Edition.current.speaker} estaba tratando. ${Edition.current.speaker} estaba corrigiendo: '
                 '${p.problems.join(', ')}. ${p.problem}',
           NarrationSection.explanation =>
             'Explicación sencilla. ${p.explanation}',

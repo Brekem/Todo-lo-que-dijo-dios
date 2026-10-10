@@ -25,8 +25,10 @@ enum ListenRepeat {
   /// Repite solo lo que Dios dijo y su referencia, para meditarlo o memorizarlo.
   quote('Repetir solo lo que Dios dijo');
 
-  const ListenRepeat(this.label);
-  final String label;
+  const ListenRepeat(this._label);
+  final String _label;
+
+  String get label => _label.replaceAll('Dios', Edition.current.speaker);
 
   ListenRepeat get next => values[(index + 1) % values.length];
 }
@@ -377,7 +379,7 @@ class ListeningController extends Notifier<ListeningState> {
     final run = _run;
     await _applyVoices();
     if (run != _run) return;
-    await _engine.speak('En el principio creó Dios los cielos y la tierra.');
+    await _engine.speak(Edition.current.narratorSample);
   }
 
   Future<void> _applyVoices() async {
@@ -556,7 +558,7 @@ class ListeningController extends Notifier<ListeningState> {
     if (state.cue) await _engine.playCue();
     if (run != _run) return;
     await _engine.speak(
-      'Yo soy ${Edition.current.divineName} tu Dios.',
+      Edition.current.divineSampleText,
       style: VoiceStyle.divine,
     );
   }

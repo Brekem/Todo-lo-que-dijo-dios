@@ -43,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
                           delay: const Duration(milliseconds: 300),
                           duration: const Duration(milliseconds: 1600),
                           child: Text(
-                            'Todo lo que\nDios dijo',
+                            'Todo lo que\n${Edition.current.speaker} dijo',
                             style: theme.textTheme.displayLarge?.copyWith(
                               fontSize: constraints.maxHeight < 720 ? 44 : 56,
                             ),
@@ -54,7 +54,7 @@ class WelcomeScreen extends StatelessWidget {
                           delay: const Duration(milliseconds: 1100),
                           duration: const Duration(milliseconds: 1400),
                           child: Text(
-                            'Explora cada palabra pronunciada por Dios y descubre su significado para tu vida.',
+                            'Explora cada palabra pronunciada por ${Edition.current.speaker} y descubre su significado para tu vida.',
                             style: theme.textTheme.bodyLarge?.copyWith(
                               color: palette.warmGray,
                               fontSize: 18,

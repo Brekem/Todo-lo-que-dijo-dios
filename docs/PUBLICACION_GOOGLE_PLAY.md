@@ -54,6 +54,7 @@ En GitHub Actions usa los secretos `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_
 flutter build appbundle --flavor yave --release --obfuscate --split-debug-info=build/symbols   # Google Play
 flutter build apk --flavor yave --release                                         # APK para instalar directo
 flutter build apk --flavor jehova --release                                       # edición «Jehová» (otra app)
+flutter build apk --flavor jesus --release                                        # edición «Jesús» (otra app)
 ```
 
 Sube `build/symbols` a Crashlytics para ver trazas legibles.

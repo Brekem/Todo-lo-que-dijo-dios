@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/config/edition.dart';
 import '../../app/providers.dart';
 import '../../app/router.dart';
 import '../../core/theme/app_palette.dart';
@@ -61,12 +62,12 @@ class _Timeline extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Recorrido de la\nVoz de Dios',
+                  'Recorrido de la\nVoz de ${Edition.current.speaker}',
                   style: theme.textTheme.displaySmall,
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'Recorre toda la Biblia viendo únicamente cuándo Dios habló. '
+                  'Recorre toda la Biblia viendo únicamente cuándo ${Edition.current.speaker} habló. '
                   '${read.length} de ${content.passages.length} palabras escuchadas.',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: palette.warmGray,

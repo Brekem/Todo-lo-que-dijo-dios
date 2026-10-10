@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/config/edition.dart';
 import '../../core/theme/app_palette.dart';
 import '../../data/models/passage.dart';
 
@@ -127,7 +128,7 @@ class _FullVersesCardState extends State<FullVersesCard> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'En dorado, lo que dice Dios. Al escucharlo suena la '
+                      'Resaltado, lo que dice ${Edition.current.speaker}. Al escucharlo suena la '
                       'campana y habla con su propia voz.',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: palette.warmGray,

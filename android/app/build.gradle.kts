@@ -54,6 +54,10 @@ android {
             dimension = "edicion"
             applicationIdSuffix = ".jehova"
         }
+        create("jesus") {
+            dimension = "edicion"
+            applicationIdSuffix = ".jesus"
+        }
     }
 
     signingConfigs {

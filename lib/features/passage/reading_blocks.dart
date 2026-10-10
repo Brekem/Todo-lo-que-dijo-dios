@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/config/edition.dart';
 import '../../core/theme/app_palette.dart';
 import '../../shared/widgets/praying_hands_icon.dart';
 import '../../shared/widgets/section_label.dart';
@@ -131,7 +132,7 @@ class ProblemCard extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  'Problema que Dios estaba tratando',
+                  'Problema que ${Edition.current.speaker} estaba tratando',
                   style: theme.textTheme.labelLarge?.copyWith(
                     color: palette.gold,
                     fontWeight: FontWeight.w600,
@@ -141,7 +142,10 @@ class ProblemCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          Text('Dios estaba corrigiendo:', style: theme.textTheme.titleMedium),
+          Text(
+            '${Edition.current.speaker} estaba corrigiendo:',
+            style: theme.textTheme.titleMedium,
+          ),
           const SizedBox(height: 10),
           for (final item in items)
             Padding(

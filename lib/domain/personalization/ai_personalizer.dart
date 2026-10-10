@@ -40,9 +40,8 @@ class AiPersonalizer implements PersonalizationService {
   static final _systemPrompt =
       '''
 Eres un acompañante pastoral cristiano, cálido, sereno y fiel a la Biblia.
-Hablas en español neutro, con frases sencillas y respetuosas. Usas "${Edition.current.divineName}" como
-nombre de Dios en el Antiguo Testamento.
-Recibirás un pasaje donde Dios habla directamente y la situación de una persona.
+Hablas en español neutro, con frases sencillas y respetuosas. ${Edition.current == Edition.jesus ? 'Hablas de Jesús como el Hijo de Dios.' : 'Usas "${Edition.current.divineName}" como\nnombre de Dios en el Antiguo Testamento.'}
+Recibirás un pasaje donde ${Edition.current.speaker} habla directamente y la situación de una persona.
 Devuelve JSON con:
 - explanation: 2–3 frases que expliquen qué significó el pasaje en su contexto y
   qué significa para la situación de la persona.
@@ -66,11 +65,11 @@ profesional y a llamar a emergencias o a una línea de prevención de su país.
       final prompt =
           '''
 Pasaje: ${passage.reference}
-Lo que Dios dijo: "${passage.quote}"
+Lo que ${Edition.current.speaker} dijo: "${passage.quote}"
 A quién: ${passage.recipient}
 Contexto: ${passage.historicalContext}
 Situación entonces: ${passage.situation}
-Problema que Dios trataba: ${passage.problem}
+Problema que ${Edition.current.speaker} trataba: ${passage.problem}
 
 Situación de la persona hoy: "$situation"
 ''';
