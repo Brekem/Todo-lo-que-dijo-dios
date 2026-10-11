@@ -106,6 +106,34 @@ class AppPalette extends ThemeExtension<AppPalette> {
     onGoldSoft: Color(0xFFF1E6CB),
   );
 
+  /// Edición «Apocalipsis»: púrpura real y dorado.
+  static const apocalipsisLight = AppPalette(
+    background: Color(0xFFFBF9FC), // blanco
+    parchment: Color(0xFFF3EEF6),
+    gold: Color(0xFFB8913A), // dorado
+    goldSoft: Color(0xFFF2E8C9),
+    blue: Color(0xFF3B1E5C), // púrpura real
+    blueSoft: Color(0xFFECE4F3),
+    warmGray: Color(0xFF746A7D),
+    ink: Color(0xFF221A2B),
+    crimson: Color(0xFF94343C),
+    glow: Color(0x33B8913A),
+  );
+
+  static const apocalipsisDark = AppPalette(
+    background: Color(0xFF0C0712), // noche púrpura
+    parchment: Color(0xFF16101F),
+    gold: Color(0xFFD4B062), // dorado
+    goldSoft: Color(0xFF2A2615),
+    blue: Color(0xFFC9B2EA), // lila claro
+    blueSoft: Color(0xFF1F1530),
+    warmGray: Color(0xFFA79DB1),
+    ink: Color(0xFFF4F0F8),
+    crimson: Color(0xFFC96A70),
+    glow: Color(0x22D4B062),
+    onGoldSoft: Color(0xFFF1E6CB),
+  );
+
   final Color background;
   final Color parchment;
   final Color gold;

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Edición «Apocalipsis»: púrpura real y dorado. -->
+    <color name="ic_launcher_background">#3B1E5C</color>
+    <color name="launch_background">#FBF9FC</color>
+</resources>

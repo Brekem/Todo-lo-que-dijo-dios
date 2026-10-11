@@ -57,6 +57,7 @@ una nueva versión.
 | Tu voz: de fábrica las voces tienen el tono de la voz de referencia; «Parecida a mi voz» graba 10 s: el narrador habla con tu tono y Dios con tu misma voz, más grave; controles de tono, velocidad y voz del narrador | `domain/listening/pitch.dart`, `domain/listening/voice_sampler.dart`, `features/listen` |
 | Edición «Jehová» (otra app): solo el Antiguo Testamento (937 palabras), con el nombre «Jehová», en azul y blanco | `lib/core/config/edition.dart`, `assets/data/content_jehova.json`, sabor `jehova` |
 | Edición «Jesús» (otra app): todo lo que dijo Jesús, de Mateo a Apocalipsis (344 pasajes, 2396 versículos de la RV1909), con su voz separada de la narración dentro de cada versículo, en dorado y verde | `tool/jesus/build_jesus.py`, `assets/data/content_jesus.json`, sabor `jesus` |
+| Edición «Apocalipsis» (otra app): las profecías del Apocalipsis, el libro completo en 45 visiones (404 versículos), cada una explicada a mano; Juan narra y Jesús, Dios, los ángeles y las voces del cielo hablan con la voz de Dios; en púrpura y dorado | `tool/apocalipsis/`, `assets/data/content_apocalipsis.json`, sabor `apocalipsis` |
 | Escuchar de fondo: sigue con la pantalla apagada o en otra app (servicio de reproducción con notificación y controles en la pantalla de bloqueo); se pausa en las llamadas y sigue al colgar; se pausa al desconectar los auriculares | `domain/listening/background_audio.dart`, `domain/listening/listening_background.dart` |
 | Búsqueda inteligente: palabra, problema, tema, personaje | `domain/search`, `features/search` |
 | Las palabras que guardé (versículo + aplicación + oración) | `features/favorites` |
@@ -94,6 +95,7 @@ flutter pub get
 flutter run                 # emulador o dispositivo Android (edición completa)
 flutter run --flavor jehova # edición «Jehová»: solo Antiguo Testamento, azul y blanco
 flutter run --flavor jesus  # edición «Jesús»: todas las palabras de Jesús, dorado y verde
+flutter run --flavor apocalipsis # edición «Apocalipsis»: el libro completo, púrpura y dorado
 flutter analyze && flutter test
 ```
 

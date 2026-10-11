@@ -31,8 +31,16 @@ abstract final class Narration {
     'El Señor' || 'La voz del Señor' => 'el Señor',
     'El Espíritu Santo' => 'el Espíritu Santo',
     'Jesús resucitado' || 'Jesús glorificado' => 'Jesús',
+    // «Un ángel», «Los cuatro seres vivientes…» → «un ángel», «los cuatro…».
+    final s when _article.hasMatch(s) => s[0].toLowerCase() + s.substring(1),
     final s => s,
   };
+
+  static final _article = RegExp(
+    r'^(Un|Una|Uno|El|La|Los|Las|Grandes|Tres|Ángeles) ',
+  );
+
+  static final _plural = RegExp(r'^(Los|Las|Grandes|Tres|Ángeles)\b');
 
   /// Los versículos completos en el orden en que se leen. Los trozos
   /// seguidos del mismo que habla se unen aunque cambie el versículo, para
@@ -65,7 +73,8 @@ abstract final class Narration {
     }
     final parts = readingParts(p);
     if (parts.isNotEmpty && parts.first.god) {
-      return 'Escucha. Habla ${speakerName(p)}.';
+      final verb = _plural.hasMatch(p.speaker) ? 'Hablan' : 'Habla';
+      return 'Escucha. $verb ${speakerName(p)}.';
     }
     return null;
   }

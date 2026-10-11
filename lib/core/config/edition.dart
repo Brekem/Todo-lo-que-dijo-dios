@@ -4,7 +4,7 @@ import '../theme/app_palette.dart';
 
 /// Ediciones de la app. Cada una se instala como una app aparte (sabor de
 /// Android): `flutter build apk --flavor yave`, `--flavor jehova` o
-/// `--flavor jesus`.
+/// `--flavor jesus` o `--flavor apocalipsis`.
 enum Edition {
   /// Todas las palabras, de Génesis a Apocalipsis, con el nombre «Yavé».
   yave(
@@ -45,6 +45,28 @@ enum Edition {
         'haré descansar.',
     light: AppPalette.jesusLight,
     dark: AppPalette.jesusDark,
+  ),
+
+  /// El libro completo del Apocalipsis, visión por visión, en púrpura y
+  /// dorado. Juan narra; Jesús, Dios y los ángeles hablan con la voz de Dios.
+  apocalipsis(
+    appName: 'Las Profecías del Apocalipsis',
+    divineName: 'Dios',
+    headline: 'Las profecías del\nApocalipsis',
+    contentAsset: 'assets/data/content_apocalipsis.json',
+    span: 'de Apocalipsis 1 a 22',
+    start: 'Apocalipsis 1',
+    milestones: 'Iglesias · Sellos · Trompetas · Copas · Cielo nuevo',
+    divineSample: 'He aquí, yo hago nuevas todas las cosas.',
+    narratorSample:
+        'Y yo Juan vi la santa ciudad, Jerusalén nueva, que descendía del '
+        'cielo.',
+    readAloud:
+        'Y limpiará Dios toda lágrima de los ojos de ellos; y la muerte no '
+        'será más; y no habrá más llanto, ni clamor, ni dolor. He aquí, yo '
+        'hago nuevas todas las cosas.',
+    light: AppPalette.apocalipsisLight,
+    dark: AppPalette.apocalipsisDark,
   );
 
   const Edition({
@@ -60,6 +82,7 @@ enum Edition {
     this.divineSample,
     this.narratorSample = 'En el principio creó Dios los cielos y la tierra.',
     this.readAloud,
+    this.headline,
   });
 
   final String appName;
@@ -80,6 +103,11 @@ enum Edition {
   final String narratorSample;
 
   final String? readAloud;
+
+  final String? headline;
+
+  /// Título grande de la bienvenida («Todo lo que\nDios dijo»).
+  String get title => headline ?? 'Todo lo que\n$speaker dijo';
 
   /// Frase para probar la voz de Dios (o de Jesús).
   String get divineSampleText => divineSample ?? 'Yo soy $divineName tu Dios.';
@@ -111,6 +139,7 @@ enum Edition {
   static final Edition current = switch (appFlavor) {
     'jehova' => jehova,
     'jesus' => jesus,
+    'apocalipsis' => apocalipsis,
     _ => yave,
   };
 }

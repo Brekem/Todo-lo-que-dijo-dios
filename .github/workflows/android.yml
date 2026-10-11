@@ -77,6 +77,11 @@ jobs:
       - name: APK edición Jesús
         run: flutter build apk --flavor jesus --release --obfuscate --split-debug-info=build/symbols-jesus
 
+      # Edición «Apocalipsis»: el libro completo, en púrpura y dorado.
+      # Es otra app (com.brekem.todoloquediosdijo.apocalipsis).
+      - name: APK edición Apocalipsis
+        run: flutter build apk --flavor apocalipsis --release --obfuscate --split-debug-info=build/symbols-apocalipsis
+
       - name: App Bundle (Google Play)
         run: flutter build appbundle --flavor yave --release --obfuscate --split-debug-info=build/symbols
 
@@ -86,6 +91,7 @@ jobs:
           cp build/app/outputs/flutter-apk/app-yave-release.apk Todo-lo-que-Dios-Dijo.apk
           cp build/app/outputs/flutter-apk/app-jehova-release.apk Todo-lo-que-Jehova-Dijo.apk
           cp build/app/outputs/flutter-apk/app-jesus-release.apk Todo-lo-que-Jesus-Dijo.apk
+          cp build/app/outputs/flutter-apk/app-apocalipsis-release.apk Las-Profecias-del-Apocalipsis.apk
           # "2.0.0+2" → "2.0.0"; "3.0.0-dev.1+3" → "3.0.0-dev.1"
           VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: *//; s/+.*//')
           echo "name=$VERSION" >> "$GITHUB_OUTPUT"
@@ -116,10 +122,14 @@ jobs:
             **Todo-lo-que-Jesus-Dijo.apk** es la edición «Jesús»: todas las
             palabras de Jesús, de Mateo a Apocalipsis, en dorado y verde.
             También es otra app.
+
+            **Las-Profecias-del-Apocalipsis.apk** es la edición «Apocalipsis»:
+            el libro completo, visión por visión, en púrpura y dorado.
           files: |
             Todo-lo-que-Dios-Dijo.apk
             Todo-lo-que-Jehova-Dijo.apk
             Todo-lo-que-Jesus-Dijo.apk
+            Las-Profecias-del-Apocalipsis.apk
 
       - uses: actions/upload-artifact@v4
         with:
@@ -128,6 +138,7 @@ jobs:
             build/app/outputs/flutter-apk/app-yave-release.apk
             build/app/outputs/flutter-apk/app-jehova-release.apk
             build/app/outputs/flutter-apk/app-jesus-release.apk
+            build/app/outputs/flutter-apk/app-apocalipsis-release.apk
 
       - uses: actions/upload-artifact@v4
         with:

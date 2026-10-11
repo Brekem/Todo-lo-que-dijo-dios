@@ -10,9 +10,11 @@ final kSearchHints = [
   'Buscar sobre ansiedad…',
   'Buscar sobre fe…',
   'Buscar sobre el perdón…',
-  Edition.current == Edition.jesus
-      ? 'Buscar por personaje: Pedro, Marta…'
-      : 'Buscar por personaje: Moisés, Elías…',
+  switch (Edition.current) {
+    Edition.jesus => 'Buscar por personaje: Pedro, Marta…',
+    Edition.apocalipsis => 'Buscar: Babilonia, el Cordero…',
+    _ => 'Buscar por personaje: Moisés, Elías…',
+  },
   'Buscar sobre el miedo…',
 ];
 

@@ -43,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
                           delay: const Duration(milliseconds: 300),
                           duration: const Duration(milliseconds: 1600),
                           child: Text(
-                            'Todo lo que\n${Edition.current.speaker} dijo',
+                            Edition.current.title,
                             style: theme.textTheme.displayLarge?.copyWith(
                               fontSize: constraints.maxHeight < 720 ? 44 : 56,
                             ),

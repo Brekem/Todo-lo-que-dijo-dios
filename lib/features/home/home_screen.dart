@@ -56,7 +56,7 @@ class _HomeBody extends ConsumerWidget {
               children: [
                 Expanded(
                   child: Text(
-                    'Todo lo que ${Edition.current.speaker} dijo',
+                    Edition.current.title.replaceAll('\n', ' '),
                     style: theme.textTheme.headlineSmall,
                   ),
                 ),

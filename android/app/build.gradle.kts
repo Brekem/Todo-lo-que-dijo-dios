@@ -58,6 +58,10 @@ android {
             dimension = "edicion"
             applicationIdSuffix = ".jesus"
         }
+        create("apocalipsis") {
+            dimension = "edicion"
+            applicationIdSuffix = ".apocalipsis"
+        }
     }
 
     signingConfigs {
