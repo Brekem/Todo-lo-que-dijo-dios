@@ -109,6 +109,24 @@ class AndroidBackgroundAudio implements BackgroundAudio {
     }
   }
 
+  static const _energy = MethodChannel('todo_lo_que_dios_dijo/energia');
+  bool _askedForBattery = false;
+
+  /// Mantiene el procesador despierto mientras se lee (MainActivity.kt):
+  /// la voz del teléfono no es un reproductor de audio y, con la pantalla
+  /// apagada, Android la cortaría entre frase y frase.
+  Future<void> _stayAwake(bool on) async {
+    try {
+      await _energy.invokeMethod<void>('despierto', on);
+      if (on && !_askedForBattery) {
+        _askedForBattery = true;
+        await _energy.invokeMethod<void>('sinAhorroDeBateria');
+      }
+    } catch (e) {
+      debugPrint('No se pudo mantener despierto el teléfono: $e');
+    }
+  }
+
   @override
   void attach(BackgroundCommands commands) => _commands = commands;
 
@@ -124,6 +142,7 @@ class AndroidBackgroundAudio implements BackgroundAudio {
       unawaited(_askForNotifications());
     }
     _playing = playing;
+    unawaited(_stayAwake(playing));
     _handler.mediaItem.add(
       MediaItem(id: title, title: title, artist: subtitle, album: _appName),
     );
@@ -146,6 +165,7 @@ class AndroidBackgroundAudio implements BackgroundAudio {
   @override
   Future<void> hide() async {
     _playing = false;
+    unawaited(_stayAwake(false));
     _handler.playbackState.add(
       PlaybackState(processingState: AudioProcessingState.idle),
     );
