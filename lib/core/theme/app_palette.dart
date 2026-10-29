@@ -134,6 +134,34 @@ class AppPalette extends ThemeExtension<AppPalette> {
     onGoldSoft: Color(0xFFF1E6CB),
   );
 
+  /// Edición «Promesas»: celeste y dorado, cielo y luz.
+  static const promesasLight = AppPalette(
+    background: Color(0xFFFAFCFF), // blanco
+    parchment: Color(0xFFEFF6FC), // celeste muy claro
+    gold: Color(0xFFB8913A), // dorado
+    goldSoft: Color(0xFFF2E8C9),
+    blue: Color(0xFF1F5F8B), // celeste profundo
+    blueSoft: Color(0xFFE1EEF8),
+    warmGray: Color(0xFF6A7682),
+    ink: Color(0xFF17232E),
+    crimson: Color(0xFF94343C),
+    glow: Color(0x33B8913A),
+  );
+
+  static const promesasDark = AppPalette(
+    background: Color(0xFF07101A), // cielo de noche
+    parchment: Color(0xFF0F1B27),
+    gold: Color(0xFFD4B062), // dorado
+    goldSoft: Color(0xFF2A2615),
+    blue: Color(0xFF9CCBEE), // celeste
+    blueSoft: Color(0xFF112434),
+    warmGray: Color(0xFF9DA9B4),
+    ink: Color(0xFFF1F6FB),
+    crimson: Color(0xFFC96A70),
+    glow: Color(0x22D4B062),
+    onGoldSoft: Color(0xFFF1E6CB),
+  );
+
   final Color background;
   final Color parchment;
   final Color gold;

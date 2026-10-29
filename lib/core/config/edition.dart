@@ -4,7 +4,7 @@ import '../theme/app_palette.dart';
 
 /// Ediciones de la app. Cada una se instala como una app aparte (sabor de
 /// Android): `flutter build apk --flavor yave`, `--flavor jehova` o
-/// `--flavor jesus` o `--flavor apocalipsis`.
+/// `--flavor jesus`, `--flavor apocalipsis` o `--flavor promesas`.
 enum Edition {
   /// Todas las palabras, de Génesis a Apocalipsis, con el nombre «Yavé».
   yave(
@@ -67,6 +67,20 @@ enum Edition {
         'hago nuevas todas las cosas.',
     light: AppPalette.apocalipsisLight,
     dark: AppPalette.apocalipsisDark,
+  ),
+
+  /// Las promesas de Dios, de Génesis a Apocalipsis, en celeste y dorado.
+  promesas(
+    appName: 'Promesas de la Biblia',
+    divineName: 'Yavé',
+    headline: 'Promesas de\nla Biblia',
+    contentAsset: 'assets/data/content_promesas.json',
+    span: 'de Génesis a Apocalipsis',
+    milestones: 'Abraham · Salmos · Profetas · Jesús · Cielo nuevo',
+    divineSample:
+        'No temas, que yo soy contigo; no desmayes, que yo soy tu Dios.',
+    light: AppPalette.promesasLight,
+    dark: AppPalette.promesasDark,
   );
 
   const Edition({
@@ -140,6 +154,7 @@ enum Edition {
     'jehova' => jehova,
     'jesus' => jesus,
     'apocalipsis' => apocalipsis,
+    'promesas' => promesas,
     _ => yave,
   };
 }

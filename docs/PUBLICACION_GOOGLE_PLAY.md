@@ -56,6 +56,7 @@ flutter build apk --flavor yave --release                                       
 flutter build apk --flavor jehova --release                                       # edición «Jehová» (otra app)
 flutter build apk --flavor jesus --release                                        # edición «Jesús» (otra app)
 flutter build apk --flavor apocalipsis --release                                  # edición «Apocalipsis» (otra app)
+flutter build apk --flavor promesas --release                                     # edición «Promesas» (otra app)
 ```
 
 Sube `build/symbols` a Crashlytics para ver trazas legibles.

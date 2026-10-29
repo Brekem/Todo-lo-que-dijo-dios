@@ -62,6 +62,10 @@ android {
             dimension = "edicion"
             applicationIdSuffix = ".apocalipsis"
         }
+        create("promesas") {
+            dimension = "edicion"
+            applicationIdSuffix = ".promesas"
+        }
     }
 
     signingConfigs {
