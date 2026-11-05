@@ -208,6 +208,23 @@ void main() {
     });
 
     test(
+      'lo que dice Adán y lo que cuenta el narrador no van con la voz de Dios',
+      () {
+        final eden = studies.passageById('b-gen-3-8')!;
+        final god = eden.verses
+            .expand((v) => v.parts)
+            .where((p) => p.god)
+            .map((p) => p.text);
+        expect(god, ['¿Dónde estás tú?']);
+        final image = studies.passageById('b-gen-1-26')!;
+        expect(
+          image.verses.firstWhere((v) => v.number == 27).parts.single.god,
+          isFalse,
+        );
+      },
+    );
+
+    test(
       'el versículo de un estudio se explica con lo escrito a mano',
       () async {
         final explainer = StudyVerseExplainer(studies, bible);

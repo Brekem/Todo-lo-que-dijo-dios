@@ -66,9 +66,15 @@ CONTEXT = {
 }
 
 DIVINE = ('Dios', 'Jesús', 'Jesús resucitado', 'Dios, sentado en el trono')
-# Versículos donde las letras rojas de la WEB no cuadran con la RV1909:
-# lo que va hasta este texto lo lee el narrador; lo demás, Jesús.
+# Versículos donde el corte automático de voces falla (letras rojas de la
+# WEB que no cuadran con la RV1909, o narración que parece palabra de Dios):
+# lo que va hasta este texto lo lee el narrador y lo demás, Dios o Jesús.
+# Con '' todo el versículo lo lee el narrador.
 VOICE_CUTS = {
+    ('Génesis', 1, 27): '',
+    ('Génesis', 3, 8): '',
+    ('Génesis', 3, 9): 'y le dijo:',
+    ('Génesis', 3, 10): '',
     ('Hechos', 9, 6): 'Y el Señor le dice:',
 }
 
@@ -137,15 +143,16 @@ def build_studies():
                 # rojas); lo que dicen los demás lo lee el narrador.
                 runs = red.get(str(v), {}).get('runs')
                 parts = split_verse(text, runs) if runs else [[text, False]]
-                cut = VOICE_CUTS.get((book, ch, v))
-                if cut:
-                    # La RV1909 tiene texto que la WEB no trae; se corta a mano.
-                    i = text.index(cut) + len(cut)
-                    parts = [[text[:i].strip(), False], [text[i:].strip(), True]]
             elif divine:
                 parts = split_intro(text)
             else:
                 parts = [[text, False]]
+            cut = VOICE_CUTS.get((book, ch, v))
+            if cut == '':
+                parts = [[text, False]]
+            elif cut:
+                i = text.index(cut) + len(cut)
+                parts = [[text[:i].strip(), False], [text[i:].strip(), True]]
             verses.append([v, [[t, 1 if g else 0] for t, g in parts]])
         bid = BOOKS[book]['id']
         era = era_of(bid)
