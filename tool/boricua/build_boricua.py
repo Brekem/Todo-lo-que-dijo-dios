@@ -66,6 +66,12 @@ CONTEXT = {
 }
 
 DIVINE = ('Dios', 'Jesús', 'Jesús resucitado', 'Dios, sentado en el trono')
+# Versículos donde las letras rojas de la WEB no cuadran con la RV1909:
+# lo que va hasta este texto lo lee el narrador; lo demás, Jesús.
+VOICE_CUTS = {
+    ('Hechos', 9, 6): 'Y el Señor le dice:',
+}
+
 RED_BOOKS = {'Mateo': 'Matthew', 'Marcos': 'Mark', 'Lucas': 'Luke', 'Juan': 'John',
              'Hechos': 'Acts', 'Apocalipsis': 'Revelation of John'}
 
@@ -116,6 +122,8 @@ def build_studies():
         assert book in BOOKS, book
         assert sorted(x['paraphrase']) == list(range(a, b + 1)), f'{x["ref"]}: paráfrasis incompleta'
         assert x['oracion'].rstrip().endswith('Amén.'), x['ref']
+        assert all(len(x[k]) > 40 for k in ('que_paso', 'explicacion', 'dios', 'humano',
+                                             'cristo', 'aplico')), f'{x["ref"]}: parte muy corta'
         assert all(c in CATEGORIES_BY_ID for c in x['cats']), x['ref']
         check_language(x['ref'], *x['paraphrase'].values(), x['que_paso'], x['explicacion'],
                        x['dios'], x['humano'], x['cristo'], x['aplico'], x['oracion'])
@@ -129,6 +137,11 @@ def build_studies():
                 # rojas); lo que dicen los demás lo lee el narrador.
                 runs = red.get(str(v), {}).get('runs')
                 parts = split_verse(text, runs) if runs else [[text, False]]
+                cut = VOICE_CUTS.get((book, ch, v))
+                if cut:
+                    # La RV1909 tiene texto que la WEB no trae; se corta a mano.
+                    i = text.index(cut) + len(cut)
+                    parts = [[text[:i].strip(), False], [text[i:].strip(), True]]
             elif divine:
                 parts = split_intro(text)
             else:

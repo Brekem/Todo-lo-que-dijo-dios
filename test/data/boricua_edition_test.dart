@@ -103,11 +103,18 @@ void main() {
     test(
       'cada estudio tiene paráfrasis de cada versículo y las seis partes',
       () {
-        expect(studies.passages.length, greaterThanOrEqualTo(130));
+        expect(studies.passages.length, greaterThanOrEqualTo(175));
         int count(String book) =>
             studies.passages.where((p) => p.book == book).length;
         expect(count('Salmos'), greaterThanOrEqualTo(35));
         expect(count('Proverbios'), greaterThanOrEqualTo(15));
+        expect(count('Hechos'), greaterThanOrEqualTo(10));
+        expect(
+          studies.passages
+              .where((p) => p.era == 'iglesia' && p.book != 'Hechos')
+              .length,
+          greaterThanOrEqualTo(45),
+        );
         expect(
           studies.passages.where((p) => p.era == 'evangelios').length,
           greaterThanOrEqualTo(50),
@@ -192,6 +199,12 @@ void main() {
         isFalse,
       );
       expect(woman.verses.last.parts.last.text, startsWith('Hija, tu fe'));
+      final saul = studies.passageById('b-hch-9-3')!;
+      final v6 = saul.verses.last.parts;
+      expect(v6.first.god, isFalse);
+      expect(v6.first.text, contains('¿qué quieres que haga?'));
+      expect(v6.last.god, isTrue);
+      expect(v6.last.text, startsWith('Levántate'));
     });
 
     test(
