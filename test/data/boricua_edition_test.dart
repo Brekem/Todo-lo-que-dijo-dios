@@ -103,7 +103,7 @@ void main() {
     test(
       'cada estudio tiene paráfrasis de cada versículo y las seis partes',
       () {
-        expect(studies.passages.length, greaterThanOrEqualTo(590));
+        expect(studies.passages.length, greaterThanOrEqualTo(640));
         int count(String book) =>
             studies.passages.where((p) => p.book == book).length;
         expect(count('Salmos'), greaterThanOrEqualTo(35));
@@ -121,6 +121,7 @@ void main() {
           'Rut',
           '1 Samuel',
           '2 Samuel',
+          '1 Reyes',
         ]) {
           expect(count(book), greaterThanOrEqualTo(40), reason: book);
         }
