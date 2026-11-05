@@ -48,6 +48,20 @@ void main() {
       expect(bible.book('sal')!.chapterCount, 150);
     });
 
+    test('tras el título del salmo, la oración empieza con mayúscula', () {
+      expect(
+        bible.text(const VerseRef('sal', 46, 1)),
+        endsWith(
+          'Salmo sobre Alamoth. Dios es nuestro amparo y fortaleza, '
+          'nuestro pronto auxilio en las tribulaciones.',
+        ),
+      );
+      expect(
+        bible.text(const VerseRef('sal', 13, 1)),
+        contains('David. ¿Hasta cuándo'),
+      );
+    });
+
     test('RV1909 con el nombre «Jehová»', () {
       expect(
         bible.text(const VerseRef('jua', 3, 16)),
@@ -89,7 +103,11 @@ void main() {
     test(
       'cada estudio tiene paráfrasis de cada versículo y las seis partes',
       () {
-        expect(studies.passages.length, greaterThanOrEqualTo(80));
+        expect(studies.passages.length, greaterThanOrEqualTo(130));
+        int count(String book) =>
+            studies.passages.where((p) => p.book == book).length;
+        expect(count('Salmos'), greaterThanOrEqualTo(35));
+        expect(count('Proverbios'), greaterThanOrEqualTo(15));
         expect(
           studies.passages.where((p) => p.era == 'evangelios').length,
           greaterThanOrEqualTo(50),

@@ -11,6 +11,7 @@ Uso:
 """
 import csv
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -58,6 +59,15 @@ BOOKS = [
 NT_START = 'Matthew'
 
 
+# «Salmo de David. jehová es…» → «Salmo de David. Jehová es…»: tras el título
+# del salmo empieza la oración con mayúscula.
+PSALM_TITLE = re.compile(r'^((?:Salmo|Al Músico|Cántico|Masquil|Mictam|Oración|Michtam)[^.]*\.)\s+([¿¡]?)(\w)')
+
+
+def capitalize_after_title(text: str) -> str:
+    return PSALM_TITLE.sub(lambda m: f'{m.group(1)} {m.group(2)}{m.group(3).upper()}', text)
+
+
 def jehova(text: str) -> str:
     return text.replace('YAVÉ', 'JEHOVÁ').replace('Yavé', 'Jehová')
 
@@ -68,6 +78,8 @@ def load():
     with SOURCE.open(encoding='utf-8') as f:
         for r in csv.DictReader(f):
             text = jehova(modernize(fix_caps(r['Text'], r['Verse'])))
+            if r['Book'] == 'Psalms' and r['Verse'] == '1':
+                text = capitalize_after_title(text)
             verses[(r['Book'], int(r['Chapter']), int(r['Verse']))] = text
     return verses
 

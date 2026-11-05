@@ -33,8 +33,8 @@ flutter build appbundle --flavor boricua --release  # Google Play
 | Función | Estado | Dónde |
 |---|---|---|
 | Biblia completa: 66 libros, 1,189 capítulos y 31,102 versículos, sin conexión | ✅ | `assets/data/biblia_rv1909.json`, `features/bible` |
-| Cada versículo con texto bíblico, paráfrasis boricua, explicación, aplicación y oración | ✅ en los 84 estudios escritos a mano · ⚙️ IA para todos los demás versículos cuando Firebase esté configurado | `domain/bible/verse_explainer.dart` |
-| Estructura educativa: qué pasó, qué enseña de Dios, del ser humano y de Jesucristo, cómo lo aplico y oración | ✅ 84 estudios (53 de los evangelios) | `tool/boricua/estudios*.py`, `features/passage/study_view.dart` |
+| Cada versículo con texto bíblico, paráfrasis boricua, explicación, aplicación y oración | ✅ en los 132 estudios escritos a mano · ⚙️ IA para todos los demás versículos cuando Firebase esté configurado | `domain/bible/verse_explainer.dart` |
+| Estructura educativa: qué pasó, qué enseña de Dios, del ser humano y de Jesucristo, cómo lo aplico y oración | ✅ 132 estudios (53 de los evangelios, 37 de Salmos, 16 de Proverbios) | `tool/boricua/estudios*.py`, `features/passage/study_view.dart` |
 | Teología simple: términos explicados automáticamente | ✅ 40 términos | `tool/boricua/recursos.py`, `domain/bible/glossary_linker.dart` |
 | Escuela Bíblica: 7 niveles × 3 lecciones, con lecturas, explicación, reflexión, ejemplo real y oración | ✅ | `features/school` |
 | Asistente cristiano: pasaje, explicación, aplicación, oración y próximo paso | ✅ 17 respuestas sin conexión y líneas de ayuda en crisis · ⚙️ IA para cualquier pregunta | `domain/assistant` |
