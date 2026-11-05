@@ -103,12 +103,14 @@ void main() {
     test(
       'cada estudio tiene paráfrasis de cada versículo y las seis partes',
       () {
-        expect(studies.passages.length, greaterThanOrEqualTo(175));
+        expect(studies.passages.length, greaterThanOrEqualTo(220));
         int count(String book) =>
             studies.passages.where((p) => p.book == book).length;
         expect(count('Salmos'), greaterThanOrEqualTo(35));
         expect(count('Proverbios'), greaterThanOrEqualTo(15));
         expect(count('Hechos'), greaterThanOrEqualTo(10));
+        // Compendio: 40 o más estudios por libro.
+        expect(count('Génesis'), greaterThanOrEqualTo(40));
         expect(
           studies.passages
               .where((p) => p.era == 'iglesia' && p.book != 'Hechos')
@@ -216,6 +218,9 @@ void main() {
             .where((p) => p.god)
             .map((p) => p.text);
         expect(god, ['¿Dónde estás tú?']);
+        final cain = studies.passageById('b-gen-4-9')!.verses.first.parts;
+        expect(cain.map((p) => p.god), [false, true, false]);
+        expect(cain[1].text, '¿Dónde está Abel tu hermano?');
         final image = studies.passageById('b-gen-1-26')!;
         expect(
           image.verses.firstWhere((v) => v.number == 27).parts.single.god,

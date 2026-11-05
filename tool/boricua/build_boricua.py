@@ -78,6 +78,27 @@ VOICE_CUTS = {
     ('Hechos', 9, 6): 'Y el Señor le dice:',
 }
 
+# Voces marcadas a mano en los archivos de estudios con voz(cita, texto):
+# el texto del versículo con «|» donde cambia la voz. Los tramos impares
+# (el 2.º, el 4.º…) los dice Dios; los demás, el narrador. «''» = todo narrador.
+VOICES = {}
+_SPACES = re.compile(r'\s+')
+
+
+def voz(ref, marked):
+    book, ch, a, b = parse_ref(ref)
+    assert a == b, ref
+    VOICES[(book, ch, a)] = marked
+
+
+def marked_parts(text, marked, ref):
+    if marked == '':
+        return [[text, False]]
+    norm = lambda t: _SPACES.sub(' ', t).strip()  # noqa: E731
+    assert norm(marked.replace('|', ' ')) == norm(text), f'{ref}: voz no cuadra con el texto'
+    return [[seg.strip(), i % 2 == 1] for i, seg in enumerate(marked.split('|')) if seg.strip()]
+
+
 RED_BOOKS = {'Mateo': 'Matthew', 'Marcos': 'Mark', 'Lucas': 'Luke', 'Juan': 'John',
              'Hechos': 'Acts', 'Apocalipsis': 'Revelation of John'}
 
@@ -121,7 +142,7 @@ def build_studies():
         studies.append(locals())
 
     for f in sorted(HERE.glob('estudios*.py')):
-        exec(compile(f.read_text(encoding='utf-8'), f.name, 'exec'), {'e': e})
+        exec(compile(f.read_text(encoding='utf-8'), f.name, 'exec'), {'e': e, 'voz': voz})
     passages = []
     for x in studies:
         book, ch, a, b = parse_ref(x['ref'])
@@ -148,7 +169,10 @@ def build_studies():
             else:
                 parts = [[text, False]]
             cut = VOICE_CUTS.get((book, ch, v))
-            if cut == '':
+            marked = VOICES.get((book, ch, v))
+            if marked is not None:
+                parts = marked_parts(text, marked, f'{book} {ch}:{v}')
+            elif cut == '':
                 parts = [[text, False]]
             elif cut:
                 i = text.index(cut) + len(cut)
