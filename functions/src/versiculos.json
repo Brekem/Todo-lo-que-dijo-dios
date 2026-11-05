@@ -80,9 +80,39 @@
   "study": "b-lam-3-21"
  },
  {
+  "reference": "Mateo 1:23",
+  "text": "«La virgen va a quedar embarazada y tendrá un hijo, y lo llamarán Emanuel», que quiere decir «Dios con nosotros».",
+  "study": "b-mat-1-21"
+ },
+ {
+  "reference": "Mateo 4:4",
+  "text": "Pero Jesús le contestó: «Está escrito: \"No solo de pan vive el ser humano, sino de toda palabra que sale de la boca de Dios\"».",
+  "study": "b-mat-4-1"
+ },
+ {
+  "reference": "Mateo 4:18",
+  "text": "Caminando por la orilla del mar de Galilea, Jesús vio a dos hermanos: Simón, a quien llamaban Pedro, y Andrés. Estaban tirando la red al mar, porque eran pescadores.",
+  "study": "b-mat-4-18"
+ },
+ {
   "reference": "Mateo 5:3",
   "text": "Dichosos los que reconocen que necesitan a Dios, porque el reino de los cielos es de ellos.",
   "study": "b-mat-5-3"
+ },
+ {
+  "reference": "Mateo 5:16",
+  "text": "De la misma manera, dejen que su luz brille delante de la gente, para que vean el bien que ustedes hacen y alaben a su Padre que está en el cielo.",
+  "study": "b-mat-5-13"
+ },
+ {
+  "reference": "Mateo 5:44",
+  "text": "Pero yo les digo: Amen a sus enemigos, bendigan a los que los maldicen, háganles bien a los que los odian y oren por los que los maltratan y los persiguen.",
+  "study": "b-mat-5-43"
+ },
+ {
+  "reference": "Mateo 6:13",
+  "text": "No nos dejes caer en tentación, y líbranos del mal. Porque tuyo es el reino, el poder y la gloria para siempre. Amén».",
+  "study": "b-mat-6-9"
  },
  {
   "reference": "Mateo 6:34",
@@ -90,9 +120,44 @@
   "study": "b-mat-6-31"
  },
  {
+  "reference": "Mateo 7:25",
+  "text": "Cayó la lluvia, crecieron los ríos y soplaron los vientos contra esa casa, pero no se cayó, porque estaba construida sobre la roca.",
+  "study": "b-mat-7-24"
+ },
+ {
   "reference": "Mateo 11:29",
   "text": "Acepten mi yugo y aprendan de mí, porque soy humilde y de corazón tierno, y van a encontrar descanso para su alma.",
   "study": "b-mat-11-28"
+ },
+ {
+  "reference": "Mateo 14:30",
+  "text": "Pero al ver lo fuerte que soplaba el viento, le dio miedo y empezó a hundirse. Entonces gritó: «¡Señor, sálvame!».",
+  "study": "b-mat-14-28"
+ },
+ {
+  "reference": "Mateo 16:24",
+  "text": "Entonces Jesús les dijo a sus discípulos: «Si alguien quiere ser mi discípulo, tiene que negarse a sí mismo, tomar su cruz y seguirme.",
+  "study": "b-mat-16-24"
+ },
+ {
+  "reference": "Mateo 18:21",
+  "text": "Entonces Pedro se acercó a Jesús y le preguntó: «Señor, ¿cuántas veces tengo que perdonar a mi hermano si me ofende? ¿Hasta siete veces?».",
+  "study": "b-mat-18-21"
+ },
+ {
+  "reference": "Mateo 22:37",
+  "text": "Jesús le contestó: «Ama al Señor tu Dios con todo tu corazón, con toda tu alma y con toda tu mente».",
+  "study": "b-mat-22-37"
+ },
+ {
+  "reference": "Mateo 25:40",
+  "text": "El Rey les contestará: «Les aseguro que todo lo que hicieron por uno de estos hermanos míos más pequeños, lo hicieron por mí».",
+  "study": "b-mat-25-35"
+ },
+ {
+  "reference": "Mateo 26:39",
+  "text": "Se adelantó un poco, se tiró rostro en tierra y oró: «Padre mío, si es posible, no me hagas beber este trago amargo. Pero que no se haga lo que yo quiero, sino lo que quieres tú».",
+  "study": "b-mat-26-38"
  },
  {
   "reference": "Mateo 28:20",
@@ -100,9 +165,99 @@
   "study": "b-mat-28-18"
  },
  {
+  "reference": "Marcos 1:15",
+  "text": "Decía: «Ya se cumplió el tiempo. El reino de Dios está cerca. Arrepiéntanse y crean en la buena noticia».",
+  "study": "b-mar-1-14"
+ },
+ {
+  "reference": "Marcos 2:15",
+  "text": "Más tarde, Jesús estaba comiendo en la casa de Leví, y muchos cobradores de impuestos y pecadores estaban comiendo con él y con sus discípulos, porque eran muchos los que lo seguían.",
+  "study": "b-mar-2-15"
+ },
+ {
+  "reference": "Marcos 4:38",
+  "text": "Jesús estaba en la parte de atrás, durmiendo sobre un cojín. Lo despertaron y le dijeron: «Maestro, ¿no te importa que nos vamos a ahogar?».",
+  "study": "b-mar-4-37"
+ },
+ {
+  "reference": "Marcos 5:30",
+  "text": "En ese mismo momento, Jesús se dio cuenta de que de él había salido poder. Se volvió hacia la gente y preguntó: «¿Quién me tocó la ropa?».",
+  "study": "b-mar-5-25"
+ },
+ {
+  "reference": "Marcos 9:22",
+  "text": "Muchas veces lo ha tirado al fuego y al agua para matarlo. Si puedes hacer algo, ten compasión de nosotros y ayúdanos.",
+  "study": "b-mar-9-22"
+ },
+ {
+  "reference": "Marcos 10:14",
+  "text": "Cuando Jesús vio esto, se enojó y les dijo: «Dejen que los niños vengan a mí. No se lo impidan, porque el reino de Dios es de los que son como ellos.",
+  "study": "b-mar-10-13"
+ },
+ {
+  "reference": "Marcos 10:43",
+  "text": "Pero entre ustedes no debe ser así. Al contrario, el que quiera ser importante entre ustedes, que sea el que les sirva,",
+  "study": "b-mar-10-43"
+ },
+ {
+  "reference": "Marcos 12:41",
+  "text": "Jesús estaba sentado frente al lugar donde se echaban las ofrendas del templo, y miraba cómo la gente echaba su dinero. Muchos ricos echaban mucho.",
+  "study": "b-mar-12-41"
+ },
+ {
+  "reference": "Lucas 1:35",
+  "text": "El ángel le contestó: «El Espíritu Santo vendrá sobre ti y el poder del Dios Altísimo te cubrirá con su sombra. Por eso el niño que va a nacer será santo y lo llamarán Hijo de Dios.",
+  "study": "b-luc-1-35"
+ },
+ {
+  "reference": "Lucas 2:10",
+  "text": "Pero el ángel les dijo: «No tengan miedo. Les traigo una buena noticia que va a llenar de alegría a todo el pueblo:",
+  "study": "b-luc-2-8"
+ },
+ {
+  "reference": "Lucas 4:19",
+  "text": "y a anunciar el año en que el Señor va a mostrar su favor.",
+  "study": "b-luc-4-18"
+ },
+ {
+  "reference": "Lucas 10:30",
+  "text": "Jesús le contestó: «Un hombre bajaba de Jerusalén a Jericó, y unos ladrones lo asaltaron, le quitaron todo, le dieron una golpiza y lo dejaron medio muerto.",
+  "study": "b-luc-10-30"
+ },
+ {
+  "reference": "Lucas 10:40",
+  "text": "Pero Marta estaba muy ocupada con todos los quehaceres de la casa. Así que se acercó a Jesús y le dijo: «Señor, ¿no te importa que mi hermana me haya dejado sola con todo el trabajo? Dile que me ayude».",
+  "study": "b-luc-10-38"
+ },
+ {
+  "reference": "Lucas 15:7",
+  "text": "Les digo que, de la misma manera, hay más alegría en el cielo por un pecador que se arrepiente que por noventa y nueve justos que no necesitan arrepentirse.",
+  "study": "b-luc-15-4"
+ },
+ {
   "reference": "Lucas 15:20",
   "text": "Así que se levantó y regresó a la casa de su papá. Todavía estaba lejos cuando su papá lo vio. Se le llenó el corazón de compasión, salió corriendo, lo abrazó y lo besó.",
   "study": "b-luc-15-20"
+ },
+ {
+  "reference": "Lucas 19:8",
+  "text": "Pero Zaqueo se puso de pie y le dijo al Señor: «Mira, Señor, voy a darles a los pobres la mitad de todo lo que tengo, y si le he robado algo a alguien, le devolveré cuatro veces más».",
+  "study": "b-luc-19-5"
+ },
+ {
+  "reference": "Lucas 23:33",
+  "text": "Cuando llegaron al lugar llamado la Calavera, crucificaron allí a Jesús y a los dos criminales, uno a su derecha y otro a su izquierda.",
+  "study": "b-luc-23-33"
+ },
+ {
+  "reference": "Lucas 23:39",
+  "text": "Uno de los criminales que estaban colgados lo insultaba: «¿No eres tú el Cristo? ¡Sálvate a ti mismo y a nosotros!».",
+  "study": "b-luc-23-39"
+ },
+ {
+  "reference": "Lucas 24:5",
+  "text": "Ellas, asustadas, bajaron la cara al suelo, pero ellos les dijeron: «¿Por qué buscan entre los muertos al que está vivo?",
+  "study": "b-luc-24-1"
  },
  {
   "reference": "Juan 1:14",
@@ -115,14 +270,79 @@
   "study": "b-jua-3-16"
  },
  {
+  "reference": "Juan 4:14",
+  "text": "pero el que beba del agua que yo le doy nunca más tendrá sed. El agua que yo le doy se convertirá en él en un manantial que brota y da vida eterna».",
+  "study": "b-jua-4-13"
+ },
+ {
+  "reference": "Juan 6:35",
+  "text": "Jesús les dijo: «Yo soy el pan de vida. El que viene a mí nunca va a tener hambre, y el que cree en mí nunca más va a tener sed».",
+  "study": "b-jua-6-35"
+ },
+ {
+  "reference": "Juan 8:9",
+  "text": "Al oír esto, se fueron yendo uno por uno, empezando por los más viejos, hasta que dejaron solo a Jesús con la mujer, que seguía allí.",
+  "study": "b-jua-8-7"
+ },
+ {
+  "reference": "Juan 8:12",
+  "text": "Jesús les habló otra vez: «Yo soy la luz del mundo. El que me sigue no va a andar en oscuridad, sino que tendrá la luz que da vida».",
+  "study": "b-jua-8-12"
+ },
+ {
+  "reference": "Juan 8:31",
+  "text": "Jesús les dijo a los judíos que habían creído en él: «Si se mantienen fieles a mis enseñanzas, serán de verdad mis discípulos.",
+  "study": "b-jua-8-31"
+ },
+ {
+  "reference": "Juan 10:10",
+  "text": "El ladrón solo viene a robar, matar y destruir. Yo he venido para que tengan vida, y vida en abundancia.",
+  "study": "b-jua-10-10"
+ },
+ {
+  "reference": "Juan 11:32",
+  "text": "Cuando María llegó a donde estaba Jesús y lo vio, se tiró a sus pies y le dijo: «Señor, si hubieras estado aquí, mi hermano no habría muerto».",
+  "study": "b-jua-11-32"
+ },
+ {
+  "reference": "Juan 13:34",
+  "text": "Les doy un mandamiento nuevo: que se amen unos a otros. Así como yo los he amado, ámense también ustedes unos a otros.",
+  "study": "b-jua-13-34"
+ },
+ {
   "reference": "Juan 14:2",
   "text": "En la casa de mi Padre hay muchas habitaciones. Si no fuera así, ya se lo habría dicho. Voy a prepararles un lugar.",
   "study": "b-jua-14-1"
  },
  {
+  "reference": "Juan 14:27",
+  "text": "Les dejo la paz; les doy mi paz. Yo no se la doy como la da el mundo. No se angustien ni tengan miedo.",
+  "study": "b-jua-14-27"
+ },
+ {
   "reference": "Juan 15:4",
   "text": "Sigan unidos a mí, y yo seguiré unido a ustedes. Una rama no puede dar fruto si está separada de la mata. Tampoco ustedes pueden dar fruto si no siguen unidos a mí.",
   "study": "b-jua-15-4"
+ },
+ {
+  "reference": "Juan 16:33",
+  "text": "Les he dicho todo esto para que en mí tengan paz. En este mundo van a tener problemas, pero ¡ánimo! Yo he vencido al mundo.",
+  "study": "b-jua-16-33"
+ },
+ {
+  "reference": "Juan 19:29",
+  "text": "Había allí una vasija llena de vinagre. Empaparon una esponja en el vinagre, la pusieron en una rama de hisopo y se la acercaron a la boca.",
+  "study": "b-jua-19-28"
+ },
+ {
+  "reference": "Juan 20:26",
+  "text": "Ocho días después, los discípulos estaban otra vez reunidos en la casa, y Tomás estaba con ellos. Aunque las puertas estaban cerradas, Jesús entró, se puso en medio de ellos y les dijo: «La paz sea con ustedes».",
+  "study": "b-jua-20-26"
+ },
+ {
+  "reference": "Juan 21:17",
+  "text": "Por tercera vez le preguntó: «Simón, hijo de Juan, ¿me quieres?». A Pedro le dolió que le preguntara por tercera vez si lo quería, y le contestó: «Señor, tú lo sabes todo; tú sabes que te quiero». Jesús le dijo: «Cuida de mis ovejas».",
+  "study": "b-jua-21-15"
  },
  {
   "reference": "Hechos 1:8",

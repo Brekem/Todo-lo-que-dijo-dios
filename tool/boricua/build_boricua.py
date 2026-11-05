@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT / 'tool' / 'jesus'))
 sys.path.insert(0, str(ROOT / 'tool' / 'promesas'))
 
 from build_promesas import split_intro  # noqa: E402  (añade tool/ al path)
+from build_jesus import RED, split_verse  # noqa: E402
 from build_content import CATEGORIES, CATEGORIES_BY_ID, CONTENT_VERSION  # noqa: E402
 
 BIBLE = json.loads((ROOT / 'assets' / 'data' / 'biblia_rv1909.json').read_text(encoding='utf-8'))
@@ -65,6 +66,8 @@ CONTEXT = {
 }
 
 DIVINE = ('Dios', 'Jesús', 'Jesús resucitado', 'Dios, sentado en el trono')
+RED_BOOKS = {'Mateo': 'Matthew', 'Marcos': 'Mark', 'Lucas': 'Luke', 'Juan': 'John',
+             'Hechos': 'Acts', 'Apocalipsis': 'Revelation of John'}
 
 CATEGORY_DESC = {
     'miedo': 'Cuando el miedo te tiene paralizado, Dios te dice: «No tengas miedo, yo estoy contigo».',
@@ -105,7 +108,8 @@ def build_studies():
           aplico, oracion):
         studies.append(locals())
 
-    exec(compile((HERE / 'estudios.py').read_text(encoding='utf-8'), 'estudios.py', 'exec'), {'e': e})
+    for f in sorted(HERE.glob('estudios*.py')):
+        exec(compile(f.read_text(encoding='utf-8'), f.name, 'exec'), {'e': e})
     passages = []
     for x in studies:
         book, ch, a, b = parse_ref(x['ref'])
@@ -116,9 +120,19 @@ def build_studies():
         check_language(x['ref'], *x['paraphrase'].values(), x['que_paso'], x['explicacion'],
                        x['dios'], x['humano'], x['cristo'], x['aplico'], x['oracion'])
         divine = x['speaker'] in DIVINE
+        red = RED.get(RED_BOOKS.get(book, ''), {}).get(str(ch), {})
         verses = []
         for v in range(a, b + 1):
-            parts = split_intro(verse_text(book, ch, v)) if divine else [[verse_text(book, ch, v), False]]
+            text = verse_text(book, ch, v)
+            if book in RED_BOOKS:
+                # Evangelios: solo lo que dice Jesús suena con su voz (letras
+                # rojas); lo que dicen los demás lo lee el narrador.
+                runs = red.get(str(v), {}).get('runs')
+                parts = split_verse(text, runs) if runs else [[text, False]]
+            elif divine:
+                parts = split_intro(text)
+            else:
+                parts = [[text, False]]
             verses.append([v, [[t, 1 if g else 0] for t, g in parts]])
         bid = BOOKS[book]['id']
         era = era_of(bid)

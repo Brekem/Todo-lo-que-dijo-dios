@@ -89,7 +89,23 @@ void main() {
     test(
       'cada estudio tiene paráfrasis de cada versículo y las seis partes',
       () {
-        expect(studies.passages.length, greaterThanOrEqualTo(40));
+        expect(studies.passages.length, greaterThanOrEqualTo(80));
+        expect(
+          studies.passages.where((p) => p.era == 'evangelios').length,
+          greaterThanOrEqualTo(50),
+        );
+        // Cada versículo está, como mucho, en un estudio.
+        final seen = <String>{};
+        for (final p in studies.passages) {
+          final r = bible.parse(p.reference)!;
+          for (var v = r.from; v <= r.to; v++) {
+            expect(
+              seen.add('${r.book.id}.${r.chapter}.$v'),
+              isTrue,
+              reason: p.id,
+            );
+          }
+        }
         expect(studies.passages.first.book, 'Génesis');
         expect(studies.passages.last.book, 'Apocalipsis');
         for (final p in studies.passages) {
@@ -139,6 +155,25 @@ void main() {
           expect(archaic.hasMatch(t), isFalse, reason: l.id);
         }
       }
+    });
+
+    test('en los evangelios solo Jesús habla con su voz', () {
+      final peter = studies.passageById('b-jua-21-15')!;
+      final v15 = peter.verses.first.parts;
+      expect(
+        v15.where((p) => p.god).map((p) => p.text),
+        contains(startsWith('Simón, hijo de Jonás')),
+      );
+      expect(
+        v15.where((p) => !p.god).map((p) => p.text).join(' '),
+        contains('Sí, Señor: tú sabes que te amo'),
+      );
+      final woman = studies.passageById('b-mar-5-25')!;
+      expect(
+        woman.verses.firstWhere((v) => v.number == 31).parts.single.god,
+        isFalse,
+      );
+      expect(woman.verses.last.parts.last.text, startsWith('Hija, tu fe'));
     });
 
     test(
