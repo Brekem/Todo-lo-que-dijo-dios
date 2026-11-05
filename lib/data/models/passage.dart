@@ -41,6 +41,49 @@ class VerseText {
   ];
 }
 
+/// Estudio en español boricua de un pasaje (edición «Biblia Boricua»).
+@immutable
+class PassageStudy {
+  const PassageStudy({
+    required this.paraphrase,
+    required this.aboutGod,
+    required this.aboutHumans,
+    required this.aboutChrist,
+  });
+
+  factory PassageStudy.fromJson(Map<String, dynamic> json) => PassageStudy(
+    paraphrase: {
+      for (final v
+          in (json['paraphrase'] as List<dynamic>).cast<List<dynamic>>())
+        (v[0] as num).toInt(): v[1] as String,
+    },
+    aboutGod: json['aboutGod'] as String,
+    aboutHumans: json['aboutHumans'] as String,
+    aboutChrist: json['aboutChrist'] as String,
+  );
+
+  /// Paráfrasis boricua, versículo por versículo.
+  final Map<int, String> paraphrase;
+
+  /// ¿Qué nos enseña acerca de Dios?
+  final String aboutGod;
+
+  /// ¿Qué nos enseña acerca del ser humano?
+  final String aboutHumans;
+
+  /// ¿Qué nos enseña acerca de Jesucristo?
+  final String aboutChrist;
+
+  Map<String, dynamic> toJson() => {
+    'paraphrase': [
+      for (final e in paraphrase.entries) [e.key, e.value],
+    ],
+    'aboutGod': aboutGod,
+    'aboutHumans': aboutHumans,
+    'aboutChrist': aboutChrist,
+  };
+}
+
 /// Un pasaje donde Yavé (Dios) habla directamente.
 @immutable
 class Passage {
@@ -66,6 +109,7 @@ class Passage {
     this.curated = true,
     String? fullReference,
     List<VerseText>? verses,
+    this.study,
   }) : fullReference = fullReference ?? reference,
        verses =
            verses ??
@@ -98,6 +142,9 @@ class Passage {
     verses: (json['verses'] as List<dynamic>?)
         ?.map((v) => VerseText.fromJson(v as List<dynamic>))
         .toList(),
+    study: json['study'] == null
+        ? null
+        : PassageStudy.fromJson(json['study'] as Map<String, dynamic>),
   );
 
   final String id;
@@ -152,6 +199,9 @@ class Passage {
   /// Los versículos completos: la narración y todo lo que Dios dice.
   final List<VerseText> verses;
 
+  /// Estudio boricua (paráfrasis y enseñanzas), si lo tiene.
+  final PassageStudy? study;
+
   /// Hay palabras de Dios en los versículos (no solo narración).
   bool get hasGodWords => verses.any((v) => v.parts.any((p) => p.god));
 
@@ -181,6 +231,7 @@ class Passage {
     'curated': curated,
     'fullReference': fullReference,
     'verses': [for (final v in verses) v.toJson()],
+    if (study != null) 'study': study!.toJson(),
   };
 
   /// Texto listo para compartir.

@@ -4,7 +4,8 @@ import '../theme/app_palette.dart';
 
 /// Ediciones de la app. Cada una se instala como una app aparte (sabor de
 /// Android): `flutter build apk --flavor yave`, `--flavor jehova` o
-/// `--flavor jesus`, `--flavor apocalipsis` o `--flavor promesas`.
+/// `--flavor jesus`, `--flavor apocalipsis`, `--flavor promesas` o
+/// `--flavor boricua`.
 enum Edition {
   /// Todas las palabras, de Génesis a Apocalipsis, con el nombre «Yavé».
   yave(
@@ -81,6 +82,27 @@ enum Edition {
         'No temas, que yo soy contigo; no desmayes, que yo soy tu Dios.',
     light: AppPalette.promesasLight,
     dark: AppPalette.promesasDark,
+  ),
+
+  /// La Biblia completa para Puerto Rico: texto RV1909, paráfrasis y
+  /// explicaciones en español boricua, Escuela Bíblica y asistente.
+  boricua(
+    appName: 'Biblia Boricua',
+    divineName: 'Jehová',
+    headline: 'Biblia\nBoricua',
+    contentAsset: 'assets/data/content_boricua.json',
+    span: 'de Génesis a Apocalipsis',
+    milestones: 'Biblia · Estudios · Escuela Bíblica · Asistente',
+    divineSample: 'No tengas miedo, que yo estoy contigo.',
+    narratorSample:
+        'En el principio Dios creó los cielos y la tierra. Bienvenido a la '
+        'Biblia Boricua.',
+    readAloud:
+        'El Señor es mi pastor; tengo todo lo que necesito. Me deja descansar '
+        'en pastos verdes y me lleva a aguas tranquilas. Me renueva las '
+        'fuerzas.',
+    light: AppPalette.boricuaLight,
+    dark: AppPalette.boricuaDark,
   );
 
   const Edition({
@@ -145,6 +167,10 @@ enum Edition {
   final AppPalette light;
   final AppPalette dark;
 
+  /// La Biblia completa, la Escuela Bíblica, el asistente y los planes de
+  /// lectura (solo la Biblia Boricua).
+  bool get hasFullBible => this == boricua;
+
   /// Solo la edición completa recibe actualizaciones del contenido por
   /// internet (traen todas las palabras con «Yavé»).
   bool get syncsContent => this == yave;
@@ -155,6 +181,7 @@ enum Edition {
     'jesus' => jesus,
     'apocalipsis' => apocalipsis,
     'promesas' => promesas,
+    'boricua' => boricua,
     _ => yave,
   };
 }

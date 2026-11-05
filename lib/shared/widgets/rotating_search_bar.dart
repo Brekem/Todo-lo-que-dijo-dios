@@ -14,6 +14,7 @@ final kSearchHints = [
     Edition.jesus => 'Buscar por personaje: Pedro, Marta…',
     Edition.apocalipsis => 'Buscar: Babilonia, el Cordero…',
     Edition.promesas => 'Buscar una promesa: paz, fuerzas…',
+    Edition.boricua => 'Buscar un estudio: ansiedad, perdón, fe…',
     _ => 'Buscar por personaje: Moisés, Elías…',
   },
   'Buscar sobre el miedo…',

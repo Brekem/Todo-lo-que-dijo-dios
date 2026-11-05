@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Biblia Boricua: los colores de la bandera de Puerto Rico. -->
+    <color name="ic_launcher_background">#0A3D91</color>
+    <color name="launch_background">#FFFFFF</color>
+</resources>

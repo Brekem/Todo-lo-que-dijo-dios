@@ -66,6 +66,10 @@ android {
             dimension = "edicion"
             applicationIdSuffix = ".promesas"
         }
+        create("boricua") {
+            dimension = "edicion"
+            applicationIdSuffix = ".boricua"
+        }
     }
 
     signingConfigs {

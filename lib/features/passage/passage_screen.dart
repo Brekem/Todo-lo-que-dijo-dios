@@ -20,6 +20,7 @@ import '../../shared/widgets/fade_slide_in.dart';
 import '../../shared/widgets/golden_shimmer.dart';
 import '../../shared/widgets/section_label.dart';
 import 'reading_blocks.dart';
+import 'study_view.dart';
 
 /// Pantalla de lectura. Desliza a los lados para avanzar cronológicamente.
 class PassageScreen extends ConsumerStatefulWidget {
@@ -293,6 +294,9 @@ class _PassageView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (passage.study != null) {
+      return StudyView(passage: passage, content: content);
+    }
     final palette = AppPalette.of(context);
     final theme = Theme.of(context);
     final prayed = ref.watch(

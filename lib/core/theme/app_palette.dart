@@ -162,6 +162,38 @@ class AppPalette extends ThemeExtension<AppPalette> {
     onGoldSoft: Color(0xFFF1E6CB),
   );
 
+  /// Biblia Boricua: los colores de la bandera de Puerto Rico. El rojo ocupa
+  /// el lugar del dorado y el azul es el del triángulo.
+  static const boricuaLight = AppPalette(
+    background: Color(0xFFFFFFFF), // blanco
+    parchment: Color(0xFFF4F7FC),
+    gold: Color(0xFFC8102E), // rojo de las franjas
+    goldSoft: Color(0xFFFBE3E6),
+    blue: Color(0xFF0A3D91), // azul del triángulo
+    blueSoft: Color(0xFFE3EBF8),
+    warmGray: Color(0xFF66707F),
+    ink: Color(0xFF141B29),
+    crimson: Color(0xFFC8102E),
+    glow: Color(0x330A3D91),
+    onGold: Color(0xFFFFFFFF),
+    onGoldSoft: Color(0xFF7A0A1C),
+  );
+
+  static const boricuaDark = AppPalette(
+    background: Color(0xFF070B16),
+    parchment: Color(0xFF0F1626),
+    gold: Color(0xFFFF6B7D), // rojo claro
+    goldSoft: Color(0xFF3A1219),
+    blue: Color(0xFF8FB4F5), // azul claro
+    blueSoft: Color(0xFF111D35),
+    warmGray: Color(0xFFA1A9B8),
+    ink: Color(0xFFF4F6FB),
+    crimson: Color(0xFFFF6B7D),
+    glow: Color(0x228FB4F5),
+    onGold: Color(0xFF2A0509),
+    onGoldSoft: Color(0xFFFFDDE2),
+  );
+
   final Color background;
   final Color parchment;
   final Color gold;

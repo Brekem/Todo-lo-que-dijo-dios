@@ -87,6 +87,15 @@ jobs:
       - name: APK edición Promesas
         run: flutter build apk --flavor promesas --release --obfuscate --split-debug-info=build/symbols-promesas
 
+      # Biblia Boricua: la Biblia completa con paráfrasis y estudios en
+      # español boricua, Escuela Bíblica y asistente.
+      # Es otra app (com.brekem.todoloquediosdijo.boricua).
+      - name: APK Biblia Boricua
+        run: flutter build apk --flavor boricua --release --obfuscate --split-debug-info=build/symbols-boricua
+
+      - name: App Bundle Biblia Boricua (Google Play)
+        run: flutter build appbundle --flavor boricua --release --obfuscate --split-debug-info=build/symbols-boricua
+
       - name: App Bundle (Google Play)
         run: flutter build appbundle --flavor yave --release --obfuscate --split-debug-info=build/symbols
 
@@ -98,6 +107,7 @@ jobs:
           cp build/app/outputs/flutter-apk/app-jesus-release.apk Todo-lo-que-Jesus-Dijo.apk
           cp build/app/outputs/flutter-apk/app-apocalipsis-release.apk Las-Profecias-del-Apocalipsis.apk
           cp build/app/outputs/flutter-apk/app-promesas-release.apk Promesas-de-la-Biblia.apk
+          cp build/app/outputs/flutter-apk/app-boricua-release.apk Biblia-Boricua.apk
           # "2.0.0+2" → "2.0.0"; "3.0.0-dev.1+3" → "3.0.0-dev.1"
           VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: *//; s/+.*//')
           echo "name=$VERSION" >> "$GITHUB_OUTPUT"
@@ -134,12 +144,17 @@ jobs:
 
             **Promesas-de-la-Biblia.apk** es la edición «Promesas»: las
             promesas de Dios de Génesis a Apocalipsis, en celeste y dorado.
+
+            **Biblia-Boricua.apk** es la Biblia Boricua: la Biblia completa
+            con paráfrasis y estudios en español boricua, Escuela Bíblica,
+            asistente cristiano, notas y planes de lectura.
           files: |
             Todo-lo-que-Dios-Dijo.apk
             Todo-lo-que-Jehova-Dijo.apk
             Todo-lo-que-Jesus-Dijo.apk
             Las-Profecias-del-Apocalipsis.apk
             Promesas-de-la-Biblia.apk
+            Biblia-Boricua.apk
 
       - uses: actions/upload-artifact@v4
         with:
@@ -150,10 +165,12 @@ jobs:
             build/app/outputs/flutter-apk/app-jesus-release.apk
             build/app/outputs/flutter-apk/app-apocalipsis-release.apk
             build/app/outputs/flutter-apk/app-promesas-release.apk
+            build/app/outputs/flutter-apk/app-boricua-release.apk
 
       - uses: actions/upload-artifact@v4
         with:
           name: todo-lo-que-dios-dijo-aab
           path: |
+            build/app/outputs/bundle/boricuaRelease/app-boricua-release.aab
             build/app/outputs/bundle/yaveRelease/app-yave-release.aab
             build/symbols

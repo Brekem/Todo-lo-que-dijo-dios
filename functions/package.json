@@ -1,0 +1,18 @@
+{
+  "name": "biblia-boricua-functions",
+  "private": true,
+  "description": "Cloud Functions de la Biblia Boricua: versículo del día por push y limpieza de cuentas.",
+  "main": "lib/index.js",
+  "engines": { "node": "22" },
+  "scripts": {
+    "build": "tsc",
+    "deploy": "firebase deploy --only functions"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.0",
+    "firebase-functions": "^6.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}

@@ -1,9 +1,17 @@
 rules_version = '2';
 
-// El contenido es de solo lectura para la app. Solo se publica desde el
-// panel de administración o con tool/firestore/seed.mjs (credenciales de servicio).
+// Reglas de Firestore para todas las ediciones.
+//
+//   content/{docId}           Contenido publicado (solo lectura para la app).
+//   users/{uid}               Datos de cada persona (notas, resaltados,
+//                             marcadores, historial, planes, lecciones). Solo
+//                             su dueño los lee y escribe.
+//   verseStudies/{verseKey}   Caché compartida de explicaciones de versículos
+//                             generadas con IA ("jua.3.16"). Se crea una vez y
+//                             no se modifica desde la app.
 service cloud.firestore {
   match /databases/{database}/documents {
+
     match /content/{docId} {
       allow read: if true;
       allow write: if false;
@@ -12,8 +20,42 @@ service cloud.firestore {
         allow write: if false;
       }
     }
+
+    match /users/{uid} {
+      allow read, delete: if isOwner(uid);
+      allow create, update: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['bible', 'updatedAt'])
+        && request.resource.data.bible is map
+        && request.resource.data.bible.keys().hasOnly(
+             ['annotations', 'history', 'plans', 'lessonsDone', 'updatedAt'])
+        && request.resource.data.bible.get('annotations', []).size() <= 20000
+        && request.resource.data.bible.get('history', []).size() <= 50;
+    }
+
+    match /verseStudies/{verseKey} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && verseKey.matches('^[0-9a-z]{3}\\.[0-9]{1,3}\\.[0-9]{1,3}$')
+        && request.resource.data.keys().hasOnly(
+             ['paraphrase', 'explanation', 'application', 'prayer', 'model'])
+        && request.resource.data.paraphrase is string
+        && request.resource.data.paraphrase.size() <= 1500
+        && request.resource.data.explanation is string
+        && request.resource.data.explanation.size() <= 2000
+        && request.resource.data.application is string
+        && request.resource.data.application.size() <= 1500
+        && request.resource.data.prayer is string
+        && request.resource.data.prayer.size() <= 1000;
+      // Las correcciones las hace el equipo con credenciales de servicio.
+      allow update, delete: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
+    }
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
     }
   }
 }

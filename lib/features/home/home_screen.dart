@@ -124,13 +124,20 @@ class _HomeBody extends ConsumerWidget {
                 const SizedBox(height: 14),
               ],
               const SizedBox(height: 28),
-              OutlinedButton.icon(
-                onPressed: () => context.go(Routes.journey),
-                icon: Icon(Icons.timeline, color: palette.gold),
-                label: Text(
-                  'Recorrer la Voz de ${Edition.current.speaker} desde ${Edition.current.start}',
+              if (Edition.current.hasFullBible)
+                OutlinedButton.icon(
+                  onPressed: () => context.go(Routes.bible),
+                  icon: Icon(Icons.menu_book, color: palette.gold),
+                  label: const Text('Leer la Biblia completa'),
+                )
+              else
+                OutlinedButton.icon(
+                  onPressed: () => context.go(Routes.journey),
+                  icon: Icon(Icons.timeline, color: palette.gold),
+                  label: Text(
+                    'Recorrer la Voz de ${Edition.current.speaker} desde ${Edition.current.start}',
+                  ),
                 ),
-              ),
             ],
           ),
         ),

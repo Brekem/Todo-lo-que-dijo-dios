@@ -14,6 +14,7 @@ import 'app/app.dart';
 import 'app/providers.dart';
 import 'core/analytics.dart';
 import 'core/config/edition.dart';
+import 'core/push_notifications.dart';
 import 'domain/listening/background_audio.dart';
 import 'domain/listening/listening_background.dart';
 import 'firebase_options.dart';
@@ -23,6 +24,9 @@ Future<void> bootstrap() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
   final firebaseReady = await _initFirebase();
+  if (firebaseReady && Edition.current.hasFullBible) {
+    unawaited(PushNotifications.init());
+  }
   final prefs = await SharedPreferences.getInstance();
   final background = await AndroidBackgroundAudio.init(
     appName: Edition.current.appName,

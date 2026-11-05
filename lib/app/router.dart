@@ -13,6 +13,15 @@ import '../features/search/search_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/stats/stats_screen.dart';
 import '../features/welcome/welcome_screen.dart';
+import '../core/config/edition.dart';
+import '../features/assistant/assistant_screen.dart';
+import '../features/bible/bible_screen.dart';
+import '../features/bible/bible_search_screen.dart';
+import '../features/bible/chapter_screen.dart';
+import '../features/bible/my_notes_screen.dart';
+import '../features/glossary/glossary_screen.dart';
+import '../features/plans/plans_screen.dart';
+import '../features/school/school_screen.dart';
 import 'shell.dart';
 
 abstract final class Routes {
@@ -24,6 +33,20 @@ abstract final class Routes {
   static const search = '/buscar';
   static const settings = '/ajustes';
   static const listen = '/escuchar';
+
+  // Biblia Boricua
+  static const bible = '/biblia';
+  static const bibleSearch = '/biblia/buscar';
+  static const myNotes = '/biblia/notas';
+  static const plans = '/planes';
+  static const school = '/escuela';
+  static const assistant = '/asistente';
+  static const glossary = '/glosario';
+
+  static String chapter(String bookId, int chapter, {int? verse}) =>
+      '/biblia/$bookId/$chapter${verse == null ? '' : '?v=$verse'}';
+  static String plan(String id) => '/planes/$id';
+  static String lesson(String id) => '/escuela/$id';
 
   static String listenFrom(String passageId) => '$listen?desde=$passageId';
 
@@ -65,35 +88,44 @@ GoRouter createRouter() => GoRouter(
     StatefulShellRoute.indexedStack(
       pageBuilder: (context, state, shell) =>
           _fadePage(state, AppShell(shell: shell)),
-      branches: [
-        StatefulShellBranch(
-          routes: [
-            GoRoute(path: Routes.home, builder: (_, _) => const HomeScreen()),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: Routes.journey,
-              builder: (_, _) => const JourneyScreen(),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: Routes.saved,
-              builder: (_, _) => const SavedWordsScreen(),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(path: Routes.stats, builder: (_, _) => const StatsScreen()),
-          ],
-        ),
-      ],
+      branches: Edition.current.hasFullBible
+          ? _boricuaBranches()
+          : [
+              StatefulShellBranch(
+                routes: [
+                  GoRoute(
+                    path: Routes.home,
+                    builder: (_, _) => const HomeScreen(),
+                  ),
+                ],
+              ),
+              StatefulShellBranch(
+                routes: [
+                  GoRoute(
+                    path: Routes.journey,
+                    builder: (_, _) => const JourneyScreen(),
+                  ),
+                ],
+              ),
+              StatefulShellBranch(
+                routes: [
+                  GoRoute(
+                    path: Routes.saved,
+                    builder: (_, _) => const SavedWordsScreen(),
+                  ),
+                ],
+              ),
+              StatefulShellBranch(
+                routes: [
+                  GoRoute(
+                    path: Routes.stats,
+                    builder: (_, _) => const StatsScreen(),
+                  ),
+                ],
+              ),
+            ],
     ),
+    if (Edition.current.hasFullBible) ..._boricuaRoutes(),
     GoRoute(
       path: Routes.search,
       parentNavigatorKey: _rootKey,
@@ -149,3 +181,85 @@ GoRouter createRouter() => GoRouter(
     ),
   ],
 );
+
+/// Pestañas de la Biblia Boricua: Inicio, Biblia, Escuela, Asistente y
+/// Guardadas.
+List<StatefulShellBranch> _boricuaBranches() => [
+  StatefulShellBranch(
+    routes: [GoRoute(path: Routes.home, builder: (_, _) => const HomeScreen())],
+  ),
+  StatefulShellBranch(
+    routes: [
+      GoRoute(path: Routes.bible, builder: (_, _) => const BibleScreen()),
+    ],
+  ),
+  StatefulShellBranch(
+    routes: [
+      GoRoute(path: Routes.school, builder: (_, _) => const SchoolScreen()),
+    ],
+  ),
+  StatefulShellBranch(
+    routes: [
+      GoRoute(
+        path: Routes.assistant,
+        builder: (_, _) => const AssistantScreen(),
+      ),
+    ],
+  ),
+  StatefulShellBranch(
+    routes: [
+      GoRoute(path: Routes.saved, builder: (_, _) => const SavedWordsScreen()),
+    ],
+  ),
+];
+
+List<RouteBase> _boricuaRoutes() => [
+  GoRoute(
+    path: Routes.bibleSearch,
+    parentNavigatorKey: _rootKey,
+    pageBuilder: (context, state) => _fadePage(
+      state,
+      BibleSearchScreen(initialQuery: state.uri.queryParameters['q'] ?? ''),
+    ),
+  ),
+  GoRoute(
+    path: Routes.myNotes,
+    parentNavigatorKey: _rootKey,
+    pageBuilder: (context, state) => _fadePage(state, const MyNotesScreen()),
+  ),
+  GoRoute(
+    path: '/biblia/:book/:chapter',
+    parentNavigatorKey: _rootKey,
+    pageBuilder: (context, state) => _fadePage(
+      state,
+      ChapterScreen(
+        key: ValueKey(state.uri.toString()),
+        bookId: state.pathParameters['book']!,
+        chapter: int.tryParse(state.pathParameters['chapter']!) ?? 1,
+        verse: int.tryParse(state.uri.queryParameters['v'] ?? ''),
+      ),
+    ),
+  ),
+  GoRoute(
+    path: Routes.plans,
+    parentNavigatorKey: _rootKey,
+    pageBuilder: (context, state) => _fadePage(state, const PlansScreen()),
+  ),
+  GoRoute(
+    path: '/planes/:id',
+    parentNavigatorKey: _rootKey,
+    pageBuilder: (context, state) =>
+        _fadePage(state, PlanScreen(planId: state.pathParameters['id']!)),
+  ),
+  GoRoute(
+    path: '/escuela/:id',
+    parentNavigatorKey: _rootKey,
+    pageBuilder: (context, state) =>
+        _fadePage(state, LessonScreen(lessonId: state.pathParameters['id']!)),
+  ),
+  GoRoute(
+    path: Routes.glossary,
+    parentNavigatorKey: _rootKey,
+    pageBuilder: (context, state) => _fadePage(state, const GlossaryScreen()),
+  ),
+];
