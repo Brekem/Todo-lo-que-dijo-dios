@@ -3780,6 +3780,11 @@
   "study": "b-sal-16-8"
  },
  {
+  "reference": "Salmos 18:1",
+  "text": "Para el director del coro. Salmo de David, siervo del Señor. David le cantó al Señor este canto el día en que el Señor lo libró de todos sus enemigos y de Saúl. Dijo: «¡Cuánto te amo, Señor, mi fuerza!",
+  "study": "b-sal-18-1"
+ },
+ {
   "reference": "Salmos 19:4",
   "text": "Sin embargo, su mensaje llega a toda la tierra, hasta el último rincón del mundo. En el cielo Dios le puso una casa al sol.",
   "study": "b-sal-19-1"
@@ -3810,6 +3815,11 @@
   "study": "b-sal-34-4"
  },
  {
+  "reference": "Salmos 34:18",
+  "text": "El Señor está cerca de los que tienen el corazón quebrantado, y salva a los de espíritu abatido.",
+  "study": "b-sal-34-18"
+ },
+ {
   "reference": "Salmos 37:7",
   "text": "Quédate tranquilo delante del Señor y espera en él con paciencia. No te desesperes por el que le va bien haciendo trampas.",
   "study": "b-sal-37-3"
@@ -3830,6 +3840,11 @@
   "study": "b-sal-46-1"
  },
  {
+  "reference": "Salmos 46:10",
+  "text": "«¡Quédense quietos y reconozcan que yo soy Dios! Seré exaltado entre las naciones; seré exaltado en la tierra».",
+  "study": "b-sal-46-10"
+ },
+ {
   "reference": "Salmos 51:4",
   "text": "Contra ti, contra ti solamente he pecado, y he hecho lo malo delante de tus ojos. Por eso tienes razón cuando me juzgas, y eres justo cuando me condenas.",
   "study": "b-sal-51-1"
@@ -3838,6 +3853,16 @@
   "reference": "Salmos 51:10",
   "text": "Dios mío, crea en mí un corazón limpio y renueva mi espíritu para que sea firme.",
   "study": "b-sal-51-10"
+ },
+ {
+  "reference": "Salmos 55:22",
+  "text": "Pon tus cargas en las manos del Señor, y él te sostendrá. Él no dejará que el justo caiga para siempre.",
+  "study": "b-sal-55-22"
+ },
+ {
+  "reference": "Salmos 56:4",
+  "text": "En Dios, cuya palabra alabo, en Dios confío y no tengo miedo. ¿Qué me puede hacer un simple mortal?",
+  "study": "b-sal-56-3"
  },
  {
   "reference": "Salmos 62:8",
@@ -3945,6 +3970,16 @@
   "study": "b-pro-1-7"
  },
  {
+  "reference": "Proverbios 1:10",
+  "text": "Hijo mío, si los pecadores quieren engañarte, no les hagas caso.",
+  "study": "b-pro-1-10"
+ },
+ {
+  "reference": "Proverbios 2:6",
+  "text": "Porque el Señor es quien da la sabiduría; de su boca salen el conocimiento y la inteligencia.",
+  "study": "b-pro-2-6"
+ },
+ {
   "reference": "Proverbios 3:5",
   "text": "Confía en el Señor de todo corazón y no te apoyes solamente en lo que tú crees entender.",
   "study": "b-pro-3-5"
@@ -3953,6 +3988,21 @@
   "reference": "Proverbios 3:10",
   "text": "Así tus graneros se llenarán por completo y tus barriles se desbordarán de vino nuevo.",
   "study": "b-pro-3-9"
+ },
+ {
+  "reference": "Proverbios 3:11",
+  "text": "Hijo mío, no desprecies la disciplina del Señor ni te enojes cuando él te corrija,",
+  "study": "b-pro-3-11"
+ },
+ {
+  "reference": "Proverbios 3:27",
+  "text": "No le niegues un favor a quien lo necesita, si está en tus manos hacerlo.",
+  "study": "b-pro-3-27"
+ },
+ {
+  "reference": "Proverbios 4:18",
+  "text": "El camino de los justos es como la luz de la aurora, que va brillando cada vez más hasta que es pleno día.",
+  "study": "b-pro-4-18"
  },
  {
   "reference": "Proverbios 4:23",
@@ -3965,9 +4015,39 @@
   "study": "b-pro-6-6"
  },
  {
+  "reference": "Proverbios 10:12",
+  "text": "El odio provoca peleas, pero el amor cubre todas las faltas.",
+  "study": "b-pro-10-12"
+ },
+ {
+  "reference": "Proverbios 10:19",
+  "text": "El que mucho habla, mucho peca; el que es prudente controla su lengua.",
+  "study": "b-pro-10-19"
+ },
+ {
+  "reference": "Proverbios 11:2",
+  "text": "Con el orgullo viene la deshonra, pero con la humildad viene la sabiduría.",
+  "study": "b-pro-11-2"
+ },
+ {
+  "reference": "Proverbios 11:25",
+  "text": "El que es generoso prosperará; el que da de beber a otros también recibirá agua.",
+  "study": "b-pro-11-25"
+ },
+ {
+  "reference": "Proverbios 12:18",
+  "text": "Hay quienes hablan sin pensar y hieren como con espada, pero las palabras de los sabios sanan.",
+  "study": "b-pro-12-18"
+ },
+ {
   "reference": "Proverbios 12:25",
   "text": "La angustia en el corazón deprime a la persona, pero una palabra amable la alegra.",
   "study": "b-pro-12-25"
+ },
+ {
+  "reference": "Proverbios 13:20",
+  "text": "El que anda con sabios se vuelve sabio, pero el que se junta con necios termina mal.",
+  "study": "b-pro-13-20"
  },
  {
   "reference": "Proverbios 14:12",
@@ -3975,9 +4055,19 @@
   "study": "b-pro-14-12"
  },
  {
+  "reference": "Proverbios 14:30",
+  "text": "El corazón tranquilo da vida al cuerpo, pero la envidia carcome hasta los huesos.",
+  "study": "b-pro-14-30"
+ },
+ {
   "reference": "Proverbios 15:1",
   "text": "La respuesta amable calma el enojo, pero las palabras duras lo encienden más.",
   "study": "b-pro-15-1"
+ },
+ {
+  "reference": "Proverbios 15:13",
+  "text": "El corazón alegre se refleja en la cara, pero el dolor del corazón deprime el espíritu.",
+  "study": "b-pro-15-13"
  },
  {
   "reference": "Proverbios 16:3",
@@ -3990,9 +4080,29 @@
   "study": "b-pro-16-9"
  },
  {
+  "reference": "Proverbios 16:18",
+  "text": "El orgullo va antes de la destrucción, y la arrogancia antes de la caída.",
+  "study": "b-pro-16-18"
+ },
+ {
+  "reference": "Proverbios 16:32",
+  "text": "Más vale ser paciente que ser un guerrero; más vale controlar el carácter que conquistar una ciudad.",
+  "study": "b-pro-16-32"
+ },
+ {
+  "reference": "Proverbios 17:9",
+  "text": "El que perdona una ofensa busca el amor, pero el que la anda repitiendo separa a los amigos.",
+  "study": "b-pro-17-9"
+ },
+ {
   "reference": "Proverbios 17:17",
   "text": "El amigo ama en todo momento, y el hermano nace para ayudar en tiempos de angustia.",
   "study": "b-pro-17-17"
+ },
+ {
+  "reference": "Proverbios 17:22",
+  "text": "El corazón alegre es buena medicina, pero el espíritu triste seca los huesos.",
+  "study": "b-pro-17-22"
  },
  {
   "reference": "Proverbios 18:10",
@@ -4005,14 +4115,54 @@
   "study": "b-pro-18-21"
  },
  {
+  "reference": "Proverbios 19:17",
+  "text": "Ayudar al pobre es como prestarle al Señor, y él se encargará de pagarlo.",
+  "study": "b-pro-19-17"
+ },
+ {
+  "reference": "Proverbios 19:21",
+  "text": "Muchos son los planes que hay en el corazón humano, pero lo que el Señor decide es lo que se cumple.",
+  "study": "b-pro-19-21"
+ },
+ {
+  "reference": "Proverbios 22:1",
+  "text": "Vale más tener buena reputación que muchas riquezas; más vale ser apreciado que tener plata y oro.",
+  "study": "b-pro-22-1"
+ },
+ {
   "reference": "Proverbios 22:6",
   "text": "Enséñale al niño el camino que debe seguir, y aun cuando sea viejo no se apartará de él.",
   "study": "b-pro-22-6"
  },
  {
+  "reference": "Proverbios 24:16",
+  "text": "Porque aunque el justo caiga siete veces, volverá a levantarse; pero los malvados se hunden en la desgracia.",
+  "study": "b-pro-24-16"
+ },
+ {
+  "reference": "Proverbios 25:21",
+  "text": "Si tu enemigo tiene hambre, dale de comer; si tiene sed, dale de beber.",
+  "study": "b-pro-25-21"
+ },
+ {
   "reference": "Proverbios 27:17",
   "text": "Así como el hierro afila al hierro, una persona ayuda a otra a ser mejor.",
   "study": "b-pro-27-17"
+ },
+ {
+  "reference": "Proverbios 28:13",
+  "text": "El que esconde sus pecados no prosperará, pero el que los confiesa y los deja recibirá misericordia.",
+  "study": "b-pro-28-13"
+ },
+ {
+  "reference": "Proverbios 29:25",
+  "text": "El miedo a la gente es una trampa, pero el que confía en el Señor estará seguro.",
+  "study": "b-pro-29-25"
+ },
+ {
+  "reference": "Proverbios 30:5",
+  "text": "Toda palabra de Dios es confiable; Dios es un escudo para los que en él buscan refugio.",
+  "study": "b-pro-30-5"
  },
  {
   "reference": "Proverbios 31:30",
