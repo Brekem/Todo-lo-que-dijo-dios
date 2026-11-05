@@ -68,7 +68,7 @@ Este repositorio todavía **no tiene proyecto iOS**. Se crea en una Mac con Xcod
 
 | Fase | Contenido | Estado |
 |---|---|---|
-| 1 | Biblia completa sin conexión; 223 estudios (45 de Génesis, 53 de los evangelios, 37 de Salmos, 16 de Proverbios, 11 de Hechos y 52 de las cartas); glosario; Escuela de 7 niveles; asistente; notas, resaltado y marcadores; audio; planes; Firebase listo para activar | ✅ esta versión |
+| 1 | Biblia completa sin conexión; 264 estudios (45 de Génesis, 42 de Éxodo, 53 de los evangelios, 37 de Salmos, 16 de Proverbios, 11 de Hechos y 52 de las cartas); glosario; Escuela de 7 niveles; asistente; notas, resaltado y marcadores; audio; planes; Firebase listo para activar | ✅ esta versión |
 | 2 | Activar Firebase; cuentas con Google o correo; revisar por muestreo la paráfrasis con IA; recordatorios locales | Próxima |
 | 3 | Más estudios a mano: más estudios de Hechos, las cartas, el Antiguo Testamento y un estudio por capítulo de los Evangelios; devocionales de 365 días | Contenido |
 | 4 | iOS; búsqueda semántica; versión web para maestros de escuela bíblica | Plataforma |

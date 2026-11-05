@@ -103,14 +103,16 @@ void main() {
     test(
       'cada estudio tiene paráfrasis de cada versículo y las seis partes',
       () {
-        expect(studies.passages.length, greaterThanOrEqualTo(220));
+        expect(studies.passages.length, greaterThanOrEqualTo(260));
         int count(String book) =>
             studies.passages.where((p) => p.book == book).length;
         expect(count('Salmos'), greaterThanOrEqualTo(35));
         expect(count('Proverbios'), greaterThanOrEqualTo(15));
         expect(count('Hechos'), greaterThanOrEqualTo(10));
         // Compendio: 40 o más estudios por libro.
-        expect(count('Génesis'), greaterThanOrEqualTo(40));
+        for (final book in ['Génesis', 'Éxodo']) {
+          expect(count(book), greaterThanOrEqualTo(40), reason: book);
+        }
         expect(
           studies.passages
               .where((p) => p.era == 'iglesia' && p.book != 'Hechos')
