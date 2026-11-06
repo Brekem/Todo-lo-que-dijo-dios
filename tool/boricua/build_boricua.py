@@ -144,9 +144,13 @@ def build_studies():
     for f in sorted(HERE.glob('estudios*.py')):
         exec(compile(f.read_text(encoding='utf-8'), f.name, 'exec'), {'e': e, 'voz': voz})
     passages = []
+    used = {}  # cada versículo va, como mucho, en un estudio
     for x in studies:
         book, ch, a, b = parse_ref(x['ref'])
         assert book in BOOKS, book
+        for v in range(a, b + 1):
+            prev = used.setdefault((book, ch, v), x['ref'])
+            assert prev == x['ref'], f'{x["ref"]}: {book} {ch}:{v} ya está en {prev}'
         assert sorted(x['paraphrase']) == list(range(a, b + 1)), f'{x["ref"]}: paráfrasis incompleta'
         assert x['oracion'].rstrip().endswith('Amén.'), x['ref']
         assert all(len(x[k]) > 40 for k in ('que_paso', 'explicacion', 'dios', 'humano',
