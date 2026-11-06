@@ -103,7 +103,7 @@ void main() {
     test(
       'cada estudio tiene paráfrasis de cada versículo y las seis partes',
       () {
-        expect(studies.passages.length, greaterThanOrEqualTo(1360));
+        expect(studies.passages.length, greaterThanOrEqualTo(1380));
         int count(String book) =>
             studies.passages.where((p) => p.book == book).length;
         expect(count('Salmos'), greaterThanOrEqualTo(35));
@@ -141,8 +141,30 @@ void main() {
           'Oseas',
           'Joel',
           'Amós',
+          'Abdías',
         ]) {
-          expect(count(book), greaterThanOrEqualTo(40), reason: book);
+          // Los libros cortos (menos de 40 estudios posibles) se cubren
+          // completos: cada versículo tiene su estudio.
+          final total = bible
+              .bookByName(book)!
+              .chapters
+              .fold<int>(0, (n, c) => n + c.length);
+          final covered = <String>{
+            for (final p in studies.passages.where((p) => p.book == book))
+              for (
+                var v = bible.parse(p.reference)!.from;
+                v <= bible.parse(p.reference)!.to;
+                v++
+              )
+                '${bible.parse(p.reference)!.chapter}.$v',
+          };
+          expect(
+            count(book) >= 40 || covered.length == total,
+            isTrue,
+            reason:
+                '$book: ${count(book)} estudios, '
+                '${covered.length} de $total versículos',
+          );
         }
         expect(
           studies.passages
