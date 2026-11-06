@@ -113,7 +113,7 @@ lib/
     home/ search/ favorites/ settings/ …   (compartidas con las demás ediciones)
 tool/boricua/
   build_biblia.py       genera biblia_rv1909.json desde la RV1909
-  estudios.py           2332 estudios escritos a mano (meta: 40 o más por libro)
+  estudios.py           2374 estudios escritos a mano (meta: 40 o más por libro)
   recursos.py           glosario, Escuela Bíblica y asistente
   build_boricua.py      valida (sin palabras antiguas, citas reales) y genera los JSON
 functions/              Cloud Functions (TypeScript)
