@@ -3,7 +3,7 @@ description: "Todo lo que Dios Dijo: todas las palabras que Yavé pronunció en 
 publish_to: 'none'
 
 # versionName+versionCode para Google Play. Incrementa el número tras "+" en cada subida.
-version: 3.58.0+67
+version: 3.59.0+68
 
 environment:
   sdk: ^3.13.4
