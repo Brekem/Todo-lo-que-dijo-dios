@@ -103,14 +103,56 @@ void main() {
     test(
       'cada estudio tiene paráfrasis de cada versículo y las seis partes',
       () {
-        expect(studies.passages.length, greaterThanOrEqualTo(1640));
+        expect(studies.passages.length, greaterThanOrEqualTo(1670));
         int count(String book) =>
             studies.passages.where((p) => p.book == book).length;
         expect(count('Salmos'), greaterThanOrEqualTo(35));
         expect(count('Proverbios'), greaterThanOrEqualTo(15));
         expect(count('Hechos'), greaterThanOrEqualTo(10));
         // Compendio: 40 o más estudios por libro.
-        for (final book in ['Génesis', 'Éxodo', 'Levítico', 'Números', 'Deuteronomio', 'Josué', 'Jueces', 'Rut', '1 Samuel', '2 Samuel', '1 Reyes', '2 Reyes', '1 Crónicas', '2 Crónicas', 'Esdras', 'Nehemías', 'Ester', 'Job', 'Salmos', 'Proverbios', 'Eclesiastés', 'Cantar de los Cantares', 'Isaías', 'Jeremías', 'Lamentaciones', 'Ezequiel', 'Daniel', 'Oseas', 'Joel', 'Amós', 'Abdías', 'Jonás', 'Miqueas', 'Nahúm', 'Habacuc', 'Sofonías', 'Hageo', 'Zacarías', 'Malaquías', 'Mateo']) {
+        for (final book in [
+          'Génesis',
+          'Éxodo',
+          'Levítico',
+          'Números',
+          'Deuteronomio',
+          'Josué',
+          'Jueces',
+          'Rut',
+          '1 Samuel',
+          '2 Samuel',
+          '1 Reyes',
+          '2 Reyes',
+          '1 Crónicas',
+          '2 Crónicas',
+          'Esdras',
+          'Nehemías',
+          'Ester',
+          'Job',
+          'Salmos',
+          'Proverbios',
+          'Eclesiastés',
+          'Cantar de los Cantares',
+          'Isaías',
+          'Jeremías',
+          'Lamentaciones',
+          'Ezequiel',
+          'Daniel',
+          'Oseas',
+          'Joel',
+          'Amós',
+          'Abdías',
+          'Jonás',
+          'Miqueas',
+          'Nahúm',
+          'Habacuc',
+          'Sofonías',
+          'Hageo',
+          'Zacarías',
+          'Malaquías',
+          'Mateo',
+          'Marcos',
+        ]) {
           // Los libros cortos (menos de 40 estudios posibles) se cubren
           // completos: cada versículo tiene su estudio.
           final total = bible
