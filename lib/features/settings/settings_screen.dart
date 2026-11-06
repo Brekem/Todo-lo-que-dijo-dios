@@ -136,7 +136,7 @@ class SettingsScreen extends ConsumerWidget {
             onTap: () => showAboutDialog(
               context: context,
               applicationName: AppConfig.appName,
-              applicationVersion: '3.71.0',
+              applicationVersion: '3.72.0',
               applicationLegalese:
                   'Textos bíblicos: ${content?.translation ?? ''}.\n\n'
                   'Tus favoritos y tu progreso se guardan solo en tu dispositivo. '
