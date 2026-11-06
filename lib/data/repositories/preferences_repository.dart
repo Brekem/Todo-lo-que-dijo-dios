@@ -26,6 +26,7 @@ class PreferencesRepository {
   static const _listenCueKey = 'listen_cue';
   static const _listenDivineVoiceKey = 'listen_divine_voice';
   static const _listenWordsOnlyKey = 'listen_words_only';
+  static const _listenPreacherKey = 'listen_preacher';
   static const _listenNarratorVoiceKey = 'listen_narrator_voice';
   static const _listenPitchKey = 'listen_pitch';
   static const _listenVoiceHzKey = 'listen_voice_hz';
@@ -149,6 +150,11 @@ class PreferencesRepository {
         _listenDivineVoiceKey,
         voice == null ? 'auto' : '${voice.$1}\t${voice.$2}',
       );
+
+  /// Modo predicador: música de fondo y pausas dramáticas.
+  bool get listeningPreacher => _prefs.getBool(_listenPreacherKey) ?? false;
+  Future<void> setListeningPreacher(bool on) =>
+      _prefs.setBool(_listenPreacherKey, on);
 
   /// Escuchar solo lo que Dios dijo, sin contexto, explicación ni oración.
   bool get listeningWordsOnly => _prefs.getBool(_listenWordsOnlyKey) ?? false;

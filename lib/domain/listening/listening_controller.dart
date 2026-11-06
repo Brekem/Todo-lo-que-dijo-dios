@@ -55,7 +55,11 @@ class ListeningState {
     this.narratorPitch = 1.02,
     this.divinePitch = 0.72,
     this.voiceHz,
+    this.preacher = false,
   });
+
+  /// Modo predicador: música de fondo y pausas dramáticas.
+  final bool preacher;
 
   final ListeningStatus status;
 
@@ -142,6 +146,7 @@ class ListeningState {
     double? narratorPitch,
     double? divinePitch,
     double? Function()? voiceHz,
+    bool? preacher,
   }) => ListeningState(
     status: status ?? this.status,
     passageIndex: passageIndex ?? this.passageIndex,
@@ -162,6 +167,7 @@ class ListeningState {
     narratorPitch: narratorPitch ?? this.narratorPitch,
     divinePitch: divinePitch ?? this.divinePitch,
     voiceHz: voiceHz != null ? voiceHz() : this.voiceHz,
+    preacher: preacher ?? this.preacher,
   );
 }
 
@@ -231,6 +237,7 @@ class ListeningController extends Notifier<ListeningState> {
       narratorPitch: prefs.listeningPitch?.$1 ?? 1.02,
       divinePitch: prefs.listeningPitch?.$2 ?? 0.72,
       voiceHz: prefs.listeningVoiceHz,
+      preacher: prefs.listeningPreacher,
     );
   }
 
@@ -384,6 +391,7 @@ class ListeningController extends Notifier<ListeningState> {
 
   Future<void> _applyVoices() async {
     await _engine.setRate(state.rate);
+    await _engine.setPreacher(state.preacher);
     await _engine.setNarratorVoice(state.narratorVoice);
     await _engine.setDivineVoice(state.divineVoice);
     await _engine.setPitch(
@@ -509,6 +517,14 @@ class ListeningController extends Notifier<ListeningState> {
   void setRepeat(ListenRepeat mode) {
     state = state.copyWith(repeat: mode, repetitions: 0);
     ref.read(preferencesRepositoryProvider).setListeningRepeat(mode.name);
+  }
+
+  /// Modo predicador: música de fondo, voz pausada y pausas dramáticas.
+  /// Se nota desde la frase siguiente, sin cortar lo que se escucha.
+  Future<void> setPreacher(bool on) async {
+    state = state.copyWith(preacher: on);
+    ref.read(preferencesRepositoryProvider).setListeningPreacher(on);
+    await _engine.setPreacher(on);
   }
 
   /// Campana antes de que Dios hable.
@@ -653,6 +669,8 @@ class ListeningController extends Notifier<ListeningState> {
           hasSavedPosition: false,
         );
         ref.read(preferencesRepositoryProvider).clearListeningPosition();
+        // Que no siga sonando la música de fondo al terminar.
+        await _engine.stop();
         return;
       }
       final index = state.passageIndex;

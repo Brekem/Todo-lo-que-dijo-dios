@@ -138,12 +138,25 @@ void main() {
         const Offset(0, -600),
       );
       await settle(tester);
+      await tester.scrollUntilVisible(
+        find.text('Voz 1 · es-US'),
+        150,
+        scrollable: find.byType(Scrollable).last,
+      );
+      await settle(tester);
       await tester.tap(find.text('Voz 1 · es-US'));
       await settle(tester);
       expect(tts.divineVoice?.name, 'es-us-x-esd-local');
+      await tester.ensureVisible(find.text('Campana antes de que Dios hable'));
+      await settle(tester);
       await tester.tap(find.text('Campana antes de que Dios hable'));
       await settle(tester);
       expect(prefs.getBool('listen_cue'), isFalse);
+      // Modo predicador: música de fondo y pausas dramáticas.
+      await tester.tap(find.byKey(const Key('preacher-mode')));
+      await settle(tester);
+      expect(prefs.getBool('listen_preacher'), isTrue);
+      expect(tts.preacher, isTrue);
 
       // Cerrar la hoja de voces.
       await tester.tapAt(const Offset(180, 40));

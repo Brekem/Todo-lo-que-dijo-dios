@@ -41,6 +41,11 @@ class FakeTts implements TtsEngine {
   @override
   Future<void> playCue() async => cues++;
 
+  bool preacher = false;
+
+  @override
+  Future<void> setPreacher(bool on) async => preacher = on;
+
   @override
   Future<List<TtsVoice>> voices() async => const [
     TtsVoice(name: 'es-us-x-esd-local', locale: 'es-US'),
@@ -358,6 +363,38 @@ void voiceTests() {
       expect(tts.cues, 0);
       expect(tts.divine, ['Sea la luz:']);
       await ctrl.pause();
+    });
+
+    test('modo predicador: se enciende, se recuerda y llega al lector', () async {
+      final (c, tts, prefs) = await setUpContainer();
+      final ctrl = c.read(listeningProvider.notifier);
+      expect(c.read(listeningProvider).preacher, isFalse);
+      await ctrl.setPreacher(true);
+      expect(c.read(listeningProvider).preacher, isTrue);
+      expect(prefs.getBool('listen_preacher'), isTrue);
+      expect(tts.preacher, isTrue);
+      // Al volver a escuchar se aplica otra vez (por si el lector se reinició).
+      tts.preacher = false;
+      await ctrl.playFrom(0);
+      await settle();
+      expect(tts.preacher, isTrue);
+      await ctrl.pause();
+      await ctrl.setPreacher(false);
+      expect(tts.preacher, isFalse);
+      expect(prefs.getBool('listen_preacher'), isFalse);
+    });
+
+    test('el predicador lee frase por frase, sin perder signos', () {
+      expect(
+        FlutterTtsEngine.sentences(
+          'Sea la luz: y fue la luz. ¿Dónde estás tú? ¡Aquí estoy!',
+        ),
+        ['Sea la luz:', 'y fue la luz.', '¿Dónde estás tú?', '¡Aquí estoy!'],
+      );
+      expect(FlutterTtsEngine.sentences('Sin punto final'), [
+        'Sin punto final',
+      ]);
+      expect(FlutterTtsEngine.sentences('  '), isEmpty);
     });
 
     test('los pasajes sobre «la voz de Yavé» los lee el narrador', () async {

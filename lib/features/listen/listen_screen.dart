@@ -645,6 +645,18 @@ class _DivineVoiceSheetState extends ConsumerState<_DivineVoiceSheet> {
               activeThumbColor: palette.gold,
               onChanged: controller.setCue,
             ),
+            SwitchListTile(
+              key: const Key('preacher-mode'),
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Modo predicador'),
+              subtitle: Text(
+                'Música de fondo que crece mientras ${Edition.current.speaker} habla, '
+                'voz más pausada y pausas dramáticas.',
+              ),
+              value: state.preacher,
+              activeThumbColor: palette.gold,
+              onChanged: controller.setPreacher,
+            ),
             const Divider(),
             option(null, 'La misma voz, más grave y solemne', 'Recomendada'),
             FutureBuilder<List<TtsVoice>>(

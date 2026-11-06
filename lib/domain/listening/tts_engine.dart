@@ -52,6 +52,10 @@ abstract interface class TtsEngine {
   /// Suena la señal de que Dios va a hablar. Completa cuando termina.
   Future<void> playCue();
 
+  /// Modo predicador: música de fondo que baja cuando hay voz y crece
+  /// mientras Dios habla, voz más pausada y pausas dramáticas entre frases.
+  Future<void> setPreacher(bool on);
+
   /// Voces en español instaladas en el teléfono.
   Future<List<TtsVoice>> voices();
 
@@ -88,6 +92,23 @@ class FlutterTtsEngine implements TtsEngine {
   double _narratorPitch = 1.02;
   static const _divineSlowdown = 0.82;
 
+  /// Modo predicador (ver [setPreacher]).
+  bool _preacher = false;
+  AudioPlayer? _music;
+  double _musicVolume = 0;
+  int _fade = 0;
+
+  /// Volumen de la música: debajo del narrador; debajo de Dios empieza un
+  /// poco más alto y sube frase a frase (crescendo), hasta [_musicPeak].
+  static const _musicUnderNarrator = 0.10;
+  static const _musicUnderGod = 0.14;
+  static const _musicStep = 0.025;
+  static const _musicPeak = 0.26;
+
+  /// Silencio entre frases: Dios hace pausas dramáticas.
+  static const _godBreath = Duration(milliseconds: 700);
+  static const _narratorBreath = Duration(milliseconds: 300);
+
   Future<void> _init() async {
     await _tts.awaitSpeakCompletion(true);
     await _tts.awaitSynthCompletion(true);
@@ -121,11 +142,14 @@ class FlutterTtsEngine implements TtsEngine {
   Future<void> _apply(VoiceStyle style) async {
     final divine = style == VoiceStyle.divine;
     await _useVoice(divine ? (_divineVoice ?? _narratorVoice) : _narratorVoice);
-    await _tts.setPitch(divine ? _divinePitch : _narratorPitch);
+    // Predicador: Dios aún más grave y pausado; el narrador, sin prisa.
+    final pitch = divine ? _divinePitch : _narratorPitch;
+    await _tts.setPitch(_preacher && divine ? pitch * 0.94 : pitch);
+    final slow = divine
+        ? (_preacher ? 0.74 : _divineSlowdown)
+        : (_preacher ? 0.92 : 1.0);
     // En Android 0.5 es la velocidad natural.
-    await _tts.setSpeechRate(
-      (0.5 * _rate * (divine ? _divineSlowdown : 1)).clamp(0.2, 1.0),
-    );
+    await _tts.setSpeechRate((0.5 * _rate * slow).clamp(0.2, 1.0));
     _current = style;
   }
 
@@ -137,10 +161,98 @@ class FlutterTtsEngine implements TtsEngine {
     await (_ready ??= _init());
     await _apply(style);
     final run = _stops;
+    if (_preacher) return _preach(text, style, run);
     // Android no lee textos de más de 4000 caracteres de una vez.
     for (final chunk in chunks(text)) {
       if (run != _stops) return;
       await _tts.speak(chunk);
+    }
+  }
+
+  /// Lee frase por frase, con un silencio entre una y otra, sobre la música.
+  Future<void> _preach(String text, VoiceStyle style, int run) async {
+    final divine = style == VoiceStyle.divine;
+    var level = divine ? _musicUnderGod : _musicUnderNarrator;
+    await _startMusic(level);
+    final phrases = sentences(text);
+    for (var i = 0; i < phrases.length; i++) {
+      if (run != _stops) return;
+      for (final chunk in chunks(phrases[i])) {
+        if (run != _stops) return;
+        await _tts.speak(chunk);
+      }
+      if (i == phrases.length - 1 || run != _stops) break;
+      if (divine) {
+        level = (level + _musicStep).clamp(0, _musicPeak).toDouble();
+        unawaited(_fadeMusic(level));
+      }
+      await Future<void>.delayed(divine ? _godBreath : _narratorBreath);
+    }
+    // Al terminar Dios, la música vuelve poco a poco a su nivel.
+    if (divine && run == _stops) unawaited(_fadeMusic(_musicUnderNarrator));
+  }
+
+  /// Parte un texto en frases (después de punto, signos de exclamación o de
+  /// interrogación, punto y coma o dos puntos), sin perder ningún signo.
+  static List<String> sentences(String text) => [
+    for (final m in RegExp(r'[^.!?;:]+[.!?;:]*').allMatches(text))
+      if (m[0]!.trim().isNotEmpty) m[0]!.trim(),
+  ];
+
+  Future<void> _startMusic(double level) async {
+    final player = _music ??= AudioPlayer()
+      // La música suena junto a la voz sin quitarle el foco de audio.
+      ..setAudioContext(
+        AudioContextConfig(focus: AudioContextConfigFocus.mixWithOthers)
+            .build(),
+      )
+      ..setReleaseMode(ReleaseMode.loop);
+    try {
+      if (player.state != PlayerState.playing) {
+        _musicVolume = 0;
+        await player.setVolume(0);
+        if (player.state == PlayerState.paused) {
+          await player.resume();
+        } else {
+          await player.play(
+            AssetSource('audio/fondo_predicador.ogg'),
+            volume: 0,
+          );
+        }
+      }
+      // Sin esperar: la voz no se demora mientras la música sube o baja.
+      unawaited(_fadeMusic(level));
+    } catch (e) {
+      debugPrint('No se pudo reproducir la música de fondo: $e');
+    }
+  }
+
+  /// Cambia el volumen de la música poco a poco (medio segundo).
+  Future<void> _fadeMusic(double target) async {
+    final player = _music;
+    if (player == null) return;
+    final fade = ++_fade;
+    final from = _musicVolume;
+    const steps = 10;
+    for (var i = 1; i <= steps; i++) {
+      if (fade != _fade) return;
+      _musicVolume = from + (target - from) * i / steps;
+      try {
+        await player.setVolume(_musicVolume);
+      } catch (_) {
+        return;
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+    }
+  }
+
+  @override
+  Future<void> setPreacher(bool on) async {
+    _preacher = on;
+    _current = null;
+    if (!on) {
+      _fade++;
+      await _music?.stop();
     }
   }
 
@@ -168,7 +280,9 @@ class FlutterTtsEngine implements TtsEngine {
   @override
   Future<void> stop() async {
     _stops++;
+    _fade++;
     await _player?.stop();
+    await _music?.pause();
     await _tts.stop();
   }
 
