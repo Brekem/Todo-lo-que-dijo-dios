@@ -103,7 +103,7 @@ void main() {
     test(
       'cada estudio tiene paráfrasis de cada versículo y las seis partes',
       () {
-        expect(studies.passages.length, greaterThanOrEqualTo(1530));
+        expect(studies.passages.length, greaterThanOrEqualTo(1540));
         int count(String book) =>
             studies.passages.where((p) => p.book == book).length;
         expect(count('Salmos'), greaterThanOrEqualTo(35));
@@ -147,6 +147,7 @@ void main() {
           'Nahúm',
           'Habacuc',
           'Sofonías',
+          'Hageo',
         ]) {
           // Los libros cortos (menos de 40 estudios posibles) se cubren
           // completos: cada versículo tiene su estudio.
